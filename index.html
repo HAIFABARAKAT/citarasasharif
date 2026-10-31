@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cita Rasa Sharif Restaurant | مطعم سيتا راسا شريف</title>
-    <!-- خطوط جوجل العالمية لدعم اللغتين العربية والإنجليزية -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- أيقونات Font Awesome لتزيين القوائم والأزرار -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ==========================================================================
-           ألوان وأنماط الموقع الافتراضية (الوضع المظلم والوضع المضيء)
-           ========================================================================== */
+        /* تعريف متغيرات الألوان المستوحاة من الصورة (الأخضر الفاتح والرمادي والأبيض) */
         :root {
-            --primary: #ff6b6b; /* اللون الأساسي للموقع - أحمر مرجاني */
-            --primary-glow: rgba(255, 107, 107, 0.4); /* توهج اللون الأساسي */
-            --bg-main: #0a0a0c; /* خلفية الموقع الداكنة */
-            --bg-card: #141419; /* خلفية الكروت والأقسام */
-            --text-main: #ffffff; /* لون النصوص الأساسية */
-            --text-muted: #a0a0ab; /* لون النصوص الفرعية */
-            --banner-gradient: linear-gradient(45deg, #ff416c, #ff4b2b, #f1c40f, #ff416c); /* ألوان البنر المتغيرة */
-            --shadow: 0 15px 35px rgba(0,0,0,0.5); /* الظلال للمسة ثلاثية الأبعاد */
-            --border-glow: rgba(255, 255, 255, 0.05); /* حدود ناعمة مضيئة */
+            --primary: #64bc26; /* الأخضر الفاتح الحيوي المتناسق مع ألوان الهوية في الصورة */
+            --primary-glow: rgba(100, 188, 38, 0.3);
+            --bg-main: #f4f6f8; /* خلفية رمادية فاتحة ومريحة للعين */
+            --bg-card: #ffffff; /* خلفية بيضاء ناصعة للكروت والأقسام لتعطي مظهراً نظيفاً */
+            --text-main: #2c3e50; /* لون الخط الرئيسي داكن لسهولة القراءة والوضوح */
+            --text-muted: #7f8c8d; /* لون الخط الفرعي أو الباهت باللون الرمادي */
+            --banner-gradient: linear-gradient(45deg, #64bc26, #84d642, #7f8c8d, #64bc26);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            --border-glow: rgba(100, 188, 38, 0.15);
         }
 
-        /* تعديل الألوان تلقائياً عند التحويل للوضع المضيء */
-        [data-theme="light"] {
-            --primary: #e74c3c;
-            --primary-glow: rgba(231, 76, 60, 0.2);
-            --bg-main: #f8f9fa;
-            --bg-card: #ffffff;
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
-            --banner-gradient: linear-gradient(45deg, #e74c3c, #f39c12, #ff6b6b, #e74c3c);
-            --shadow: 0 15px 35px rgba(0,0,0,0.08);
-            --border-glow: rgba(0, 0, 0, 0.05);
+        /* الوضع المظلم التبديري الاختياري لتوفير تباين جذاب للزوار */
+        [data-theme="dark"] {
+            --primary: #64bc26;
+            --primary-glow: rgba(100, 188, 38, 0.4);
+            --bg-main: #1a1b1f;
+            --bg-card: #24262b;
+            --text-main: #ffffff;
+            --text-muted: #a0a0ab;
+            --banner-gradient: linear-gradient(45deg, #24262b, #64bc26, #1a1b1f, #24262b);
+            --shadow: 0 15px 35px rgba(0,0,0,0.3);
+            --border-glow: rgba(255, 255, 255, 0.05);
         }
 
-        /* إعدادات الحركة العامة والانسيابية لجميع العناصر */
         * {
             margin: 0;
             padding: 0;
@@ -47,36 +44,34 @@
         }
 
         body {
-            font-family: 'Cairo', 'Poppins', sans-serif;
+            font-family: 'Poppins', 'Cairo', sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
             overflow-x: hidden;
         }
 
-        /* ==========================================================================
-           الهيدر (الشريط العلوي) وأزرار التحكم
-           ========================================================================== */
+        /* الهيدر العلوي */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(var(--bg-card), 0.8);
-            backdrop-filter: blur(10px); /* تأثير زجاجي ضبابي خلف الهيدر */
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border-glow);
+            border-bottom: 2px solid var(--border-glow);
             box-shadow: var(--shadow);
         }
 
         .logo {
             font-size: 24px;
             font-weight: 900;
-            background: linear-gradient(45deg, var(--primary), #f1c40f);
+            background: linear-gradient(45deg, var(--primary), #489314);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px var(--primary-glow);
+            text-shadow: 0 0 15px var(--primary-glow);
         }
 
         .nav-controls {
@@ -85,12 +80,11 @@
             gap: 20px;
         }
 
-        /* تصميم الأزرار السحرية المضيئة للغات والثيم */
         .btn-magic {
-            background: var(--bg-card);
+            background: var(--bg-main);
             border: 1px solid var(--border-glow);
             color: var(--text-main);
-            padding: 10px 15px;
+            padding: 10px 18px;
             border-radius: 30px;
             cursor: pointer;
             box-shadow: var(--shadow);
@@ -102,26 +96,25 @@
 
         .btn-magic:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 15px var(--primary-glow);
+            box-shadow: 0 5px 15px var(--primary-glow);
             border-color: var(--primary);
+            background: var(--primary);
+            color: white;
         }
 
-        /* ==========================================================================
-           البنر الرئيسي المتغير الألوان وتأثير اللمعة
-           ========================================================================== */
+        /* البنر الرئيسي بتأثير التدرج اللوني واللمعة السحرية الفضية */
         .banner {
             position: relative;
-            height: 350px;
+            height: 380px;
             background: var(--banner-gradient);
             background-size: 400% 400%;
-            animation: gradientMove 12s ease infinite; /* حركة تغير الألوان التدريجية */
+            animation: gradientMove 12s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: white;
             overflow: hidden;
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.3);
         }
 
         @keyframes gradientMove {
@@ -130,12 +123,12 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* تأثير خط اللمعة السحرية الأبيض الذي يمر عبر البنر */
+        /* تأثير اللمعة الفضية الفخمة المتحركة بشكل تلقائي */
         .banner::before {
             content: '';
             position: absolute;
             top: 0; right: 0; bottom: 0; left: 0;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3) 50%, transparent);
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4) 50%, transparent);
             transform: translateX(-100%);
             animation: shimmer 4s infinite;
         }
@@ -147,16 +140,16 @@
         .banner-content h1 {
             font-size: 48px;
             font-weight: 900;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
             margin-bottom: 10px;
         }
 
         .banner-content p {
             font-size: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
 
-        /* عناوين الأقسام وتأثير الخط المضيء أسفلها */
+        /* عناوين الأقسام الرئيسية للموقع */
         .section-title {
             text-align: center;
             margin: 60px 0 30px;
@@ -175,25 +168,22 @@
             box-shadow: 0 0 10px var(--primary);
         }
 
-        /* ==========================================================================
-           قسم صور الوجبات الإنسيابي والمتحرك تلقائياً
-           ========================================================================== */
+        /* سلايدر صور الوجبات الانسيابي المتحرك تلقائياً وتؤخذ الصور من مجلد pic */
         .slider-container {
             width: 100%;
             overflow: hidden;
             padding: 20px 0;
             position: relative;
-            background: rgba(255, 255, 255, 0.02);
         }
 
         .fluid-track {
             display: flex;
             width: calc(300px * 8);
-            animation: continuousScroll 25s linear infinite; /* حركة مستمرة بدون توقف للصور */
+            animation: continuousScroll 25s linear infinite;
         }
 
         .fluid-track:hover {
-            animation-play-state: paused; /* يقف التحرك مؤقتاً عند وضع الماوس على الصورة */
+            animation-play-state: paused;
         }
 
         @keyframes continuousScroll {
@@ -215,18 +205,17 @@
 
         .slide-card img {
             width: 100%;
-            height: 70%;
+            height: 75%;
             object-fit: cover;
         }
 
         .slide-info {
             padding: 15px;
             text-align: center;
+            font-weight: 700;
         }
 
-        /* ==========================================================================
-           أقسام المنيو الدائرية المضيئة والمبتكرة
-           ========================================================================== */
+        /* أقسام المنيو الدائرية المعتمدة بالكامل على الصور من مجلد pic */
         .menu-circles {
             display: flex;
             justify-content: center;
@@ -247,51 +236,32 @@
             height: 140px;
             border-radius: 50%;
             background: var(--bg-card);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 3px solid var(--border-glow);
+            overflow: hidden;
+            border: 4px solid var(--bg-card);
             box-shadow: var(--shadow);
             margin-bottom: 15px;
             position: relative;
-            overflow: hidden;
         }
 
-        .circle-img-wrapper i {
-            font-size: 45px;
-            color: var(--primary);
-            text-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* تأثير توهج داخلي عند تمرير الماوس على الدائرة */
-        .circle-img-wrapper::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            box-shadow: inset 0 0 20px var(--primary-glow);
-            opacity: 0;
-            transition: 0.3s;
+        .circle-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .circle-item:hover .circle-img-wrapper {
-            transform: rotate(15deg) scale(1.1);
+            transform: scale(1.1) rotate(5deg);
             border-color: var(--primary);
-            box-shadow: 0 0 25px var(--primary-glow);
-        }
-
-        .circle-item:hover .circle-img-wrapper::after {
-            opacity: 1;
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .circle-item span {
             font-weight: 700;
             font-size: 18px;
+            margin-top: 5px;
         }
 
-        /* ==========================================================================
-           قسم العدادات والإحصائيات والزيارات
-           ========================================================================== */
+        /* قسم الإحصائيات والزيارات اليومية للعملاء */
         .stats-section {
             background: var(--bg-card);
             padding: 60px 8%;
@@ -322,9 +292,7 @@
             margin-bottom: 5px;
         }
 
-        /* ==========================================================================
-           قسم معلومات وساعات العمل والأسئلة الشائعة
-           ========================================================================== */
+        /* شبكة معلومات العمل والأسئلة الاستفسارية الشائعة */
         .info-faq-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -362,9 +330,8 @@
             font-size: 20px;
         }
 
-        /* نظام الأسئلة الشائعة المنبثق الأكورديون */
         .faq-item {
-            background: rgba(255,255,255,0.02);
+            background: var(--bg-main);
             border: 1px solid var(--border-glow);
             border-radius: 12px;
             margin-bottom: 15px;
@@ -391,9 +358,7 @@
             transition: all 0.3s ease;
         }
 
-        /* ==========================================================================
-           قسم فورم الطلبات المتقدم والمرتبط بـ Web3Forms
-           ========================================================================== */
+        /* نموذج إرسال وتلقي الطلبات الذكي */
         .order-section {
             padding: 60px 8%;
             max-width: 800px;
@@ -404,9 +369,8 @@
             background: var(--bg-card);
             padding: 40px;
             border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
             border: 1px solid var(--border-glow);
-            position: relative;
         }
 
         .form-group {
@@ -422,7 +386,7 @@
         .form-control {
             width: 100%;
             padding: 15px;
-            background: rgba(0,0,0,0.2);
+            background: var(--bg-main);
             border: 1px solid var(--border-glow);
             border-radius: 12px;
             color: var(--text-main);
@@ -443,11 +407,10 @@
             margin-top: 10px;
         }
 
-        /* أزرار اختيار متعدد للوجبات بشكل جمالي وتفاعلي */
         .checkbox-btn {
             display: block;
             position: relative;
-            background: rgba(0,0,0,0.15);
+            background: var(--bg-main);
             border: 1px solid var(--border-glow);
             padding: 15px;
             border-radius: 12px;
@@ -463,20 +426,17 @@
             cursor: pointer;
         }
 
-        .checkbox-btn input:checked ~ .btn-text {
-            color: var(--primary);
-        }
-
         .checkbox-btn:has(input:checked) {
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-            background: rgba(255, 107, 107, 0.1);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px var(--primary-glow);
         }
 
         .submit-btn {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(45deg, var(--primary), #ff4b2b);
+            background: var(--primary);
             border: none;
             border-radius: 12px;
             color: white;
@@ -489,42 +449,53 @@
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px var(--primary-glow);
+            background: #489314;
         }
 
-        /* ==========================================================================
-           قسم شريط شركاء الثقة والطلبات السابقة المعكوس (من اليسار لليمين)
-           ========================================================================== */
-        .trust-track {
-            display: flex;
-            width: calc(200px * 8);
-            animation: continuousScrollReverse 20s linear infinite; /* تحرك بالاتجاه العكسي للتميز البصري */
+        /* قسم شركاء الثقة المطوّر: شبكة مربعات تفاعلية تتغير ألوانها بسلاسة للأخضر الفاتح عند التمرير بالماوس أو اللمس بالأصبع */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            padding: 20px 8% 60px;
         }
 
-        @keyframes continuousScrollReverse {
-            0% { transform: translateX(calc(-200px * 4)); }
-            100% { transform: translateX(0); }
-        }
-
-        .partner-logo {
-            width: 180px;
-            height: 100px;
-            margin: 0 10px;
+        .partner-box {
             background: var(--bg-card);
-            border-radius: 15px;
+            border: 2px solid var(--border-glow);
+            padding: 30px 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 1px solid var(--border-glow);
-            box-shadow: var(--shadow);
+            gap: 10px;
         }
 
-        .partner-logo i {
-            font-size: 40px;
-            color: var(--text-muted);
-            opacity: 0.7;
+        /* تأثير حركي خلاب عند تمرير الماوس أو اللمس بالأصبع على الجوال */
+        .partner-box:hover, .partner-box:active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--primary-glow);
         }
 
-        /* أيقونة الواتساب العائمة أسفل الشاشة للتواصل السريع */
+        .partner-box i {
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .partner-box:hover i, .partner-box:active i {
+            color: white;
+        }
+
+        /* أيقونة تطبيق الواتساب العائمة للمحادثات الفورية */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -547,12 +518,12 @@
             transform: scale(1.1) rotate(15deg);
         }
 
-        /* الفوتر (تذييل الصفحة) */
+        /* تذييل الصفحة الفوتر المدمج */
         footer {
-            background: #050507;
+            background: var(--bg-card);
             padding: 40px 8%;
             text-align: center;
-            border-top: 1px solid var(--border-glow);
+            border-top: 2px solid var(--border-glow);
             color: var(--text-muted);
         }
 
@@ -561,22 +532,20 @@
             margin-bottom: 15px;
         }
 
-        /* كلاسات التحكم بإخفاء وإظهار اللغات بناءً على اللغة النشطة */
+        /* كلاسات التحكم اللغوي لإخفاء الفئات غير النشطة */
         [lang="en"] .lang-ar { display: none !important; }
         [lang="ar"] .lang-en { display: none !important; }
     </style>
 </head>
-<body data-theme="dark">
+<body>
 
-    <!-- الهيدر العلوي ويحتوي على أزرار التبديل السحري -->
+    <!-- شريط التنقل والتحكم الرئيسي بالثيم واللغات -->
     <header>
         <div class="logo">Cita Rasa Sharif</div>
         <div class="nav-controls">
-            <!-- زر تحويل الألوان بين القمر والشمس -->
             <button class="btn-magic" onclick="toggleTheme()" id="themeBtn">
                 <i class="fas fa-sun"></i>
             </button>
-            <!-- زر تبديل اللغة الفوري للزوار -->
             <button class="btn-magic" onclick="toggleLanguage()" id="langBtn">
                 <span class="lang-ar">English</span>
                 <span class="lang-en">العربية</span>
@@ -584,7 +553,7 @@
         </div>
     </header>
 
-    <!-- البنر الرئيسي ذو اللمعة والتموج اللوني -->
+    <!-- البنر الإعلاني ذو التموج اللوني واللمعة الشاملة المبتكرة -->
     <section class="banner">
         <div class="banner-content">
             <h1 class="lang-ar">مطعم سيتا راسا شريف</h1>
@@ -594,75 +563,74 @@
         </div>
     </section>
 
-    <!-- عنوان قسم الوجبات الإنسيابية المتنقلة -->
+    <!-- قسم صور الوجبات الانسيابي التلقائي الذي يسحب الصور محلياً من مجلد pic -->
     <h2 class="section-title">
         <span class="lang-ar">وجباتنا المميزة</span>
         <span class="lang-en">Our Signature Meals</span>
     </h2>
     <div class="slider-container">
         <div class="fluid-track">
-            <!-- كروت الوجبات المتكررة لإنشاء تأثير الحركة اللانهائية المنتظمة -->
             <div class="slide-card">
-                <img src="https://images.unsplash.com/photo-1561651823-34fed022540d?w=500&q=80" alt="Shawarma">
+                <img src="pic/shawarma.jpg" alt="Shawarma">
                 <div class="slide-info">
-                    <h3 class="lang-ar">شاورما ملكية</h3>
-                    <h3 class="lang-en">Royal Shawarma</h3>
+                    <span class="lang-ar">شاورما ملكية</span>
+                    <span class="lang-en">Royal Shawarma</span>
                 </div>
             </div>
             <div class="slide-card">
-                <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80" alt="Mandi">
+                <img src="pic/mandi.jpg" alt="Chicken Mandi">
                 <div class="slide-info">
-                    <h3 class="lang-ar">مندي دجاج فاخر</h3>
-                    <h3 class="lang-en">Premium Chicken Mandi</h3>
+                    <span class="lang-ar">مندي دجاج فاخر</span>
+                    <span class="lang-en">Premium Chicken Mandi</span>
                 </div>
             </div>
             <div class="slide-card">
-                <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80" alt="Strips">
+                <img src="pic/strips.jpg" alt="Chicken Strips">
                 <div class="slide-info">
-                    <h3 class="lang-ar">ستربس دجاج مقرمش</h3>
-                    <h3 class="lang-en">Crispy Chicken Strips</h3>
+                    <span class="lang-ar">ستربس دجاج مقرمش</span>
+                    <span class="lang-en">Crispy Chicken Strips</span>
                 </div>
             </div>
             <div class="slide-card">
-                <img src="https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=500&q=80" alt="Drinks">
+                <img src="pic/drinks.jpg" alt="Drinks">
                 <div class="slide-info">
-                    <h3 class="lang-ar">مشروبات منعشة</h3>
-                    <h3 class="lang-en">Refreshing Drinks</h3>
+                    <span class="lang-ar">مشروبات منعشة</span>
+                    <span class="lang-en">Refreshing Drinks</span>
                 </div>
             </div>
-            <!-- تكرار الكروت لضمان عدم وجود فجوات أثناء الحركة الدائرية -->
-            <div class="slide-card"><img src="https://images.unsplash.com/photo-1561651823-34fed022540d?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">شاورما ملكية</h3><h3 class="lang-en">Royal Shawarma</h3></div></div>
-            <div class="slide-card"><img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">مندي دجاج فاخر</h3><h3 class="lang-en">Premium Chicken Mandi</h3></div></div>
-            <div class="slide-card"><img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">ستربس دجاج مقرمش</h3><h3 class="lang-en">Crispy Chicken Strips</h3></div></div>
-            <div class="slide-card"><img src="https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">مشروبات منعشة</h3><h3 class="lang-en">Refreshing Drinks</h3></div></div>
+            <!-- كروت مكررة برمجياً للحفاظ على دورة الحركة اللانهائية الملساء -->
+            <div class="slide-card"><img src="pic/shawarma.jpg"><div class="slide-info"><span class="lang-ar">شاورما ملكية</span><span class="lang-en">Royal Shawarma</span></div></div>
+            <div class="slide-card"><img src="pic/mandi.jpg"><div class="slide-info"><span class="lang-ar">مندي دجاج فاخر</span><span class="lang-en">Premium Chicken Mandi</span></div></div>
+            <div class="slide-card"><img src="pic/strips.jpg"><div class="slide-info"><span class="lang-ar">ستربس دجاج مقرمش</span><span class="lang-en">Crispy Chicken Strips</span></div></div>
+            <div class="slide-card"><img src="pic/drinks.jpg"><div class="slide-info"><span class="lang-ar">مشروبات منعشة</span><span class="lang-en">Refreshing Drinks</span></div></div>
         </div>
     </div>
 
-    <!-- قسم دوائر المنيو الأربعة المحددة -->
+    <!-- أقسام المنيو الدائرية التي تعتمد على الصور المخزنة في مجلد pic -->
     <h2 class="section-title">
         <span class="lang-ar">أقسام المنيو</span>
         <span class="lang-en">Menu Categories</span>
     </h2>
     <div class="menu-circles">
         <div class="circle-item">
-            <div class="circle-img-wrapper">🌯</div>
+            <div class="circle-img-wrapper"><img src="pic/cat-shawarma.jpg" alt="Shawarma Category"></div>
             <span class="lang-ar">شاورما</span><span class="lang-en">Shawarma</span>
         </div>
         <div class="circle-item">
-            <div class="circle-img-wrapper">Te🍗</div>
+            <div class="circle-img-wrapper"><img src="pic/cat-mandi.jpg" alt="Chicken Mandi Category"></div>
             <span class="lang-ar">مندي دجاج</span><span class="lang-en">Chicken Mandi</span>
         </div>
         <div class="circle-item">
-            <div class="circle-img-wrapper">🍿</div>
+            <div class="circle-img-wrapper"><img src="pic/cat-strips.jpg" alt="Chicken Strips Category"></div>
             <span class="lang-ar">ستربس دجاج</span><span class="lang-en">Chicken Strips</span>
         </div>
         <div class="circle-item">
-            <div class="circle-img-wrapper">🥤</div>
+            <div class="circle-img-wrapper"><img src="pic/cat-drinks.jpg" alt="Drinks Category"></div>
             <span class="lang-ar">مشروبات</span><span class="lang-en">Drinks</span>
         </div>
     </div>
 
-    <!-- شريط الإحصائيات وعداد الزيارات المتفاعل ديناميكياً -->
+    <!-- قسم الإحصائيات وعداد الزيارات اليومي التفاعلي -->
     <section class="stats-section">
         <div class="stat-box">
             <i class="fas fa-users"></i>
@@ -678,7 +646,7 @@
         </div>
     </section>
 
-    <!-- شبكة المعلومات وساعات العمل الرسمية مع الأسئلة والأجوبة المحمية -->
+    <!-- معلومات وساعات عمل المطعم وقائمة الأسئلة الشائعة للزوار -->
     <section class="info-faq-grid">
         <div class="info-card">
             <h2 class="lang-ar"><i class="fas fa-info-circle"></i> معلومات المطعم</h2>
@@ -715,17 +683,16 @@
         </div>
     </section>
 
-    <!-- فورمة استقبال الطلبات بجميع شروطها التقنية المحددة -->
+    <!-- فورم استقبال طلبات المناسبات والحفلات الذكي عبر حساب العميل في Web3Forms -->
     <section class="order-section">
         <h2 class="section-title">
             <span class="lang-ar">طلب الحفلات والمناسبات</span>
             <span class="lang-en">Events & Catering Orders</span>
         </h2>
-        <!-- فورم الإرسال لـ Web3Forms مع استخدام الـ Access Key المرفق الخاص بك -->
         <form action="https://api.web3forms.com/submit" method="POST" class="order-form" id="cateringForm">
+            <!-- مفتاح الربط السري الخاص بحساب العميل لاستقبال الرسائل مباشرة -->
             <input type="hidden" name="access_key" value="705785a7-7db7-4974-8bcc-52aea4b30120">
 
-            <!-- اختيار اسم الوجبة أو الوجبات المتعددة -->
             <div class="form-group">
                 <label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
                 <label class="lang-en">Select Meals (You can select multiple):</label>
@@ -749,35 +716,30 @@
                 </div>
             </div>
 
-            <!-- عدد الوجبات بحد أدنى 10 وجبات كاملاً -->
             <div class="form-group">
                 <label class="lang-ar">عدد الوجبات الكلي (الحد الأدنى 10 وجبات):</label>
                 <label class="lang-en">Total Number of Meals (Minimum 10):</label>
                 <input type="number" name="quantity" class="form-control" min="10" value="10" required>
             </div>
 
-            <!-- تاريخ الاستلام محمي برمجياً ليكون بعد 3 أيام من اليوم كأقل تقدير -->
             <div class="form-group">
                 <label class="lang-ar">تاريخ الاستلام (أقل شيء بعد 3 أيام):</label>
                 <label class="lang-en">Pickup Date (Minimum 3 days from today):</label>
                 <input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
             </div>
 
-            <!-- ساعة الاستلام بحدود ساعات عمل المطعم الفعلي -->
             <div class="form-group">
                 <label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
                 <label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
                 <input type="time" name="delivery_time" class="form-control" min="10:00" max="22:00" required>
             </div>
 
-            <!-- صندوق الملاحظات والإضافات الخاصة للعميل -->
             <div class="form-group">
                 <label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
                 <label class="lang-en">Would you like to add anything extra?</label>
                 <textarea name="special_notes" class="form-control" rows="4" placeholder="..."></textarea>
             </div>
 
-            <!-- زر إرسال الفورمة السحري -->
             <button type="submit" class="submit-btn">
                 <span class="lang-ar">إرسال الطلب السحري</span>
                 <span class="lang-en">Send Magical Order</span>
@@ -785,41 +747,48 @@
         </form>
     </section>
 
-    <!-- شريط شركاء الثقة الدوار والمتحرك بانسيابية تامة -->
+    <!-- قسم شركاء الثقة المطور كلياً على شكل مربعات أنيقة تتفاعل عند اللمس أو التمرير بالماوس لتتغير للأخضر الفاتح الجميل -->
     <h2 class="section-title">
-        <span class="lang-ar">شركاء الثقة وطلبات سابقة</span>
-        <span class="lang-en">Trusted Partners & Past Orders</span>
+        <span class="lang-ar">شركاء الثقة</span>
+        <span class="lang-en">Trusted Partners</span>
     </h2>
-    <div class="slider-container" style="margin-bottom: 60px;">
-        <div class="trust-track">
-            <div class="partner-logo"><i class="fas fa-handshake"> Partner 1</i></div>
-            <div class="partner-logo"><i class="fas fa-award"> Quality</i></div>
-            <div class="partner-logo"><i class="fas fa-utensils"> Gourmet</i></div>
-            <div class="partner-logo"><i class="fas fa-star"> Top Choice</i></div>
-            <div class="partner-logo"><i class="fas fa-handshake"> Partner 1</i></div>
-            <div class="partner-logo"><i class="fas fa-award"> Quality</i></div>
-            <div class="partner-logo"><i class="fas fa-utensils"> Gourmet</i></div>
-            <div class="partner-logo"><i class="fas fa-star"> Top Choice</i></div>
+    <div class="partners-grid">
+        <div class="partner-box">
+            <i class="fas fa-handshake"></i>
+            <span class="lang-ar">شركة التموين المتميز</span>
+            <span class="lang-en">Premium Catering Co.</span>
+        </div>
+        <div class="partner-box">
+            <i class="fas fa-award"></i>
+            <span class="lang-ar">مؤسسة الجودة العالمية</span>
+            <span class="lang-en">Global Quality Est.</span>
+        </div>
+        <div class="partner-box">
+            <i class="fas fa-utensils"></i>
+            <span class="lang-ar">شريك المذاق الرفيع</span>
+            <span class="lang-en">Gourmet Taste Partner</span>
+        </div>
+        <div class="partner-box">
+            <i class="fas fa-star"></i>
+            <span class="lang-ar">الخيار الأول للثقة</span>
+            <span class="lang-en">First Choice Trust</span>
         </div>
     </div>
 
-    <!-- أيقونة واتس اب العائمة للرد على الاستفسارات الفورية -->
+    <!-- زر الاتصال والمحادثة السريعة العائم عبر تطبيق واتساب -->
     <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- فوتر الموقع الرسمي متضمناً اسم المطعم وعام النشر للحقوق -->
+    <!-- فوتر الموقع المحتوي على اسم المطعم والحقوق -->
     <footer>
         <h2>Cita Rasa Sharif</h2>
         <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا راسا شريف. لمسات سحرية بكل وجبة.</p>
         <p class="lang-en">© 2026 All Rights Reserved for Cita Rasa Sharif. Magical touches in every meal.</p>
     </footer>
 
-    <!-- ==========================================================================
-       أكواد الجافا سكريبت التفاعلية لإدارة وظائف الموقع بشكل ذكي وسلس
-       ========================================================================== */ -->
     <script>
-        // وظيفة تبديل لغة الموقع بالكامل وتعديل اتجاه النصوص انسيابياً (RTL / LTR)
+        // دالة تحويل اللغات للتحكم الفوري بالاتجاهات والنصوص
         function toggleLanguage() {
             const currentLang = document.documentElement.getAttribute('lang');
             if (currentLang === 'ar') {
@@ -831,20 +800,20 @@
             }
         }
 
-        // وظيفة تحويل ألوان الموقع بين الوضع المظلم والوضع المضيء مع تغيير الأيقونات
+        // دالة التبديل اللوني لثيمات الواجهة (شمس / قمر)
         function toggleTheme() {
             const body = document.body;
             const themeBtn = document.getElementById('themeBtn').querySelector('i');
             if (body.getAttribute('data-theme') === 'dark') {
-                body.setAttribute('data-theme', 'light');
-                themeBtn.className = 'fas fa-moon';
+                body.removeAttribute('data-theme');
+                themeBtn.className = 'fas fa-sun';
             } else {
                 body.setAttribute('data-theme', 'dark');
-                themeBtn.className = 'fas fa-sun';
+                themeBtn.className = 'fas fa-moon';
             }
         }
 
-        // وظيفة فتح وإغلاق كروت الأسئلة الشائعة بنظام الأكورديون الذكي
+        // دالة الأكورديون الذكي لقسم الأسئلة الاستفسارية الشائعة
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const icon = element.querySelector('i');
@@ -859,20 +828,20 @@
             }
         }
 
-        // إعدادات القيود المفروضة برمجياً فور تحميل الصفحة
+        // كود التحكم البرمجي الفوري بمجرد تحميل وعرض الصفحة كاملة للعميل
         window.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('deliveryDate');
             const today = new Date();
-            today.setDate(today.getDate() + 3); // إضافة 3 أيام للحد الأدنى من الطلب
+            // إضافة 3 أيام كحد أدنى إلزامي لقبول تاريخ الطلب الجديد
+            today.setDate(today.getDate() + 3);
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             
-            // تطبيق قفل تاريخ التوصيل المستقبلي ليكون متوافقاً مع رغبتك
             dateInput.min = `${year}-${month}-${day}`;
             dateInput.value = `${year}-${month}-${day}`;
             
-            // محاكاة حية وتفاعلية لزيادة عداد الزيارات التلقائي لمنح الثقة للزوار
+            // تحديث ومحاكاة تلقائية متكررة لعداد الزيارات الفعلي
             let count = parseInt(document.getElementById('visitCounter').innerText.replace(/,/g, ''));
             setInterval(() => {
                 count += Math.floor(Math.random() * 3) + 1;
