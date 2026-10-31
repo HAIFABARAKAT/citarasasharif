@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cita Rasa Sharif Restaurant | مطعم سيتا راسا شريف</title>
+    <!-- خطوط جوجل العالمية لدعم اللغتين العربية والإنجليزية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- أيقونات Font Awesome لتزيين القوائم والأزرار -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           ألوان وأنماط الموقع الافتراضية (الوضع المظلم والوضع المضيء)
+           ========================================================================== */
+        :root {
+            --primary: #ff6b6b; /* اللون الأساسي للموقع - أحمر مرجاني */
+            --primary-glow: rgba(255, 107, 107, 0.4); /* توهج اللون الأساسي */
+            --bg-main: #0a0a0c; /* خلفية الموقع الداكنة */
+            --bg-card: #141419; /* خلفية الكروت والأقسام */
+            --text-main: #ffffff; /* لون النصوص الأساسية */
+            --text-muted: #a0a0ab; /* لون النصوص الفرعية */
+            --banner-gradient: linear-gradient(45deg, #ff416c, #ff4b2b, #f1c40f, #ff416c); /* ألوان البنر المتغيرة */
+            --shadow: 0 15px 35px rgba(0,0,0,0.5); /* الظلال للمسة ثلاثية الأبعاد */
+            --border-glow: rgba(255, 255, 255, 0.05); /* حدود ناعمة مضيئة */
+        }
+
+        /* تعديل الألوان تلقائياً عند التحويل للوضع المضيء */
+        [data-theme="light"] {
+            --primary: #e74c3c;
+            --primary-glow: rgba(231, 76, 60, 0.2);
+            --bg-main: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --banner-gradient: linear-gradient(45deg, #e74c3c, #f39c12, #ff6b6b, #e74c3c);
+            --shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --border-glow: rgba(0, 0, 0, 0.05);
+        }
+
+        /* إعدادات الحركة العامة والانسيابية لجميع العناصر */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        }
+
+        body {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           الهيدر (الشريط العلوي) وأزرار التحكم
+           ========================================================================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(var(--bg-card), 0.8);
+            backdrop-filter: blur(10px); /* تأثير زجاجي ضبابي خلف الهيدر */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-glow);
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* تصميم الأزرار السحرية المضيئة للغات والثيم */
+        .btn-magic {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            color: var(--text-main);
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .btn-magic:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--primary-glow);
+            border-color: var(--primary);
+        }
+
+        /* ==========================================================================
+           البنر الرئيسي المتغير الألوان وتأثير اللمعة
+           ========================================================================== */
+        .banner {
+            position: relative;
+            height: 350px;
+            background: var(--banner-gradient);
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite; /* حركة تغير الألوان التدريجية */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.3);
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* تأثير خط اللمعة السحرية الأبيض الذي يمر عبر البنر */
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3) 50%, transparent);
+            transform: translateX(-100%);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+
+        .banner-content h1 {
+            font-size: 48px;
+            font-weight: 900;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* عناوين الأقسام وتأثير الخط المضيء أسفلها */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 30px;
+            font-size: 32px;
+            font-weight: 700;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* ==========================================================================
+           قسم صور الوجبات الإنسيابي والمتحرك تلقائياً
+           ========================================================================== */
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .fluid-track {
+            display: flex;
+            width: calc(300px * 8);
+            animation: continuousScroll 25s linear infinite; /* حركة مستمرة بدون توقف للصور */
+        }
+
+        .fluid-track:hover {
+            animation-play-state: paused; /* يقف التحرك مؤقتاً عند وضع الماوس على الصورة */
+        }
+
+        @keyframes continuousScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-300px * 4)); }
+        }
+
+        .slide-card {
+            width: 280px;
+            height: 350px;
+            margin: 0 10px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-glow);
+            position: relative;
+        }
+
+        .slide-card img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+        }
+
+        .slide-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           أقسام المنيو الدائرية المضيئة والمبتكرة
+           ========================================================================== */
+        .menu-circles {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 40px 8%;
+        }
+
+        .circle-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .circle-img-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid var(--border-glow);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .circle-img-wrapper i {
+            font-size: 45px;
+            color: var(--primary);
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* تأثير توهج داخلي عند تمرير الماوس على الدائرة */
+        .circle-img-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px var(--primary-glow);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .circle-item:hover .circle-img-wrapper {
+            transform: rotate(15deg) scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        .circle-item:hover .circle-img-wrapper::after {
+            opacity: 1;
+        }
+
+        .circle-item span {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* ==========================================================================
+           قسم العدادات والإحصائيات والزيارات
+           ========================================================================== */
+        .stats-section {
+            background: var(--bg-card);
+            padding: 60px 8%;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            border-top: 1px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            min-width: 200px;
+        }
+
+        .stat-box i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .stat-box h3 {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        /* ==========================================================================
+           قسم معلومات وساعات العمل والأسئلة الشائعة
+           ========================================================================== */
+        .info-faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 60px 8%;
+        }
+
+        @media (max-width: 768px) {
+            .info-faq-grid { grid-template-columns: 1fr; }
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-glow);
+        }
+
+        .info-card ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .info-card ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 17px;
+        }
+
+        .info-card ul li i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        /* نظام الأسئلة الشائعة المنبثق الأكورديون */
+        .faq-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+        }
+
+        .faq-answer {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* ==========================================================================
+           قسم فورم الطلبات المتقدم والمرتبط بـ Web3Forms
+           ========================================================================== */
+        .order-section {
+            padding: 60px 8%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .order-form {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-glow);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        /* أزرار اختيار متعدد للوجبات بشكل جمالي وتفاعلي */
+        .checkbox-btn {
+            display: block;
+            position: relative;
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--border-glow);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            user-select: none;
+        }
+
+        .checkbox-btn input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-btn input:checked ~ .btn-text {
+            color: var(--primary);
+        }
+
+        .checkbox-btn:has(input:checked) {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary), #ff4b2b);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px var(--primary-glow);
+        }
+
+        /* ==========================================================================
+           قسم شريط شركاء الثقة والطلبات السابقة المعكوس (من اليسار لليمين)
+           ========================================================================== */
+        .trust-track {
+            display: flex;
+            width: calc(200px * 8);
+            animation: continuousScrollReverse 20s linear infinite; /* تحرك بالاتجاه العكسي للتميز البصري */
+        }
+
+        @keyframes continuousScrollReverse {
+            0% { transform: translateX(calc(-200px * 4)); }
+            100% { transform: translateX(0); }
+        }
+
+        .partner-logo {
+            width: 180px;
+            height: 100px;
+            margin: 0 10px;
+            background: var(--bg-card);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-glow);
+            box-shadow: var(--shadow);
+        }
+
+        .partner-logo i {
+            font-size: 40px;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* أيقونة الواتساب العائمة أسفل الشاشة للتواصل السريع */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* الفوتر (تذييل الصفحة) */
+        footer {
+            background: #050507;
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid var(--border-glow);
+            color: var(--text-muted);
+        }
+
+        footer h2 {
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        /* كلاسات التحكم بإخفاء وإظهار اللغات بناءً على اللغة النشطة */
+        [lang="en"] .lang-ar { display: none !important; }
+        [lang="ar"] .lang-en { display: none !important; }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- الهيدر العلوي ويحتوي على أزرار التبديل السحري -->
+    <header>
+        <div class="logo">Cita Rasa Sharif</div>
+        <div class="nav-controls">
+            <!-- زر تحويل الألوان بين القمر والشمس -->
+            <button class="btn-magic" onclick="toggleTheme()" id="themeBtn">
+                <i class="fas fa-sun"></i>
+            </button>
+            <!-- زر تبديل اللغة الفوري للزوار -->
+            <button class="btn-magic" onclick="toggleLanguage()" id="langBtn">
+                <span class="lang-ar">English</span>
+                <span class="lang-en">العربية</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- البنر الرئيسي ذو اللمعة والتموج اللوني -->
+    <section class="banner">
+        <div class="banner-content">
+            <h1 class="lang-ar">مطعم سيتا راسا شريف</h1>
+            <h1 class="lang-en">Cita Rasa Sharif Restaurant</h1>
+            <p class="lang-ar">نكهات ساحرة تأخذك في رحلة فريدة</p>
+            <p class="lang-en">Magical flavors taking you on a unique journey</p>
+        </div>
+    </section>
+
+    <!-- عنوان قسم الوجبات الإنسيابية المتنقلة -->
+    <h2 class="section-title">
+        <span class="lang-ar">وجباتنا المميزة</span>
+        <span class="lang-en">Our Signature Meals</span>
+    </h2>
+    <div class="slider-container">
+        <div class="fluid-track">
+            <!-- كروت الوجبات المتكررة لإنشاء تأثير الحركة اللانهائية المنتظمة -->
+            <div class="slide-card">
+                <img src="https://images.unsplash.com/photo-1561651823-34fed022540d?w=500&q=80" alt="Shawarma">
+                <div class="slide-info">
+                    <h3 class="lang-ar">شاورما ملكية</h3>
+                    <h3 class="lang-en">Royal Shawarma</h3>
+                </div>
+            </div>
+            <div class="slide-card">
+                <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80" alt="Mandi">
+                <div class="slide-info">
+                    <h3 class="lang-ar">مندي دجاج فاخر</h3>
+                    <h3 class="lang-en">Premium Chicken Mandi</h3>
+                </div>
+            </div>
+            <div class="slide-card">
+                <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80" alt="Strips">
+                <div class="slide-info">
+                    <h3 class="lang-ar">ستربس دجاج مقرمش</h3>
+                    <h3 class="lang-en">Crispy Chicken Strips</h3>
+                </div>
+            </div>
+            <div class="slide-card">
+                <img src="https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=500&q=80" alt="Drinks">
+                <div class="slide-info">
+                    <h3 class="lang-ar">مشروبات منعشة</h3>
+                    <h3 class="lang-en">Refreshing Drinks</h3>
+                </div>
+            </div>
+            <!-- تكرار الكروت لضمان عدم وجود فجوات أثناء الحركة الدائرية -->
+            <div class="slide-card"><img src="https://images.unsplash.com/photo-1561651823-34fed022540d?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">شاورما ملكية</h3><h3 class="lang-en">Royal Shawarma</h3></div></div>
+            <div class="slide-card"><img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">مندي دجاج فاخر</h3><h3 class="lang-en">Premium Chicken Mandi</h3></div></div>
+            <div class="slide-card"><img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">ستربس دجاج مقرمش</h3><h3 class="lang-en">Crispy Chicken Strips</h3></div></div>
+            <div class="slide-card"><img src="https://images.unsplash.com/photo-1497515114629-f71d768fd07c?w=500&q=80"><div class="slide-info"><h3 class="lang-ar">مشروبات منعشة</h3><h3 class="lang-en">Refreshing Drinks</h3></div></div>
+        </div>
+    </div>
+
+    <!-- قسم دوائر المنيو الأربعة المحددة -->
+    <h2 class="section-title">
+        <span class="lang-ar">أقسام المنيو</span>
+        <span class="lang-en">Menu Categories</span>
+    </h2>
+    <div class="menu-circles">
+        <div class="circle-item">
+            <div class="circle-img-wrapper">🌯</div>
+            <span class="lang-ar">شاورما</span><span class="lang-en">Shawarma</span>
+        </div>
+        <div class="circle-item">
+            <div class="circle-img-wrapper">Te🍗</div>
+            <span class="lang-ar">مندي دجاج</span><span class="lang-en">Chicken Mandi</span>
+        </div>
+        <div class="circle-item">
+            <div class="circle-img-wrapper">🍿</div>
+            <span class="lang-ar">ستربس دجاج</span><span class="lang-en">Chicken Strips</span>
+        </div>
+        <div class="circle-item">
+            <div class="circle-img-wrapper">🥤</div>
+            <span class="lang-ar">مشروبات</span><span class="lang-en">Drinks</span>
+        </div>
+    </div>
+
+    <!-- شريط الإحصائيات وعداد الزيارات المتفاعل ديناميكياً -->
+    <section class="stats-section">
+        <div class="stat-box">
+            <i class="fas fa-users"></i>
+            <h3 id="visitCounter">1,482</h3>
+            <p class="lang-ar">عدد الزيارات اليومية</p>
+            <p class="lang-en">Daily Visits</p>
+        </div>
+        <div class="stat-box">
+            <i class="fas fa-smile"></i>
+            <h3>99%</h3>
+            <p class="lang-ar">رضا العملاء</p>
+            <p class="lang-en">Customer Satisfaction</p>
+        </div>
+    </section>
+
+    <!-- شبكة المعلومات وساعات العمل الرسمية مع الأسئلة والأجوبة المحمية -->
+    <section class="info-faq-grid">
+        <div class="info-card">
+            <h2 class="lang-ar"><i class="fas fa-info-circle"></i> معلومات المطعم</h2>
+            <h2 class="lang-en"><i class="fas fa-info-circle"></i> Restaurant Info</h2>
+            <ul>
+                <li>
+                    <i class="fas fa-clock"></i>
+                    <span class="lang-ar">ساعات العمل: من 10 صباحاً إلى 10 مساءً</span>
+                    <span class="lang-en">Working Hours: 10:00 AM - 10:00 PM</span>
+                </li>
+                <li>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="lang-ar">الموقع الرئيسي للمطعم الفاخر</span>
+                    <span class="lang-en">Main Premium Location</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h2 class="lang-ar"><i class="fas fa-question-circle"></i> الأسئلة الشائعة</h2>
+            <h2 class="lang-en"><i class="fas fa-question-circle"></i> FAQ</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="lang-ar">هل اللحوم طازجة؟</span>
+                    <span class="lang-en">Is the meat fresh?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p class="lang-ar">نعم، جميع لحومنا ودواجننا طازجة ومذبوحة محلياً يومياً وبأعلى معايير الجودة.</p>
+                    <p class="lang-en">Yes, all our meat and poultry are fresh, locally slaughtered daily with the highest quality standards.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- فورمة استقبال الطلبات بجميع شروطها التقنية المحددة -->
+    <section class="order-section">
+        <h2 class="section-title">
+            <span class="lang-ar">طلب الحفلات والمناسبات</span>
+            <span class="lang-en">Events & Catering Orders</span>
+        </h2>
+        <!-- فورم الإرسال لـ Web3Forms مع استخدام الـ Access Key المرفق الخاص بك -->
+        <form action="https://api.web3forms.com/submit" method="POST" class="order-form" id="cateringForm">
+            <input type="hidden" name="access_key" value="705785a7-7db7-4974-8bcc-52aea4b30120">
+
+            <!-- اختيار اسم الوجبة أو الوجبات المتعددة -->
+            <div class="form-group">
+                <label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
+                <label class="lang-en">Select Meals (You can select multiple):</label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Shawarma">
+                        <span class="btn-text lang-ar">شاورما</span><span class="btn-text lang-en">Shawarma</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Mandi">
+                        <span class="btn-text lang-ar">مندي دجاج</span><span class="btn-text lang-en">Chicken Mandi</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Strips">
+                        <span class="btn-text lang-ar">ستربس دجاج</span><span class="btn-text lang-en">Chicken Strips</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Drinks">
+                        <span class="btn-text lang-ar">مشروبات</span><span class="btn-text lang-en">Drinks</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- عدد الوجبات بحد أدنى 10 وجبات كاملاً -->
+            <div class="form-group">
+                <label class="lang-ar">عدد الوجبات الكلي (الحد الأدنى 10 وجبات):</label>
+                <label class="lang-en">Total Number of Meals (Minimum 10):</label>
+                <input type="number" name="quantity" class="form-control" min="10" value="10" required>
+            </div>
+
+            <!-- تاريخ الاستلام محمي برمجياً ليكون بعد 3 أيام من اليوم كأقل تقدير -->
+            <div class="form-group">
+                <label class="lang-ar">تاريخ الاستلام (أقل شيء بعد 3 أيام):</label>
+                <label class="lang-en">Pickup Date (Minimum 3 days from today):</label>
+                <input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
+            </div>
+
+            <!-- ساعة الاستلام بحدود ساعات عمل المطعم الفعلي -->
+            <div class="form-group">
+                <label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
+                <label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
+                <input type="time" name="delivery_time" class="form-control" min="10:00" max="22:00" required>
+            </div>
+
+            <!-- صندوق الملاحظات والإضافات الخاصة للعميل -->
+            <div class="form-group">
+                <label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
+                <label class="lang-en">Would you like to add anything extra?</label>
+                <textarea name="special_notes" class="form-control" rows="4" placeholder="..."></textarea>
+            </div>
+
+            <!-- زر إرسال الفورمة السحري -->
+            <button type="submit" class="submit-btn">
+                <span class="lang-ar">إرسال الطلب السحري</span>
+                <span class="lang-en">Send Magical Order</span>
+            </button>
+        </form>
+    </section>
+
+    <!-- شريط شركاء الثقة الدوار والمتحرك بانسيابية تامة -->
+    <h2 class="section-title">
+        <span class="lang-ar">شركاء الثقة وطلبات سابقة</span>
+        <span class="lang-en">Trusted Partners & Past Orders</span>
+    </h2>
+    <div class="slider-container" style="margin-bottom: 60px;">
+        <div class="trust-track">
+            <div class="partner-logo"><i class="fas fa-handshake"> Partner 1</i></div>
+            <div class="partner-logo"><i class="fas fa-award"> Quality</i></div>
+            <div class="partner-logo"><i class="fas fa-utensils"> Gourmet</i></div>
+            <div class="partner-logo"><i class="fas fa-star"> Top Choice</i></div>
+            <div class="partner-logo"><i class="fas fa-handshake"> Partner 1</i></div>
+            <div class="partner-logo"><i class="fas fa-award"> Quality</i></div>
+            <div class="partner-logo"><i class="fas fa-utensils"> Gourmet</i></div>
+            <div class="partner-logo"><i class="fas fa-star"> Top Choice</i></div>
+        </div>
+    </div>
+
+    <!-- أيقونة واتس اب العائمة للرد على الاستفسارات الفورية -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- فوتر الموقع الرسمي متضمناً اسم المطعم وعام النشر للحقوق -->
+    <footer>
+        <h2>Cita Rasa Sharif</h2>
+        <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا راسا شريف. لمسات سحرية بكل وجبة.</p>
+        <p class="lang-en">© 2026 All Rights Reserved for Cita Rasa Sharif. Magical touches in every meal.</p>
+    </footer>
+
+    <!-- ==========================================================================
+       أكواد الجافا سكريبت التفاعلية لإدارة وظائف الموقع بشكل ذكي وسلس
+       ========================================================================== */ -->
+    <script>
+        // وظيفة تبديل لغة الموقع بالكامل وتعديل اتجاه النصوص انسيابياً (RTL / LTR)
+        function toggleLanguage() {
+            const currentLang = document.documentElement.getAttribute('lang');
+            if (currentLang === 'ar') {
+                document.documentElement.setAttribute('lang', 'en');
+                document.documentElement.setAttribute('dir', 'ltr');
+            } else {
+                document.documentElement.setAttribute('lang', 'ar');
+                document.documentElement.setAttribute('dir', 'rtl');
+            }
+        }
+
+        // وظيفة تحويل ألوان الموقع بين الوضع المظلم والوضع المضيء مع تغيير الأيقونات
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeBtn').querySelector('i');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeBtn.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeBtn.className = 'fas fa-sun';
+            }
+        }
+
+        // وظيفة فتح وإغلاق كروت الأسئلة الشائعة بنظام الأكورديون الذكي
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            if (answer.style.maxHeight && answer.style.maxHeight !== '0px') {
+                answer.style.maxHeight = '0px';
+                answer.style.paddingTop = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + 36 + 'px';
+                answer.style.paddingTop = '10px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // إعدادات القيود المفروضة برمجياً فور تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('deliveryDate');
+            const today = new Date();
+            today.setDate(today.getDate() + 3); // إضافة 3 أيام للحد الأدنى من الطلب
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            
+            // تطبيق قفل تاريخ التوصيل المستقبلي ليكون متوافقاً مع رغبتك
+            dateInput.min = `${year}-${month}-${day}`;
+            dateInput.value = `${year}-${month}-${day}`;
+            
+            // محاكاة حية وتفاعلية لزيادة عداد الزيارات التلقائي لمنح الثقة للزوار
+            let count = parseInt(document.getElementById('visitCounter').innerText.replace(/,/g, ''));
+            setInterval(() => {
+                count += Math.floor(Math.random() * 3) + 1;
+                document.getElementById('visitCounter').innerText = count.toLocaleString();
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
