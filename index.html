@@ -743,28 +743,43 @@
             <!-- مفتاح الربط السري الخاص بحساب العميل لاستقبال الرسائل مباشرة -->
             <input type="hidden" name="access_key" value="705785a7-7db7-4974-8bcc-52aea4b30120">
 
-            <div class="form-group">
-                <label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
-                <label class="lang-en">Select Meals (You can select multiple):</label>
-                <div class="checkbox-grid">
-                    <label class="checkbox-btn">
-                        <input type="checkbox" name="meals[]" value="Shawarma">
-                        <span class="btn-text lang-ar">شاورما</span><span class="btn-text lang-en">Shawarma</span>
-                    </label>
-                    <label class="checkbox-btn">
-                        <input type="checkbox" name="meals[]" value="Mandi">
-                        <span class="btn-text lang-ar">مندي دجاج</span><span class="btn-text lang-en">Chicken Mandi</span>
-                    </label>
-                    <label class="checkbox-btn">
-                        <input type="checkbox" name="meals[]" value="Strips">
-                        <span class="btn-text lang-ar">ستربس دجاج</span><span class="btn-text lang-en">Chicken Strips</span>
-                    </label>
-                    <label class="checkbox-btn">
-                        <input type="checkbox" name="meals[]" value="Drinks">
-                        <span class="btn-text lang-ar">مشروبات</span><span class="btn-text lang-en">Drinks</span>
-                    </label>
-                </div>
-            </div>
+<!-- ========================================================
+     مربعات اختيار الوجبات الذكية المتوافقة مع اللغتين
+     ======================================================== -->
+			<div class="form-group">
+				<label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
+				<label class="lang-en">Select Meals (You can select multiple):</label>
+				
+				<div class="checkbox-grid">
+					<!-- مربع الشاورما -->
+					<label class="checkbox-btn">
+						<input type="checkbox" name="meals[]" value="Shawarma">
+						<span class="btn-text lang-ar">شاورما</span>
+						<span class="btn-text lang-en">Shawarma</span>
+					</label>
+					
+					<!-- مربع مندي الدجاج -->
+					<label class="checkbox-btn">
+						<input type="checkbox" name="meals[]" value="Mandi">
+						<span class="btn-text lang-ar">مندي دجاج</span>
+						<span class="btn-text lang-en">Chicken Mandi</span>
+					</label>
+					
+					<!-- مربع ستربس الدجاج -->
+					<label class="checkbox-btn">
+						<input type="checkbox" name="meals[]" value="Strips">
+						<span class="btn-text lang-ar">ستربس دجاج</span>
+						<span class="btn-text lang-en">Chicken Strips</span>
+					</label>
+					
+					<!-- مربع المشروبات -->
+					<label class="checkbox-btn">
+						<input type="checkbox" name="meals[]" value="Drinks">
+						<span class="btn-text lang-ar">مشروبات</span>
+						<span class="btn-text lang-en">Drinks</span>
+					</label>
+				</div>
+			</div>
 
             <div class="form-group">
                 <label class="lang-ar">عدد الوجبات الكلي (الحد الأدنى 10 وجبات):</label>
