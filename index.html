@@ -812,13 +812,7 @@
 			will-change: transform; /* تسريع معالجة الحركة عبر كارت الشاشة للجوال */
 		}
 		
-		/* إجبار المتصفح على الجوال على تفعيل السحب الأفقي وإلغاء التجمد */
-		.slider-container, .customers-slider-container {
-			touch-action: pan-y !important; /* يسمح بنزول الصفحة لأسفل وفي نفس الوقت يسمح بسحب الأشرطة جانبياً */
-		}
-		.fluid-track, .customers-track {
-			will-change: transform;
-		}
+		
     </style>
 </head>
 <body>
@@ -1253,54 +1247,53 @@
 // ========================================================
 
 
-// ========================================================
-// المحرك النهائي والمضمون 100%: حركة سرمدية انسيابية + سحب لمسي حر
-// ========================================================
-		function setupPerfectScrollAndSwipe(containerSelector, trackSelector, speed) {
+		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// تكرار المحتوى مرتين لضمان الدوران اللانهائي المستمر
-			const originalContent = track.innerHTML;
-			track.innerHTML = originalContent + originalContent;
+			// إيقاف أنميشن الـ CSS القديم للاعتماد الكامل على الجافاسكربت
+			track.style.animation = 'none';
 		
+			let scrollPosition = 0;
 			let isDragging = false;
 			let startX = 0;
 			let lastX = 0;
-			let scrollPosition = 0;
+			let animationFrameId;
 		
-			// حساب العرض الدقيق للمجموعة الواحدة بالبكسل بعد تحميل الصور بالكامل
-			let baseWidth = track.scrollWidth / 2;
-			window.addEventListener('load', () => {
-				baseWidth = track.scrollWidth / 2;
-			});
-		
-			// 1. محرك الحركة التلقائية المتصلة
+			// دالة الحركة التلقائية المستمرة
 			function animate() {
 				if (!isDragging) {
+					// فحص اتجاه اللغة الحالي للموقع تلقائياً
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
+					// تحريك الشريط بناءً على اتجاه اللغة
 					if (isRTL) {
 						scrollPosition += speed;
-						if (scrollPosition >= 0) {
-							scrollPosition = -baseWidth;
-						}
 					} else {
 						scrollPosition -= speed;
-						if (Math.abs(scrollPosition) >= baseWidth) {
-							scrollPosition = 0;
-						}
 					}
+					
+					// حساب نصف العرض الإجمالي للشريط المكرر لإعادة التدوير اللانهائي
+					const halfWidth = track.scrollWidth / 2;
+					
+					if (Math.abs(scrollPosition) >= halfWidth) {
+						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة
+					}
+					
 					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
-				requestAnimationFrame(animate);
+				animationFrameId = requestAnimationFrame(animate);
 			}
-			requestAnimationFrame(animate);
 		
-			// 2. معالجة أحداث اللمس بالأصبع بشكل مباشر وخفيف
+			// إطلاق الحركة التلقائية فوراً
+			animate();
+		
+			// === إعدادات أحداث اللمس والسحب المصححة للجوال ===
+			
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
+				// تصحيح الخطأ المطبعي لقراءة نقطة اللمس الأولى بالأصبع
 				startX = e.touches[0].clientX;
 				lastX = startX;
 			}, { passive: true });
@@ -1308,32 +1301,32 @@
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
 				
+				// تصحيح الخطأ المطبعي لقراءة حركة الإصبع المستمرة
 				const currentX = e.touches[0].clientX;
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
-				// تحريك الشريط مع حركة الإصبع مباشرة
+				// تحديث الموقف الحركي المباشر بناءً على سحب الإصبع
 				scrollPosition += deltaX;
 		
-				// التصفير الصامت لحماية التدفق ومنع الفراغات والوميض البصري
-				if (scrollPosition > 0) {
-					scrollPosition -= baseWidth;
-				} else if (Math.abs(scrollPosition) >= baseWidth * 2) {
-					scrollPosition += baseWidth;
+				// حدود الصيانة وإعادة التدوير لمنع حدوث أي فراغات أو اختفاء
+				const halfWidth = track.scrollWidth / 2;
+				if (Math.abs(scrollPosition) >= halfWidth) {
+					scrollPosition = 0;
 				}
 		
 				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; // العودة التلقائية الفورية والناعمة للحركة الذاتية
+				isDragging = false; // استئناف الحركة الذاتية فوراً بمجرد رفع الإصبع
 			});
 		}
 		
-		// تشغيل المحرك للشريطين فور تحميل الصفحة
+		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			setupPerfectScrollAndSwipe('.slider-container', '.fluid-track', 1.2);
-			setupPerfectScrollAndSwipe('.customers-slider-container', '.customers-track', 0.8);
+			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
+			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
 		
