@@ -714,6 +714,80 @@
 			text-shadow: none; /* إزالة أي ظلال قديمة قد تشوه النص */
 		}
 		
+		/* ========================================================
+   تأثيرات اللمسة السحرية واللمعان لكروت الزبائن السابقة
+   ======================================================== */
+
+		/* الحالة الافتراضية لمستطيل الزبون */
+		.customer-rectangle {
+			width: 200px;
+			height: 70px;
+			margin: 0 10px;
+			background: var(--bg-card);
+			border: 1px solid var(--border-glow);
+			border-radius: 12px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* ظل افتراضي ناعم */
+			flex-shrink: 0;
+			border-left: 4px solid var(--primary); /* خط أخضر فاتح جانبي */
+			position: relative;
+			overflow: hidden;
+			cursor: pointer;
+			
+			/* ضمان انسيابية تامة للحركة والتحول اللوني */
+			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+						box-shadow 0.4s ease, 
+						background-color 0.4s ease,
+						border-color 0.4s ease;
+		}
+		
+		/* تجهيز طبقة وميض اللمعة السحرية بداخل مستطيل الزبون */
+		.customer-rectangle::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -150%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(
+				90deg, 
+				transparent, 
+				rgba(255, 255, 255, 0.3) 50%, 
+				transparent
+			);
+			transform: skewX(-20deg);
+			z-index: 2;
+			transition: none;
+		}
+		
+		/* تأثير مرور الماوس أو اللمس بالأصبع (Hover State) لقائمة الزبائن */
+		.customer-rectangle:hover {
+			transform: scale(1.05); /* تكبير بسيط ومرن بنسبة 5% */
+			border-color: var(--primary);
+			
+			/* تحول الخلفية مباشرة إلى كود الهيكس المختار (الأخضر الفستقي الأعمق بقليل) */
+			background-color: #c5e1a5 !important; 
+			
+			/* ظل ثلاثي الأبعاد عميق يعطي هالة خضراء خفيفة للمستطيل */
+			box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25), 
+						0 8px 15px rgba(0, 0, 0, 0.2);
+		}
+		
+		/* إطلاق وميض اللمعة الخاطف ليعبر فوق المستطيل عند التمرير */
+		.customer-rectangle:hover::before {
+			left: 150%;
+			transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+		}
+		
+		/* تنسيق خط اسم الزبون ليتحول للون داكن واضح ومريح جداً فوق الخلفية الجديدة */
+		.customer-rectangle:hover span {
+			color: #2e7d32 !important; /* لون أخضر عشبي داكن */
+			transition: color 0.3s ease;
+		}
+		
+		
     </style>
 </head>
 <body>
