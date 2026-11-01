@@ -811,6 +811,14 @@
 			width: max-content !important; /* يجعل الحاوية تتسع لجميع المربعات أفقياً */
 			will-change: transform; /* تسريع معالجة الحركة عبر كارت الشاشة للجوال */
 		}
+		
+		/* إجبار المتصفح على الجوال على تفعيل السحب الأفقي وإلغاء التجمد */
+		.slider-container, .customers-slider-container {
+			touch-action: pan-y !important; /* يسمح بنزول الصفحة لأسفل وفي نفس الوقت يسمح بسحب الأشرطة جانبياً */
+		}
+		.fluid-track, .customers-track {
+			will-change: transform;
+		}
     </style>
 </head>
 <body>
@@ -1246,38 +1254,42 @@
 
 
 // ========================================================
-// المحرك السحري المتكامل: حركة سرمدية انسيابية + سحب لمسي حر 100%
+// المحرك النهائي والمضمون 100%: حركة سرمدية انسيابية + سحب لمسي حر
 // ========================================================
-		function setupUltimateScrollAndSwipe(containerSelector, trackSelector, speed) {
+		function setupPerfectScrollAndSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// تكرار المحتوى مرتين لضمان التدوير اللانهائي
+			// تكرار المحتوى مرتين لضمان الدوران اللانهائي المستمر
 			const originalContent = track.innerHTML;
 			track.innerHTML = originalContent + originalContent;
 		
 			let isDragging = false;
 			let startX = 0;
+			let lastX = 0;
 			let scrollPosition = 0;
-			
-			// حساب العرض الدقيق للمجموعة الواحدة
-			const baseWidth = track.scrollWidth / 2;
 		
-			// 1. محرك الحركة التلقائية النظيفة
+			// حساب العرض الدقيق للمجموعة الواحدة بالبكسل بعد تحميل الصور بالكامل
+			let baseWidth = track.scrollWidth / 2;
+			window.addEventListener('load', () => {
+				baseWidth = track.scrollWidth / 2;
+			});
+		
+			// 1. محرك الحركة التلقائية المتصلة
 			function animate() {
 				if (!isDragging) {
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
 					if (isRTL) {
 						scrollPosition += speed;
-						if (scrollPosition >= baseWidth) {
-							scrollPosition -= baseWidth;
+						if (scrollPosition >= 0) {
+							scrollPosition = -baseWidth;
 						}
 					} else {
 						scrollPosition -= speed;
 						if (Math.abs(scrollPosition) >= baseWidth) {
-							scrollPosition += baseWidth;
+							scrollPosition = 0;
 						}
 					}
 					track.style.transform = `translateX(${scrollPosition}px)`;
@@ -1286,40 +1298,42 @@
 			}
 			requestAnimationFrame(animate);
 		
-			// 2. محرك السحب اللمسي الحر الذكي للجوال
+			// 2. معالجة أحداث اللمس بالأصبع بشكل مباشر وخفيف
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
-				// التقاط نقطة البداية للأصبع مضافاً إليها الموقف الحالي للشريط
-				startX = e.touches[0].clientX - scrollPosition;
+				startX = e.touches[0].clientX;
+				lastX = startX;
 			}, { passive: true });
 		
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
 				
-				// حساب الإزاحة المباشرة للأصبع
-				scrollPosition = e.touches[0].clientX - startX;
+				const currentX = e.touches[0].clientX;
+				const deltaX = currentX - lastX;
+				lastX = currentX;
 		
-				// التصفير الصامت اللحظي أثناء سحب العميل لمنع الفراغات والوميض
+				// تحريك الشريط مع حركة الإصبع مباشرة
+				scrollPosition += deltaX;
+		
+				// التصفير الصامت لحماية التدفق ومنع الفراغات والوميض البصري
 				if (scrollPosition > 0) {
 					scrollPosition -= baseWidth;
-					startX += baseWidth; // موازنة النقطة المرجعية فوراً
-				} else if (Math.abs(scrollPosition) >= baseWidth) {
+				} else if (Math.abs(scrollPosition) >= baseWidth * 2) {
 					scrollPosition += baseWidth;
-					startX -= baseWidth; // موازنة النقطة المرجعية فوراً
 				}
 		
 				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; // استئناف الدوران التلقائي فوراً وبنعومة من نفس النقطة
+				isDragging = false; // العودة التلقائية الفورية والناعمة للحركة الذاتية
 			});
 		}
 		
-		// تشغيل المحرك النهائي للشريطين فور تحميل الصفحة
+		// تشغيل المحرك للشريطين فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			setupUltimateScrollAndSwipe('.slider-container', '.fluid-track', 1.2);
-			setupUltimateScrollAndSwipe('.customers-slider-container', '.customers-track', 0.8);
+			setupPerfectScrollAndSwipe('.slider-container', '.fluid-track', 1.2);
+			setupPerfectScrollAndSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
 		
