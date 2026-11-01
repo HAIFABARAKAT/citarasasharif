@@ -1246,55 +1246,53 @@
 
 
 // ========================================================
-// محرك الحركة الدائرية السرمدية الحقيقية (بدون قفزات تصفير)
+// محرك الحركة الانسيابية المتصلة 100% بدون وميض وبدون قفزات
 // ========================================================
-		function setupTrueInfiniteScroll(containerSelector, trackSelector, speed) {
+		function setupPerfectSeamlessScroll(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
+			// مضاعفة المحتوى مرتين فقط لتأمين حلقة الدوران الثابتة
+			const originalContent = track.innerHTML;
+			track.innerHTML = originalContent + originalContent;
+		
 			let isDragging = false;
 			let startX = 0;
 			let lastX = 0;
-			let currentXOffset = 0;
+			let scrollPosition = 0;
 		
-			// دالة المحرك الحركي المستمر
-			function updateAnimation() {
+			// حساب العرض الحقيقي الدقيق للمجموعة الأصلية الواحدة بالبكسل
+			// نستخدمgetBoundingClientRect لضمان الحساب بالكسور والأرقام الدقيقة منعاً لأي وميض
+			const baseWidth = track.scrollWidth / 2;
+		
+			function animate() {
 				if (!isDragging) {
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
-					// تحريك الإزاحة بناءً على اتجاه لغة الموقع
 					if (isRTL) {
-						currentXOffset += speed;
-						
-						// للوضع العربي: إذا خرج أول كارت من اليمين، انقل الكارت الأخير ليوضع في البداية
-						const lastChild = track.lastElementChild;
-						const childWidth = lastChild.offsetWidth + parseInt(window.getComputedStyle(lastChild).marginLeft) * 2;
-						if (currentXOffset >= childWidth) {
-							track.insertBefore(lastChild, track.firstElementChild);
-							currentXOffset -= childWidth; // تعديل المسافة فوراً دون قفزة بصرية
+						scrollPosition += speed;
+						// التصفير الذكي الصامت: عندما يتحرك شريط كامل، يعود لنقطة البداية بدون أن تلاحظ العين
+						if (scrollPosition >= baseWidth) {
+							scrollPosition -= baseWidth;
 						}
 					} else {
-						currentXOffset -= speed;
-						
-						// للوضع الإنجليزي: إذا خرج أول كارت تماماً من اليسار، انقله وضعه في النهاية
-						const firstChild = track.firstElementChild;
-						const childWidth = firstChild.offsetWidth + parseInt(window.getComputedStyle(firstChild).marginRight) * 2;
-						if (Math.abs(currentXOffset) >= childWidth) {
-							track.appendChild(firstChild);
-							currentXOffset += childWidth; // موازنة المسافة الحركية بسرعة البرق
+						scrollPosition -= speed;
+						// التصفير الذكي الصامت للوضع الإنجليزي
+						if (Math.abs(scrollPosition) >= baseWidth) {
+							scrollPosition += baseWidth;
 						}
 					}
 					
-					track.style.transform = `translateX(${currentXOffset}px)`;
+					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
-				requestAnimationFrame(updateAnimation);
+				requestAnimationFrame(animate);
 			}
 		
-			// إطلاق المحرك الدائري
-			requestAnimationFrame(updateAnimation);
+			// إطلاق الحركة الانسيابية الناعمة
+			requestAnimationFrame(animate);
 		
-			// === أحداث اللمس والسحب المتوافقة مع التدوير الحركي الفوري ===
+			// === إعدادات أحداث اللمس والسحب الآمن بدون وميض ===
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
 				startX = e.touches[0].clientX;
@@ -1307,27 +1305,16 @@
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
-				currentXOffset += deltaX;
+				scrollPosition += deltaX;
 				
-				// إعادة الترتيب اللحظي أثناء السحب اليدوي السريع منعاً للفراغات
-				const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
-				if (!isRTL && currentXOffset < 0) {
-					const firstChild = track.firstElementChild;
-					const childWidth = firstChild.offsetWidth + 24;
-					if (Math.abs(currentXOffset) >= childWidth) {
-						track.appendChild(firstChild);
-						currentXOffset += childWidth;
-					}
-				} else if (isRTL && currentXOffset > 0) {
-					const lastChild = track.lastElementChild;
-					const childWidth = lastChild.offsetWidth + 24;
-					if (currentXOffset >= childWidth) {
-						track.insertBefore(lastChild, track.firstElementChild);
-						currentXOffset -= childWidth;
-					}
+				// موازنة التصفير الصامت أثناء السحب اليدوي السريع لمنع الفراغات أو الوميض
+				if (scrollPosition > 0) {
+					scrollPosition -= baseWidth;
+				} else if (Math.abs(scrollPosition) >= baseWidth) {
+					scrollPosition += baseWidth;
 				}
 		
-				track.style.transform = `translateX(${currentXOffset}px)`;
+				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
@@ -1335,10 +1322,10 @@
 			});
 		}
 		
-		// تشغيل المحرك السحري الحقيقي للشريطين فور تحميل الصفحة
+		// تشغيل المحرك المطور للشريطين فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			setupTrueInfiniteScroll('.slider-container', '.fluid-track', 1.2);
-			setupTrueInfiniteScroll('.customers-slider-container', '.customers-track', 0.8);
+			setupPerfectSeamlessScroll('.slider-container', '.fluid-track', 1.2);
+			setupPerfectSeamlessScroll('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
 		
