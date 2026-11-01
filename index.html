@@ -1106,6 +1106,9 @@
     <script>
         // دالة تحويل اللغات للتحكم الفوري بالاتجاهات والنصوص
         function toggleLanguage() {
+		
+			
+			
             const currentLang = document.documentElement.getAttribute('lang');
             if (currentLang === 'ar') {
                 document.documentElement.setAttribute('lang', 'en');
@@ -1114,6 +1117,9 @@
                 document.documentElement.setAttribute('lang', 'ar');
                 document.documentElement.setAttribute('dir', 'rtl');
             }
+			
+			// السطر المطلوب إضافته في نهاية دالة toggleLanguage:
+			document.querySelectorAll('.fluid-track, .customers-track').forEach(t => t.style.transform = 'translateX(0px)');
         }
 
         // دالة التبديل اللوني لثيمات الواجهة (شمس / قمر)
