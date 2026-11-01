@@ -1202,11 +1202,16 @@
                 document.documentElement.setAttribute('lang', 'ar');
                 document.documentElement.setAttribute('dir', 'rtl');
             }
-			document.querySelectorAll('.fluid-track, .customers-track').forEach(t => t.style.transform = 'translateX(0px)');
-            
+			
+            // Reset active indexes and scroll triggers safely for both LTR and RTL
             currentProductIndex = 0;
             const track = document.getElementById('productsTrack');
             if(track) track.style.transform = 'translateX(0px)';
+            
+            // Re-trigger the global animation reset safely without breaking the position window
+            if(window.activeAnimations) {
+                window.activeAnimations.forEach(anim => anim.reset());
+            }
         }
 
         function toggleTheme() {
@@ -1375,12 +1380,14 @@
             }
         }
 
+		window.activeAnimations = [];
 		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 			
-			track.innerHTML = track.innerHTML.repeat(50);
+			const originalItemsHTML = track.innerHTML;
+			track.innerHTML = originalItemsHTML.repeat(50);
 			track.style.animation = 'none';
 		
 			let scrollPosition = 0;
@@ -1396,9 +1403,16 @@
 					} else {
 						scrollPosition -= speed;
 					}
-					const halfWidth = track.scrollWidth / 2;
-					if (Math.abs(scrollPosition) >= halfWidth) {
-						scrollPosition = 0;
+					
+					const singleSetWidth = track.scrollWidth / 50;
+					if (isRTL) {
+						if (scrollPosition >= 0) {
+							scrollPosition = -singleSetWidth;
+						}
+					} else {
+						if (Math.abs(scrollPosition) >= singleSetWidth) {
+							scrollPosition = 0;
+						}
 					}
 					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
@@ -1406,6 +1420,13 @@
 			}
 		
 			animate();
+			
+			window.activeAnimations.push({
+				reset: () => {
+					scrollPosition = 0;
+					track.style.transform = `translateX(0px)`;
+				}
+			});
 			
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
@@ -1419,8 +1440,9 @@
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 				scrollPosition += deltaX;
-				const halfWidth = track.scrollWidth / 2;
-				if (Math.abs(scrollPosition) >= halfWidth) {
+				
+				const singleSetWidth = track.scrollWidth / 50;
+				if (Math.abs(scrollPosition) >= singleSetWidth * 2) {
 					scrollPosition = 0;
 				}
 				track.style.transform = `translateX(${scrollPosition}px)`;
