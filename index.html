@@ -1241,15 +1241,15 @@
 		});
 		
 		// ========================================================
-		// كود جافاسكربت المطور والمصحح بالكامل لدعم العربية والإنجليزية (حركة + سحب)
-		// ========================================================
-		
+// كود جافاسكربت المصحح 100% لدعم الحركة والسحب اللمسي في الاتجاهين
+// ========================================================
+
 		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// إلغاء أنميشن الـ CSS القديم تماماً للاعتماد الفوري على حركة الجافاسكربت الذكية
+			// إيقاف أنميشن الـ CSS القديم للاعتماد الكامل على الجافاسكربت
 			track.style.animation = 'none';
 		
 			let scrollPosition = 0;
@@ -1264,7 +1264,7 @@
 					// فحص اتجاه اللغة الحالي للموقع تلقائياً
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
-					// إذا كانت اللغة عربية (RTL) نقوم بزيادة الموقع (موجب)، وإذا كانت إنجليزية نقوم بطرحه (سالب)
+					// تحريك الشريط بناءً على اتجاه اللغة
 					if (isRTL) {
 						scrollPosition += speed;
 					} else {
@@ -1275,7 +1275,7 @@
 					const halfWidth = track.scrollWidth / 2;
 					
 					if (Math.abs(scrollPosition) >= halfWidth) {
-						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة خفية
+						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة
 					}
 					
 					track.style.transform = `translateX(${scrollPosition}px)`;
@@ -1286,25 +1286,27 @@
 			// إطلاق الحركة التلقائية فوراً
 			animate();
 		
-			// === إعدادات أحداث اللمس والسحب المتقدمة للجوال ===
+			// === إعدادات أحداث اللمس والسحب المصححة للجوال ===
 			
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
-				startX = e.touches[clientX];
+				// تصحيح الخطأ المطبعي لقراءة نقطة اللمس الأولى بالأصبع
+				startX = e.touches[0].clientX;
 				lastX = startX;
 			}, { passive: true });
 		
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
 				
-				const currentX = e.touches[clientX];
+				// تصحيح الخطأ المطبعي لقراءة حركة الإصبع المستمرة
+				const currentX = e.touches[0].clientX;
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
-				// تحديث الموقف الحركي المباشر بناءً على إزاحة سحب الإصبع
+				// تحديث الموقف الحركي المباشر بناءً على سحب الإصبع
 				scrollPosition += deltaX;
 		
-				// حدود الصيانة وإعادة التدوير أثناء السحب اليدوي لمنع حدوث أي فراغات أو اختفاء في الجهتين
+				// حدود الصيانة وإعادة التدوير لمنع حدوث أي فراغات أو اختفاء
 				const halfWidth = track.scrollWidth / 2;
 				if (Math.abs(scrollPosition) >= halfWidth) {
 					scrollPosition = 0;
@@ -1314,18 +1316,16 @@
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; // استئناف الحركة الذاتية فوراً من نفس النقطة بمجرد رفع الإصبع
+				isDragging = false; // استئناف الحركة الذاتية فوراً بمجرد رفع الإصبع
 			});
 		}
 		
-		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة وتحديد سرعات متناسقة
+		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			// تشغيل شريط صور الوجبات المميزة
 			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
-			
-			// تشغيل شريط تجارب وزبائن المطعم السابقة
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
+		
     </script>
 </body>
 </html>
