@@ -1246,86 +1246,80 @@
 
 
 // ========================================================
-// محرك الحركة الانسيابية المتصلة 100% بدون وميض وبدون قفزات
+// المحرك السحري المتكامل: حركة سرمدية انسيابية + سحب لمسي حر 100%
 // ========================================================
-		function setupPerfectSeamlessScroll(containerSelector, trackSelector, speed) {
+		function setupUltimateScrollAndSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// مضاعفة المحتوى مرتين فقط لتأمين حلقة الدوران الثابتة
+			// تكرار المحتوى مرتين لضمان التدوير اللانهائي
 			const originalContent = track.innerHTML;
 			track.innerHTML = originalContent + originalContent;
 		
 			let isDragging = false;
 			let startX = 0;
-			let lastX = 0;
 			let scrollPosition = 0;
-		
-			// حساب العرض الحقيقي الدقيق للمجموعة الأصلية الواحدة بالبكسل
-			// نستخدمgetBoundingClientRect لضمان الحساب بالكسور والأرقام الدقيقة منعاً لأي وميض
+			
+			// حساب العرض الدقيق للمجموعة الواحدة
 			const baseWidth = track.scrollWidth / 2;
 		
+			// 1. محرك الحركة التلقائية النظيفة
 			function animate() {
 				if (!isDragging) {
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
 					if (isRTL) {
 						scrollPosition += speed;
-						// التصفير الذكي الصامت: عندما يتحرك شريط كامل، يعود لنقطة البداية بدون أن تلاحظ العين
 						if (scrollPosition >= baseWidth) {
 							scrollPosition -= baseWidth;
 						}
 					} else {
 						scrollPosition -= speed;
-						// التصفير الذكي الصامت للوضع الإنجليزي
 						if (Math.abs(scrollPosition) >= baseWidth) {
 							scrollPosition += baseWidth;
 						}
 					}
-					
 					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
 				requestAnimationFrame(animate);
 			}
-		
-			// إطلاق الحركة الانسيابية الناعمة
 			requestAnimationFrame(animate);
 		
-			// === إعدادات أحداث اللمس والسحب الآمن بدون وميض ===
+			// 2. محرك السحب اللمسي الحر الذكي للجوال
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
-				startX = e.touches[0].clientX;
-				lastX = startX;
+				// التقاط نقطة البداية للأصبع مضافاً إليها الموقف الحالي للشريط
+				startX = e.touches[0].clientX - scrollPosition;
 			}, { passive: true });
 		
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
-				const currentX = e.touches[0].clientX;
-				const deltaX = currentX - lastX;
-				lastX = currentX;
-		
-				scrollPosition += deltaX;
 				
-				// موازنة التصفير الصامت أثناء السحب اليدوي السريع لمنع الفراغات أو الوميض
+				// حساب الإزاحة المباشرة للأصبع
+				scrollPosition = e.touches[0].clientX - startX;
+		
+				// التصفير الصامت اللحظي أثناء سحب العميل لمنع الفراغات والوميض
 				if (scrollPosition > 0) {
 					scrollPosition -= baseWidth;
+					startX += baseWidth; // موازنة النقطة المرجعية فوراً
 				} else if (Math.abs(scrollPosition) >= baseWidth) {
 					scrollPosition += baseWidth;
+					startX -= baseWidth; // موازنة النقطة المرجعية فوراً
 				}
 		
 				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false;
+				isDragging = false; // استئناف الدوران التلقائي فوراً وبنعومة من نفس النقطة
 			});
 		}
 		
-		// تشغيل المحرك المطور للشريطين فور تحميل الصفحة
+		// تشغيل المحرك النهائي للشريطين فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			setupPerfectSeamlessScroll('.slider-container', '.fluid-track', 1.2);
-			setupPerfectSeamlessScroll('.customers-slider-container', '.customers-track', 0.8);
+			setupUltimateScrollAndSwipe('.slider-container', '.fluid-track', 1.2);
+			setupUltimateScrollAndSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
 		
