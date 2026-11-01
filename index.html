@@ -10,14 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* تعريف متغيرات الألوان المستوحاة من الصورة (الأخضر الفاتح والرمادي والأبيض) */
         :root {
-            --primary: #64bc26; /* الأخضر الفاتح الحيوي المتناسق مع ألوان الهوية في الصورة */
+            --primary: #64bc26; 
             --primary-glow: rgba(100, 188, 38, 0.3);
-            --bg-main: #f4f6f8; /* خلفية رمادية فاتحة ومريحة للعين */
-            --bg-card: #ffffff; /* خلفية بيضاء ناصعة للكروت والأقسام لتعطي مظهراً نظيفاً */
-            --text-main: #2c3e50; /* لون الخط الرئيسي داكن لسهولة القراءة والوضوح */
-            --text-muted: #7f8c8d; /* لون الخط الفرعي أو الباهت باللون الرمادي */
+            --bg-main: #f4f6f8; 
+            --bg-card: #ffffff; 
+            --text-main: #2c3e50; 
+            --text-muted: #7f8c8d; 
             --banner-gradient: linear-gradient(45deg, #64bc26, #84d642, #7f8c8d, #64bc26);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
             --border-glow: rgba(100, 188, 38, 0.15);
@@ -25,19 +24,18 @@
             --neon-glow: none;
         }
 
-        /* الوضع المظلم التبديري الاختياري لتوفير تباين جذاب للزوار */
         [data-theme="dark"] {
             --primary: #64bc26;
-            --primary-glow: rgba(100, 188, 38, 0.4);
+            --primary-glow: rgba(100, 188, 38, 0.5);
             --bg-main: #1a1b1f;
             --bg-card: #24262b;
             --text-main: #ffffff;
             --text-muted: #a0a0ab;
             --banner-gradient: linear-gradient(45deg, #24262b, #64bc26, #1a1b1f, #24262b);
             --shadow: 0 15px 35px rgba(0,0,0,0.3);
-            --border-glow: rgba(255, 255, 255, 0.05);
-            --header-bg: rgba(36, 38, 43, 0.75);
-            --neon-glow: 0 0 15px #64bc26, 0 0 25px rgba(100, 188, 38, 0.6);
+            --border-glow: rgba(100, 188, 38, 0.3);
+            --header-bg: rgba(36, 38, 43, 0.7);
+            --neon-glow: 0 0 15px rgba(100, 188, 38, 0.6), 0 0 30px rgba(100, 188, 38, 0.3);
         }
 
         * {
@@ -54,22 +52,23 @@
             overflow-x: hidden;
         }
 
-        /* الهيدر العلوي المتطور بتأثير الزجاج المضبب */
+        /* 1. Glassmorphism Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
             background: var(--header-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
             box-shadow: var(--shadow);
         }
 
+        /* 2. Neon Glow for Dark Mode inside Logo & Active Items */
         .logo {
             font-size: 24px;
             font-weight: 900;
@@ -98,7 +97,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 600;
-            transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
         }
 
         .btn-magic:hover {
@@ -109,7 +108,6 @@
             color: white;
         }
 
-        /* البنر الرئيسي بتأثير التدرج اللوني واللمعة السحرية الفضية */
         .banner {
             position: relative;
             height: 380px;
@@ -143,19 +141,6 @@
             100% { transform: translateX(100%); }
         }
 
-        /* تأثير ظهور الأقسام تدريجياً */
-        .reveal-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .reveal-section.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* عناوين الأقسام الرئيسية للموقع */
         .section-title {
             text-align: center;
             margin: 60px 0 30px;
@@ -174,7 +159,6 @@
             box-shadow: 0 0 10px var(--primary);
         }
 
-        /* سلايدر صور الوجبات الانسيابي المتحرك تلقائياً وتؤخذ الصور من مجلد pic */
         .slider-container {
             width: 100%;
             overflow: hidden;
@@ -182,12 +166,13 @@
             position: relative;
         }
 
-        .fluid-track {
-            display: flex;
-            width: max-content;
-            will-change: transform;
-        }
+		.fluid-track {
+			display: flex;
+			width: max-content !important;
+			will-change: transform;
+		}
 
+        /* 3. Tilt Effect CSS properties initialization */
         .slide-card {
             width: 280px;
             height: 350px;
@@ -199,62 +184,62 @@
             border: 1px solid var(--border-glow);
             position: relative;
             cursor: pointer;
-            perspective: 1000px;
+			transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             transform-style: preserve-3d;
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            perspective: 1000px;
         }
-        
-        .slide-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25) 50%, transparent);
-            transform: skewX(-20deg);
-            z-index: 2;
-        }
-        
-        .slide-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3); 
-        }
-        
-        .slide-card:hover::before {
-            left: 150%;
-            transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        
-        .slide-card img {
-            width: 100%;
-            height: 70%;
-            object-fit: cover;
-            pointer-events: none;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        
-        .slide-card:hover img {
-            transform: scale(1.05) translateZ(20px);
-        }
-        
-        .slide-info {
-            padding: 15px;
-            text-align: center;
-            background: var(--bg-card);
-            transition: background-color 0.4s ease; 
-            transform: translateZ(10px);
-        }
-        
-        .slide-card:hover .slide-info {
-            background-color: #c5e1a5 !important; 
-        }
-        
-        .slide-card:hover .slide-info h3, .slide-card:hover .slide-info span {
-            color: #33691e !important;
-        }
+		
+		.slide-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -150%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25) 50%, transparent);
+			transform: skewX(-20deg);
+			z-index: 2;
+			transition: none;
+		}
+		
+		.slide-card:hover {
+			border-color: var(--primary);
+			box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3); 
+		}
+		
+		.slide-card:hover::before {
+			left: 150%;
+			transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+		}
+		
+		.slide-card img {
+			width: 100%;
+			height: 70%;
+			object-fit: cover;
+			transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(20px);
+		}
+		
+		.slide-card:hover img {
+			transform: scale(1.05) translateZ(30px);
+		}
 
-        /* قسم المنتجات */
+        .slide-info {
+			padding: 15px;
+			text-align: center;
+			background: var(--bg-card);
+			transition: background-color 0.4s ease; 
+            transform: translateZ(10px);
+		}
+		
+		.slide-card:hover .slide-info {
+			background-color: #c5e1a5 !important; 
+		}
+		
+		.slide-card:hover .slide-info h3 {
+			color: #33691e !important;
+		}
+
         .products-carousel-container {
             position: relative;
             max-width: 1280px;
@@ -274,9 +259,10 @@
             display: flex;
             gap: 20px;
             scroll-behavior: smooth;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.5s ease-in-out;
         }
 
+        /* 3. Tilt Effect on Product Cards too */
         .product-card {
             flex: 0 0 calc((100% - 60px) / 4);
             background: var(--bg-card);
@@ -290,9 +276,9 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            perspective: 1000px;
+			transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             transform-style: preserve-3d;
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            perspective: 1000px;
         }
 
         @media (max-width: 1024px) {
@@ -309,8 +295,8 @@
             width: 100%;
             height: 220px;
             object-fit: cover;
-            pointer-events: none;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(15px);
         }
 
         .product-card-body {
@@ -341,7 +327,7 @@
         }
 
         .product-card:hover img {
-            transform: scale(1.06) translateZ(15px);
+            transform: scale(1.06) translateZ(25px);
         }
 
         .product-card:hover .product-card-body {
@@ -390,7 +376,7 @@
             cursor: pointer;
             z-index: 10;
             box-shadow: var(--shadow);
-            transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+            transition: background 0.3s, color 0.3s, transform 0.3s;
         }
 
         .carousel-arrow:hover {
@@ -406,7 +392,6 @@
         [dir="rtl"] .arrow-left { left: auto; right: 5px; transform: translateY(-50%) rotate(180deg); }
         [dir="rtl"] .arrow-right { right: auto; left: 5px; transform: translateY(-50%) rotate(180deg); }
 
-        /* أقسام المنيو الدائرية */
         .menu-circles {
             display: flex;
             justify-content: center;
@@ -420,6 +405,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
         .circle-img-wrapper {
@@ -432,7 +418,7 @@
             box-shadow: var(--shadow);
             margin-bottom: 15px;
             position: relative;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         .circle-img-wrapper img {
@@ -453,7 +439,6 @@
             margin-top: 5px;
         }
 
-        /* قسم الإحصائيات */
         .stats-section {
             background: var(--bg-card);
             padding: 60px 8%;
@@ -484,7 +469,6 @@
             margin-bottom: 5px;
         }
 
-        /* شبكة معلومات العمل والأسئلة الشائعة */
         .info-faq-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -550,7 +534,6 @@
             transition: all 0.3s ease;
         }
 
-        /* نموذج الطلبات */
         .order-section {
             padding: 60px 8%;
             max-width: 800px;
@@ -610,7 +593,7 @@
             cursor: pointer;
             font-weight: 700;
             user-select: none;
-            transition: border-color 0.3s, background 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .checkbox-btn input {
@@ -646,7 +629,6 @@
             background: #489314;
         }
 
-        /* قسم شركاء الثقة */
         .partners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -669,7 +651,7 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            transition: background 0.4s, color 0.4s, transform 0.4s, border-color 0.4s;
+            transition: transform 0.3s, background 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .partner-box:hover, .partner-box:active {
@@ -683,117 +665,13 @@
         .partner-box i {
             font-size: 32px;
             color: var(--primary);
-            transition: color 0.4s;
+            transition: color 0.3s;
         }
 
         .partner-box:hover i, .partner-box:active i {
             color: white;
         }
 
-        /* قسم الزبائن والتجارب السابقة */
-        .customers-slider-container {
-            width: 100%;
-            overflow: hidden;
-            padding: 20px 0;
-            position: relative;
-            background: rgba(139, 195, 74, 0.05);
-            margin-bottom: 20px;
-        }
-        
-        .customers-track {
-            display: flex;
-            width: max-content;
-            will-change: transform;
-        }
-        
-        .customer-rectangle {
-            width: 200px;
-            height: 70px;
-            margin: 0 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-            border-left: 4px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
-        }
-        
-        .customer-rectangle::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent);
-            transform: skewX(-20deg);
-            z-index: 2;
-        }
-        
-        .customer-rectangle:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
-            background-color: #c5e1a5 !important; 
-            box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25), 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .customer-rectangle:hover::before {
-            left: 150%;
-            transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        
-        .customer-rectangle:hover span {
-            color: #2e7d32 !important;
-        }
-        
-        .customer-rectangle span {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        /* زر العودة للأعلى الذكي */
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background-color 0.3s;
-        }
-
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .back-to-top:hover {
-            background-color: #489314;
-            box-shadow: 0 8px 20px var(--primary-glow);
-        }
-
-        /* أيقونة تطبيق الواتساب العائمة */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -810,27 +688,47 @@
             box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
             z-index: 1000;
             text-decoration: none;
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .whatsapp-float:hover {
             transform: scale(1.1) rotate(15deg);
         }
 
-        /* شريط تقدم التمرير الذكي */
-        #scrollProgressBar {
+        /* 5. Smart Back to Top Button */
+        .back-to-top {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: var(--primary);
-            z-index: 10001;
-            box-shadow: 0 1px 5px var(--primary-glow);
-            transition: width 0.1s ease-out;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.3s ease, background-color 0.3s ease;
+            border: none;
         }
 
-        /* تذييل الصفحة الفوتر المدمج */
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: #489314;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--primary-glow);
+        }
+
         footer {
             background: var(--bg-card);
             padding: 40px 8%;
@@ -844,23 +742,102 @@
             margin-bottom: 15px;
         }
 
-        /* كلاسات التحكم اللغوي لإخفاء الفئات غير النشطة */
         [lang="en"] .lang-ar { display: none !important; }
         [lang="ar"] .lang-en { display: none !important; }
-        
+		
+		.customers-slider-container {
+			width: 100%;
+			overflow: hidden;
+			padding: 20px 0;
+			position: relative;
+			background: rgba(139, 195, 74, 0.05); 
+			margin-bottom: 20px;
+		}
+		
+		.customers-track {
+			display: flex;
+			width: max-content !important;
+			will-change: transform;
+		}
+		
+		.customer-rectangle {
+			width: 200px;
+			height: 70px;
+			margin: 0 10px;
+			background: var(--bg-card);
+			border: 1px solid var(--border-glow);
+			border-radius: 12px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+			flex-shrink: 0;
+			border-left: 4px solid var(--primary);
+			position: relative;
+			overflow: hidden;
+			cursor: pointer;
+			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
+		}
+		
+		.customer-rectangle::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -150%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent);
+			transform: skewX(-20deg);
+			z-index: 2;
+		}
+		
+		.customer-rectangle:hover {
+			transform: scale(1.05); 
+			border-color: var(--primary);
+			background-color: #c5e1a5 !important; 
+			box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25), 0 8px 15px rgba(0, 0, 0, 0.2);
+		}
+		
+		.customer-rectangle:hover::before {
+			left: 150%;
+			transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+		}
+		
+		.customer-rectangle:hover span {
+			color: #2e7d32 !important; 
+			transition: color 0.3s ease;
+		}
+		
+		#scrollProgressBar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 0%;
+			height: 3px;
+			background: var(--primary);
+			z-index: 10001;
+			box-shadow: 0 1px 5px var(--primary-glow);
+			transition: width 0.1s ease-out;
+		}
+
+        /* 4. Scroll Reveal Animation initial states */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+		
     </style>
 </head>
 <body>
 
-    <!-- شريط تقدم القراءة والنزول الرفيع -->
-    <div id="scrollProgressBar"></div>
+	<div id="scrollProgressBar"></div>
 
-    <!-- زر العودة للأعلى الذكي -->
-    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
-        <i class="fas fa-chevron-up"></i>
-    </div>
-
-    <!-- شريط التنقل والتحكم الرئيسي بالثيم واللغات -->
     <header>
         <div class="logo">Cita Rasa Sharif</div>
         <div class="nav-controls">
@@ -874,7 +851,6 @@
         </div>
     </header>
 
-    <!-- البنر الإعلاني -->
     <section class="banner">
         <div class="banner-content">
             <h1 class="lang-ar">مطعم سيتا راسا شريف</h1>
@@ -884,48 +860,51 @@
         </div>
     </section>
 
-    <!-- قسم صور الوجبات الانسيابي التلقائي -->
-    <section class="reveal-section">
+    <!-- Adding reveal class for scroll effect -->
+    <div class="reveal">
         <h2 class="section-title">
             <span class="lang-ar">وجباتنا المميزة</span>
             <span class="lang-en">Our Signature Meals</span>
         </h2>
-        <div class="slider-container" id="mealsContainer">
-            <div class="fluid-track" id="mealsTrack">
-                <div class="slide-card">
+        <div class="slider-container">
+            <div class="fluid-track">
+                <div class="slide-card tilt-element">
                     <img src="pic/shawarma.jpg" alt="Shawarma">
                     <div class="slide-info">
                         <span class="lang-ar">شاورما ملكية</span>
                         <span class="lang-en">Royal Shawarma</span>
                     </div>
                 </div>
-                <div class="slide-card">
+                <div class="slide-card tilt-element">
                     <img src="pic/mandi.jpg" alt="Chicken Mandi">
                     <div class="slide-info">
                         <span class="lang-ar">مندي دجاج فاخر</span>
                         <span class="lang-en">Premium Chicken Mandi</span>
                     </div>
                 </div>
-                <div class="slide-card">
+                <div class="slide-card tilt-element">
                     <img src="pic/strips.jpg" alt="Chicken Strips">
                     <div class="slide-info">
                         <span class="lang-ar">ستربس دجاج مقرمش</span>
                         <span class="lang-en">Crispy Chicken Strips</span>
                     </div>
                 </div>
-                <div class="slide-card">
+                <div class="slide-card tilt-element">
                     <img src="pic/drinks.jpg" alt="Drinks">
                     <div class="slide-info">
                         <span class="lang-ar">مشروبات منعشة</span>
                         <span class="lang-en">Refreshing Drinks</span>
                     </div>
                 </div>
+                <div class="slide-card tilt-element"><img src="pic/shawarma.jpg"><div class="slide-info"><span class="lang-ar">شاورما ملكية</span><span class="lang-en">Royal Shawarma</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/mandi.jpg"><div class="slide-info"><span class="lang-ar">مندي دجاج فاخر</span><span class="lang-en">Premium Chicken Mandi</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/strips.jpg"><div class="slide-info"><span class="lang-ar">ستربس دجاج مقرمش</span><span class="lang-en">Crispy Chicken Strips</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/drinks.jpg"><div class="slide-info"><span class="lang-ar">مشروبات منعشة</span><span class="lang-en">Refreshing Drinks</span></div></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- قسم المنتجات المتطور بـ 4 كروت وأسهم تحريك -->
-    <section class="reveal-section">
+    <div class="reveal">
         <h2 class="section-title">
             <span class="lang-ar">منتجاتنا الخاصة</span>
             <span class="lang-en">Our Special Products</span>
@@ -937,7 +916,8 @@
             
             <div class="products-carousel-wrapper">
                 <div class="products-carousel-track" id="productsTrack">
-                    <div class="product-card">
+                    
+                    <div class="product-card tilt-element">
                         <img src="pic/Mixmas.jpg" alt="Special Spice Mix">
                         <div class="product-card-body">
                             <h3 class="lang-ar">خلطة بهارات</h3>
@@ -946,7 +926,7 @@
                         </div>
                     </div>
                     
-                    <div class="product-card">
+                    <div class="product-card tilt-element">
                         <img src="pic/Yellowmas.jpg" alt="Biryani Spices">
                         <div class="product-card-body">
                             <h3 class="lang-ar">بهار برياني</h3>
@@ -955,7 +935,7 @@
                         </div>
                     </div>
                     
-                    <div class="product-card">
+                    <div class="product-card tilt-element">
                         <img src="pic/Redmas.jpg" alt="BBQ Spices">
                         <div class="product-card-body">
                             <h3 class="lang-ar">بهار مشاوي</h3>
@@ -964,7 +944,7 @@
                         </div>
                     </div>
                     
-                    <div class="product-card">
+                    <div class="product-card tilt-element">
                         <img src="pic/Blackh.jpg" alt="Royal Honey">
                         <div class="product-card-body">
                             <h3 class="lang-ar">عسل ملكي</h3>
@@ -973,7 +953,7 @@
                         </div>
                     </div>
                     
-                    <div class="product-card">
+                    <div class="product-card tilt-element">
                         <img src="pic/Whiteh.jpg" alt="Black Royal Honey">
                         <div class="product-card-body">
                             <h3 class="lang-ar">عسل ملكي أسود</h3>
@@ -982,7 +962,7 @@
                         </div>
                     </div>
                     
-                    <div class="product-card">
+                    <div class="product-card tilt-element">
                         <img src="pic/Yellowh.jpg" alt="White Royal Honey">
                         <div class="product-card-body">
                             <h3 class="lang-ar">عسل ملكي أبيض</h3>
@@ -990,6 +970,7 @@
                             <div class="product-price">500 RM</div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
 
@@ -997,10 +978,9 @@
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
-    </section>
+    </div>
 
-    <!-- أقسام المنيو الدائرية -->
-    <section class="reveal-section">
+    <div class="reveal">
         <h2 class="section-title">
             <span class="lang-ar">أقسام المنيو</span>
             <span class="lang-en">Menu Categories</span>
@@ -1023,10 +1003,9 @@
                 <span class="lang-ar">مشروبات</span><span class="lang-en">Drinks</span>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- قسم الإحصائيات -->
-    <section class="stats-section reveal-section">
+    <section class="stats-section reveal">
         <div class="stat-box">
             <i class="fas fa-users"></i>
             <h3 id="visitCounter">1,482</h3>
@@ -1041,8 +1020,7 @@
         </div>
     </section>
 
-    <!-- معلومات وساعات عمل المطعم وقائمة الأسئلة الشائعة -->
-    <section class="info-faq-grid reveal-section">
+    <section class="info-faq-grid reveal">
         <div class="info-card">
             <h2 class="lang-ar"><i class="fas fa-info-circle"></i> معلومات المطعم</h2>
             <h2 class="lang-en"><i class="fas fa-info-circle"></i> Restaurant Info</h2>
@@ -1078,8 +1056,7 @@
         </div>
     </section>
 
-    <!-- فورم استقبال طلبات المناسبات والحفلات -->
-    <section class="order-section reveal-section">
+    <section class="order-section reveal">
         <h2 class="section-title">
             <span class="lang-ar">طلب الحفلات والمناسبات</span>
             <span class="lang-en">Events & Catering Orders</span>
@@ -1122,12 +1099,12 @@
                 <input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
             </div>
 
-            <div class="form-group">
-                <label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
-                <label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
-                <select id="deliveryTimeSelect" name="delivery_time" class="form-control" required>
-                </select>
-            </div>
+			<div class="form-group">
+				<label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
+				<label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
+				<select id="deliveryTimeSelect" name="delivery_time" class="form-control" required>
+				</select>
+			</div>
 
             <div class="form-group">
                 <label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
@@ -1141,16 +1118,24 @@
             </button>
         </form>
     </section>
-    
-    <!-- قسم تجارب الزبائن السابقة -->
-    <section class="reveal-section">
+	
+    <div class="reveal">
         <h2 class="section-title">
             <span class="lang-en">Past Customers & Clients</span>
             <span class="lang-ar">تجارب وزبائن سابقة</span>
         </h2>
         
-        <div class="customers-slider-container" id="customersContainer">
-            <div class="customers-track" id="customersTrack">
+        <div class="customers-slider-container">
+            <div class="customers-track">
+                <div class="customer-rectangle"><span>School</span></div>
+                <div class="customer-rectangle"><span>Tire company</span></div>
+                <div class="customer-rectangle"><span>Uitm</span></div>
+                <div class="customer-rectangle"><span>Family Ahmed</span></div>
+                <div class="customer-rectangle"><span>Expert Print</span></div>
+                <div class="customer-rectangle"><span>Coway</span></div>
+                <div class="customer-rectangle"><span>Aquila</span></div>
+                <div class="customer-rectangle"><span>Management</span></div>
+                
                 <div class="customer-rectangle"><span>School</span></div>
                 <div class="customer-rectangle"><span>Tire company</span></div>
                 <div class="customer-rectangle"><span>Uitm</span></div>
@@ -1161,10 +1146,9 @@
                 <div class="customer-rectangle"><span>Management</span></div>
             </div>
         </div>
-    </section>
-    
-    <!-- قسم شركاء الثقة -->
-    <section class="reveal-section">
+    </div>
+	
+    <div class="reveal">
         <h2 class="section-title">
             <span class="lang-ar">شركاء الثقة</span>
             <span class="lang-en">Trusted Partners</span>
@@ -1191,26 +1175,24 @@
                 <span class="lang-en">First Choice Trust</span>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- زر الواتساب العائم -->
     <a href="https://wa.me/601163514552" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- فوتر الموقع -->
+    <!-- 5. Back to top trigger button -->
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()" aria-label="Back to Top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <footer>
         <h2>Cita Rasa Sharif</h2>
-        <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا راسا شريف. لمسات سحرية بكل وجبة.</p>
+        <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا rasa شريف. لمسات سحرية بكل وجبة.</p>
         <p class="lang-en">© 2026 All Rights Reserved for Cita Rasa Sharif. Magical touches in every meal.</p>
     </footer>
 
     <script>
-        // مراجع السلايدرات لإعادة الضبط الذكي عند تغيير اللغة
-        let resetMealsCenter = null;
-        let resetCustomersCenter = null;
-
-        // دالة تحويل اللغات للتحكم الفوري بالاتجاهات والنصوص
         function toggleLanguage() {
             const currentLang = document.documentElement.getAttribute('lang');
             if (currentLang === 'ar') {
@@ -1220,18 +1202,13 @@
                 document.documentElement.setAttribute('lang', 'ar');
                 document.documentElement.setAttribute('dir', 'rtl');
             }
+			document.querySelectorAll('.fluid-track, .customers-track').forEach(t => t.style.transform = 'translateX(0px)');
             
-            // الحل الذكي والمعدل: إعادة توطين الوجبات والزبائن في المنتصف تماماً بعد تغيير اتجاه الصفحة
-            if(typeof resetMealsCenter === 'function') resetMealsCenter();
-            if(typeof resetCustomersCenter === 'function') resetCustomersCenter();
-            
-            // إعادة تصفير حاوية المنتجات الخاصة
             currentProductIndex = 0;
             const track = document.getElementById('productsTrack');
             if(track) track.style.transform = 'translateX(0px)';
         }
 
-        // دالة التبديل اللوني لثيمات الواجهة
         function toggleTheme() {
             const body = document.body;
             const themeBtn = document.getElementById('themeBtn').querySelector('i');
@@ -1244,7 +1221,6 @@
             }
         }
 
-        // دالة الأكورديون لقسم الأسئلة الشائعة
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const icon = element.querySelector('i');
@@ -1259,49 +1235,6 @@
             }
         }
 
-        // تأثير تتبع التمرير لظهور العناصر Scroll Reveal
-        function revealOnScroll() {
-            const sections = document.querySelectorAll('.reveal-section');
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (sectionTop < windowHeight * 0.85) {
-                    section.add('active');
-                }
-            });
-        }
-        window.addEventListener('scroll', revealOnScroll);
-        window.addEventListener('DOMContentLoaded', revealOnScroll);
-
-        // التحكم بزر العودة للأعلى وشريط التقدم
-        window.addEventListener('scroll', () => {
-            const progressBar = document.getElementById('scrollProgressBar');
-            const backToTop = document.getElementById('backToTop');
-            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            
-            if (progressBar) {
-                const scrolled = (winScroll / height) * 100;
-                progressBar.style.width = scrolled + '%';
-            }
-            
-            if (backToTop) {
-                if (winScroll > 300) {
-                    backToTop.classList.add('show');
-                } else {
-                    backToTop.classList.remove('show');
-                }
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // كود التحكم البرمجي بمجرد تحميل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('deliveryDate');
             const today = new Date();
@@ -1315,60 +1248,102 @@
                 dateInput.value = `${year}-${month}-${day}`;
             }
             
-            // عداد الزيارات التلقائي
             let count = parseInt(document.getElementById('visitCounter').innerText.replace(/,/g, ''));
             setInterval(() => {
                 count += Math.floor(Math.random() * 3) + 1;
                 document.getElementById('visitCounter').innerText = count.toLocaleString();
             }, 4000);
+
+            // Trigger reveal on load
+            reveal();
         });
-        
-        // توليد أوقات العمل ديناميكياً
-        function populateBusinessHours() {
-            const timeSelect = document.getElementById('deliveryTimeSelect');
-            if (!timeSelect) return;
-            
-            timeSelect.innerHTML = '';
-            const startHour = 10;
-            const endHour = 22;
-            const currentLang = document.documentElement.getAttribute('lang') || 'en';
-        
-            for (let hour = startHour; hour <= endHour; hour++) {
-                const maxMinutes = (hour === endHour) ? 0 : 45;
-                for (let min = 0; min <= maxMinutes; min += 15) {
-                    const hh = String(hour).padStart(2, '0');
-                    const mm = String(min).padStart(2, '0');
-                    const timeValue = `${hh}:${mm}`;
-                    let displayHour = hour % 12;
-                    if (displayHour === 0) displayHour = 12;
-                    const displayMin = String(min).padStart(2, '0');
-                    let textToShow = '';
-        
-                    if (currentLang === 'ar') {
-                        const period = (hour < 12) ? 'صباحاً' : (hour === 12 && min === 0 ? 'ظهراً' : 'مساءً');
-                        textToShow = `${displayHour}:${displayMin} ${period}`;
-                    } else {
-                        const period = (hour < 12) ? 'AM' : 'PM';
-                        textToShow = `${displayHour}:${displayMin} ${period}`;
-                    }
-                    
-                    const option = document.createElement('option');
-                    option.value = timeValue;
-                    option.textContent = textToShow;
-                    timeSelect.appendChild(option);
+		
+		function populateBusinessHours() {
+			const timeSelect = document.getElementById('deliveryTimeSelect');
+			if (!timeSelect) return;
+			
+			timeSelect.innerHTML = '';
+			const startHour = 10;
+			const endHour = 22;
+			const currentLang = document.documentElement.getAttribute('lang') || 'en';
+		
+			for (let hour = startHour; hour <= endHour; hour++) {
+				const maxMinutes = (hour === endHour) ? 0 : 45;
+				for (let min = 0; min <= maxMinutes; min += 15) {
+					const hh = String(hour).padStart(2, '0');
+					const mm = String(min).padStart(2, '0');
+					const timeValue = `${hh}:${mm}`;
+					let displayHour = hour % 12;
+					if (displayHour === 0) displayHour = 12;
+					const displayMin = String(min).padStart(2, '0');
+					let textToShow = '';
+		
+					if (currentLang === 'ar') {
+						const period = (hour < 12) ? 'صباحاً' : (hour === 12 && min === 0 ? 'ظهراً' : 'مساءً');
+						textToShow = `${displayHour}:${displayMin} ${period}`;
+					} else {
+						const period = (hour < 12) ? 'AM' : 'PM';
+						textToShow = `${displayHour}:${displayMin} ${period}`;
+					}
+					
+					const option = document.createElement('option');
+					option.value = timeValue;
+					option.textContent = textToShow;
+					timeSelect.appendChild(option);
+				}
+			}
+		}
+		
+		window.addEventListener('DOMContentLoaded', populateBusinessHours);
+		
+		const originalToggleLanguage = toggleLanguage;
+		toggleLanguage = function() {
+			originalToggleLanguage();
+			populateBusinessHours();
+		};
+		
+        // 4. Scroll Reveal Logic & 5. Back to top visibility
+		window.addEventListener('scroll', () => {
+			const progressBar = document.getElementById('scrollProgressBar');
+			if (progressBar) {
+				const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+				const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+				const scrolled = (winScroll / height) * 100;
+				progressBar.style.width = scrolled + '%';
+			}
+
+            reveal();
+
+            // Back to Top button show/hide
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            if (backToTopBtn) {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            }
+		});
+
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
                 }
             }
         }
-        
-        window.addEventListener('DOMContentLoaded', populateBusinessHours);
-        
-        const originalToggleLanguage = toggleLanguage;
-        toggleLanguage = function() {
-            originalToggleLanguage();
-            populateBusinessHours();
-        };
 
-        // وظيفة تحريك كروت المنتجات بواسطة الأسهم
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+		
         let currentProductIndex = 0;
         function slideProducts(direction) {
             const track = document.getElementById('productsTrack');
@@ -1400,106 +1375,92 @@
             }
         }
 
-        // تأثير الـ Tilt ثلاثي الأبعاد المتجاوب مع حركة الماوس الكروت
-        function applyTiltEffect() {
-            const cards = document.querySelectorAll('.slide-card, .product-card');
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
+		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
+			const container = document.querySelector(containerSelector);
+			const track = document.querySelector(trackSelector);
+			if (!container || !track) return;
+			
+			track.innerHTML = track.innerHTML.repeat(50);
+			track.style.animation = 'none';
+		
+			let scrollPosition = 0;
+			let isDragging = false;
+			let startX = 0;
+			let lastX = 0;
+		
+			function animate() {
+				if (!isDragging) {
+					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+					if (isRTL) {
+						scrollPosition += speed;
+					} else {
+						scrollPosition -= speed;
+					}
+					const halfWidth = track.scrollWidth / 2;
+					if (Math.abs(scrollPosition) >= halfWidth) {
+						scrollPosition = 0;
+					}
+					track.style.transform = `translateX(${scrollPosition}px)`;
+				}
+				requestAnimationFrame(animate);
+			}
+		
+			animate();
+			
+			container.addEventListener('touchstart', (e) => {
+				isDragging = true;
+				startX = e.touches[0].clientX;
+				lastX = startX;
+			}, { passive: true });
+		
+			container.addEventListener('touchmove', (e) => {
+				if (!isDragging) return;
+				const currentX = e.touches[0].clientX;
+				const deltaX = currentX - lastX;
+				lastX = currentX;
+				scrollPosition += deltaX;
+				const halfWidth = track.scrollWidth / 2;
+				if (Math.abs(scrollPosition) >= halfWidth) {
+					scrollPosition = 0;
+				}
+				track.style.transform = `translateX(${scrollPosition}px)`;
+			}, { passive: true });
+		
+			container.addEventListener('touchend', () => {
+				isDragging = false;
+			});
+		}
+		
+		window.addEventListener('DOMContentLoaded', () => {
+			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
+			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
+            setupTiltEffect();
+		});
+
+        /* 3. Tilt Effect Functionality */
+        function setupTiltEffect() {
+            const elements = document.querySelectorAll('.tilt-element');
+            elements.forEach(element => {
+                element.addEventListener('mousemove', (e) => {
+                    const rect = element.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
+                    
                     const xc = rect.width / 2;
                     const yc = rect.height / 2;
-                    const angleX = (yc - y) / 15;
-                    const angleY = (x - xc) / 15;
-                    card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale(1.02)`;
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-                });
-            });
-        }
-        window.addEventListener('DOMContentLoaded', applyTiltEffect);
-
-        // وظيفة بناء الأشرطة المتكررة اللانهائية لتعمل بسلاسة والبدء من المنتصف عند التبديل اللغوي
-        function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
-            const container = document.querySelector(containerSelector);
-            const track = document.querySelector(trackSelector);
-            if (!container || !track) return;
-            
-            // تكرار المحتوى لجعله لانهائياً بشكل كافي
-            const originalHTML = track.innerHTML;
-            track.innerHTML = originalHTML.repeat(40);
-        
-            let scrollPosition = 0;
-            let isDragging = false;
-            let startX = 0;
-            let lastX = 0;
-
-            // دالة ضبط التمركز في المنتصف تماماً لإخفاء البداية والنهاية
-            function resetToCenter() {
-                const totalWidth = track.scrollWidth;
-                // ضبط التموضع في منتصف العرض الإجمالي للأشرطة المتكررة لتفادي حواف البداية
-                scrollPosition = -(totalWidth / 3);
-                track.style.transform = `translateX(${scrollPosition}px)`;
-            }
-            
-            // تنفيذ التمركز المبدئي عند تحميل الصفحة
-            setTimeout(resetToCenter, 100);
-
-            function animate() {
-                if (!isDragging) {
-                    const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
-                    if (isRTL) {
-                        scrollPosition += speed;
-                    } else {
-                        scrollPosition -= speed;
-                    }
                     
-                    const oneThirdWidth = track.scrollWidth / 3;
-                    if (Math.abs(scrollPosition) >= oneThirdWidth * 2 || scrollPosition >= 0) {
-                        scrollPosition = -oneThirdWidth;
-                    }
-                    track.style.transform = `translateX(${scrollPosition}px)`;
-                }
-                requestAnimationFrame(animate);
-            }
-        
-            animate();
-            
-            container.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                startX = e.touches[0].clientX;
-                lastX = startX;
-            }, { passive: true });
-        
-            container.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                const currentX = e.touches[0].clientX;
-                const deltaX = currentX - lastX;
-                lastX = currentX;
-                scrollPosition += deltaX;
+                    const angleX = (yc - y) / 15; 
+                    const angleY = (x - xc) / 15;
+                    
+                    element.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px) scale(1.03)`;
+                });
                 
-                const oneThirdWidth = track.scrollWidth / 3;
-                if (Math.abs(scrollPosition) >= oneThirdWidth * 2 || scrollPosition >= 0) {
-                    scrollPosition = -oneThirdWidth;
-                }
-                track.style.transform = `translateX(${scrollPosition}px)`;
-            }, { passive: true });
-        
-            container.addEventListener('touchend', () => {
-                isDragging = false;
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+                });
             });
-
-            return resetToCenter;
         }
-        
-        window.addEventListener('DOMContentLoaded', () => {
-            resetMealsCenter = setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
-            resetCustomersCenter = setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
-        });
-        
+		
     </script>
 </body>
 </html>
