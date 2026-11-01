@@ -811,11 +811,14 @@
                 <input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
             </div>
 
-            <div class="form-group">
-                <label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
-                <label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
-                <input type="time" name="delivery_time" class="form-control" min="10:00" max="22:00" required>
-            </div>
+            <!-- حقل ساعة استلام الطلب المطور بقائمة منسدلة -->
+			<div class="form-group">
+				<label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
+				<label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
+				<select id="deliveryTimeSelect" name="delivery_time" class="form-control" required>
+					<!-- سيتم توليد الساعات والدقائق هنا تلقائياً بواسطة الجافاسكربت باللغتين -->
+				</select>
+			</div>
 
             <div class="form-group">
                 <label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
@@ -963,6 +966,66 @@
                 document.getElementById('visitCounter').innerText = count.toLocaleString();
             }, 4000);
         });
+		
+		// دالة لتوليد أوقات العمل من 10 صباحاً حتى 10 مساءً بشكل ديناميكي ومتوافق مع اللغتين
+		function populateBusinessHours() {
+			const timeSelect = document.getElementById('deliveryTimeSelect');
+			if (!timeSelect) return;
+			
+			timeSelect.innerHTML = ''; // تنظيف القائمة أولاً
+			
+			// تحديد البداية والنهاية بالساعات (من 10 صباحاً = 10 إلى 22 مساءً = 22)
+			const startHour = 10;
+			const endHour = 22;
+			
+			// الحصول على اللغة الحالية للموقع لمعرفة طريقة العرض
+			const currentLang = document.documentElement.getAttribute('lang') || 'en';
+		
+			for (let hour = startHour; hour <= endHour; hour++) {
+				// نحدد الدقائق (خطوات كل 15 دقيقة: 00، 15، 30، 45)
+				// عند الوصول للساعة 10 مساءً (22) نكتفي بدقيقة 00 فقط وننهي الحلقة
+				const maxMinutes = (hour === endHour) ? 0 : 45;
+				
+				for (let min = 0; min <= maxMinutes; min += 15) {
+					// تنسيق رقم الساعة والدقيقة رقمياً لإرساله للسيرفر (مثل 10:15)
+					const hh = String(hour).padStart(2, '0');
+					const mm = String(min).padStart(2, '0');
+					const timeValue = `${hh}:${mm}`;
+					
+					// تحويل الساعة لنظام 12 ساعة للعرض على الزبون
+					let displayHour = hour % 12;
+					if (displayHour === 0) displayHour = 12; // تحويل الساعة 12 إلى 12 بدلاً من 0
+					
+					const displayMin = String(min).padStart(2, '0');
+					let textToShow = '';
+		
+					// صياغة النص بناءً على لغة الموقع الحالية
+					if (currentLang === 'ar') {
+						const period = (hour < 12) ? 'صباحاً' : (hour === 12 && min === 0 ? 'ظهراً' : 'مساءً');
+						textToShow = `${displayHour}:${displayMin} ${period}`;
+					} else {
+						const period = (hour < 12) ? 'AM' : 'PM';
+						textToShow = `${displayHour}:${displayMin} ${period}`;
+					}
+					
+					// إنشاء خيار الاختيار وضمه للقائمة
+					const option = document.createElement('option');
+					option.value = timeValue;
+					option.textContent = textToShow;
+					timeSelect.appendChild(option);
+				}
+			}
+		}
+		
+		// تشغيل الدالة فور تحميل الصفحة
+		window.addEventListener('DOMContentLoaded', populateBusinessHours);
+		
+		// إعادة تحديث أوقات القائمة فور قيام المستخدم بتغيير لغة الموقع لتتحول الكلمات تلقائياً
+		const originalToggleLanguage = toggleLanguage;
+		toggleLanguage = function() {
+			originalToggleLanguage(); // تشغيل وظيفة تغيير اللغة الأصلية
+			populateBusinessHours();   // إعادة بناء القائمة باللغة الجديدة فوراً
+		};
     </script>
 </body>
 </html>
