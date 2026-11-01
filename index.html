@@ -1251,6 +1251,8 @@
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
+			
+			track.innerHTML = track.innerHTML.repeat(50);
 		
 			// إيقاف أنميشن الـ CSS القديم للاعتماد الكامل على الجافاسكربت
 			track.style.animation = 'none';
