@@ -560,21 +560,31 @@
 			margin-bottom: 20px;
 		}
 		
+		/* شريط الزبائن - متوافق مع الاتجاهين */
 		.customers-track {
 			display: flex;
-			/* عرض الشريط يعتمد على حجم المستطيلات لضمان حركة متصلة دون انقطاع */
 			width: calc(220px * 16); 
 			animation: scrollCustomers 30s linear infinite;
 		}
 		
-		/* إيقاف الحركة مؤقتاً عند مرور الماوس أو لمس الشاشة لمزيد من التفاعل */
 		.customers-track:hover {
 			animation-play-state: paused;
 		}
 		
+		/* الحركة الافتراضية للغة الإنجليزية */
 		@keyframes scrollCustomers {
 			0% { transform: translateX(0); }
 			100% { transform: translateX(calc(-220px * 8)); }
+		}
+		
+		/* حل السحر للغة العربية: عكس اتجاه حركة شريط الزبائن عند قلب اللغة */
+		[dir="rtl"] .customers-track {
+			animation: scrollCustomersRTL 30s linear infinite;
+		}
+		
+		@keyframes scrollCustomersRTL {
+			0% { transform: translateX(0); }
+			100% { transform: translateX(calc(220px * 8)); } /* تحويل القيمة لموجبة ليدور بشكل لا نهائي مريح للعين */
 		}
 		
 		.customer-rectangle {
