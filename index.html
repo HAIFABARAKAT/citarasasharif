@@ -811,6 +811,22 @@
 			width: max-content !important; /* يجعل الحاوية تتسع لجميع المربعات أفقياً */
 			will-change: transform; /* تسريع معالجة الحركة عبر كارت الشاشة للجوال */
 		}
+		
+				/* هذا الأمر يلغي تماماً أي حركة CSS قديمة كانت مضافة للشريط */
+		.marquee-content {
+		animation: none !important; 
+		display: flex !important;
+		gap: 24px !important; /* يمكنك تعديل المسافة بين المربعات من هنا */
+		overflow: hidden !important;
+		white-space: nowrap !important;
+		width: max-content !important;
+		}
+		
+		/* إلغاء حركات الأنيمايشن لأي كلاسات فرعية قديمة */
+		.marquee-ltr, .marquee-rtl {
+		animation: none !important;
+		}
+		
     </style>
 </head>
 <body>
