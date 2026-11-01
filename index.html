@@ -1326,6 +1326,46 @@
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
+		
+		
+		const marqueeContent = document.querySelector('.marquee-content');
+		let speed = 1; // يمكنك زيادة الرقم لزيادة السرعة أو تقليله لإبطائها
+		
+		function animateMarquee() {
+			// التحقق من اتجاه اللغة (يدعم العربي والإنجليزي تلقائياً)
+			const isRtl = document.documentElement.dir === 'rtl' || document.body.style.direction === 'rtl';
+		
+			if (!isRtl) {
+				// الاتجاه الإنجليزي (من اليمين إلى اليسار)
+				marqueeContent.scrollLeft += speed;
+				
+				// بمجرد خروج العنصر الأول تماماً من العرض، ننقله إلى النهاية
+				if (marqueeContent.scrollLeft >= marqueeContent.firstElementChild.offsetWidth + 24) {
+					marqueeContent.appendChild(marqueeContent.firstElementChild);
+					marqueeContent.scrollLeft = 0;
+				}
+			} else {
+				// الاتجاه العربي (من اليسار إلى اليمين)
+				marqueeContent.scrollLeft -= speed;
+				
+				// بمجرد خروج العنصر الأخير تماماً، ننقله إلى البداية
+				if (Math.abs(marqueeContent.scrollLeft) >= marqueeContent.lastElementChild.offsetWidth + 24) {
+					marqueeContent.insertBefore(marqueeContent.lastElementChild, marqueeContent.firstElementChild);
+					marqueeContent.scrollLeft = 0;
+				}
+			}
+		
+			requestAnimationFrame(animateMarquee);
+		}
+		
+		// تشغيل الحركة المستمرة فور تحميل الصفحة
+		window.addEventListener('DOMContentLoaded', () => {
+			// التأكد من أن الحاوية تسمح بالتمرير برمجياً
+			marqueeContent.style.overflow = 'hidden';
+			marqueeContent.style.display = 'flex';
+			requestAnimationFrame(animateMarquee);
+		});		
+		
     </script>
 </body>
 </html>
