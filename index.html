@@ -1244,61 +1244,53 @@
 // كود جافاسكربت المصحح 100% لدعم الحركة والسحب اللمسي في الاتجاهين
 // ========================================================
 
-// ========================================================
-// كود جافاسكربت المطور لمنع انقطاع الشريط وعودته بشكل مفاجئ
-// ========================================================
-
 		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// لمسة سحرية: مضاعفة كروت العناصر برمجياً لضمان عدم حدوث أي فراغ بصري أو قطوعات نهائياً
-			const originalContent = track.innerHTML;
-			track.innerHTML = originalContent + originalContent + originalContent; // تكرار المحتوى 3 مرات للأمان الكامل
-		
+			// إيقاف أنميشن الـ CSS القديم للاعتماد الكامل على الجافاسكربت
 			track.style.animation = 'none';
 		
 			let scrollPosition = 0;
 			let isDragging = false;
 			let startX = 0;
 			let lastX = 0;
+			let animationFrameId;
 		
-			// حساب ثلث العرض الإجمالي (لأننا كررنا العناصر 3 مرات) لتتم إعادة التدوير بسلاسة خفية
-			const oneThirdWidth = track.scrollWidth / 3;
-		
-			// تعيين نقطة البداية في منتصف الشريط المكرر لتجنب الحواف الفارغة تماماً
-			scrollPosition = -oneThirdWidth;
-			track.style.transform = `translateX(${scrollPosition}px)`;
-		
+			// دالة الحركة التلقائية المستمرة
 			function animate() {
 				if (!isDragging) {
+					// فحص اتجاه اللغة الحالي للموقع تلقائياً
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
+					// تحريك الشريط بناءً على اتجاه اللغة
 					if (isRTL) {
 						scrollPosition += speed;
-						// إعادة تدوير غير مرئية عند الحركة لليمين في الوضع العربي
-						if (scrollPosition >= 0) {
-							scrollPosition = -oneThirdWidth;
-						}
 					} else {
 						scrollPosition -= speed;
-						// إعادة تدوير غير مرئية عند الحركة لليسار في الوضع الإنجليزي
-						if (Math.abs(scrollPosition) >= oneThirdWidth * 2) {
-							scrollPosition = -oneThirdWidth;
-						}
+					}
+					
+					// حساب نصف العرض الإجمالي للشريط المكرر لإعادة التدوير اللانهائي
+					const halfWidth = track.scrollWidth / 2;
+					
+					if (Math.abs(scrollPosition) >= halfWidth) {
+						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة
 					}
 					
 					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
-				requestAnimationFrame(animate);
+				animationFrameId = requestAnimationFrame(animate);
 			}
 		
+			// إطلاق الحركة التلقائية فوراً
 			animate();
 		
-			// === إعدادات أحداث اللمس والسحب اللانهائي المستقر ===
+			// === إعدادات أحداث اللمس والسحب المصححة للجوال ===
+			
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
+				// تصحيح الخطأ المطبعي لقراءة نقطة اللمس الأولى بالأصبع
 				startX = e.touches[0].clientX;
 				lastX = startX;
 			}, { passive: true });
@@ -1306,28 +1298,29 @@
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
 				
+				// تصحيح الخطأ المطبعي لقراءة حركة الإصبع المستمرة
 				const currentX = e.touches[0].clientX;
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
+				// تحديث الموقف الحركي المباشر بناءً على سحب الإصبع
 				scrollPosition += deltaX;
 		
-				// حماية إعادة التدوير الفورية أثناء السحب اليدوي السريع لمنع الانقطاع
-				if (Math.abs(scrollPosition) >= oneThirdWidth * 2) {
-					scrollPosition = -oneThirdWidth;
-				} else if (scrollPosition > 0) {
-					scrollPosition = -oneThirdWidth;
+				// حدود الصيانة وإعادة التدوير لمنع حدوث أي فراغات أو اختفاء
+				const halfWidth = track.scrollWidth / 2;
+				if (Math.abs(scrollPosition) >= halfWidth) {
+					scrollPosition = 0;
 				}
 		
 				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; 
+				isDragging = false; // استئناف الحركة الذاتية فوراً بمجرد رفع الإصبع
 			});
 		}
 		
-		// تشغيل الميزة الاحترافية للشريطين معاً فور تحميل الصفحة
+		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
 			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
