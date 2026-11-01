@@ -176,20 +176,32 @@
             position: relative;
         }
 
-        .fluid-track {
-            display: flex;
-            width: calc(300px * 8);
-            animation: continuousScroll 25s linear infinite;
-        }
-
-        .fluid-track:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes continuousScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-300px * 4)); }
-        }
+		/* شريط صور الوجبات - متوافق مع الاتجاهين */
+		.fluid-track {
+			display: flex;
+			width: calc(300px * 8);
+			animation: continuousScroll 25s linear infinite;
+		}
+		
+		.fluid-track:hover {
+			animation-play-state: paused;
+		}
+		
+		/* الحركة الافتراضية للغة الإنجليزية (من اليسار لليمين) */
+		@keyframes continuousScroll {
+			0% { transform: translateX(0); }
+			100% { transform: translateX(calc(-300px * 4)); }
+		}
+		
+		/* حل السحر للغة العربية: عندما يتحول اتجاه الموقع لـ RTL يتم عكس الحركة برمجياً */
+		[dir="rtl"] .fluid-track {
+			animation: continuousScrollRTL 25s linear infinite;
+		}
+		
+		@keyframes continuousScrollRTL {
+			0% { transform: translateX(0); }
+			100% { transform: translateX(calc(300px * 4)); } /* تحويل القيمة لموجبة لتدور للداخل بدلاً من الاختفاء للخارج */
+		}
 
         .slide-card {
             width: 280px;
