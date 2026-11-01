@@ -535,6 +535,56 @@
         /* كلاسات التحكم اللغوي لإخفاء الفئات غير النشطة */
         [lang="en"] .lang-ar { display: none !important; }
         [lang="ar"] .lang-en { display: none !important; }
+		
+				/* ========================================================
+		قسم الزبائن والتجارب السابقة - شريط متحرك انسيابي
+		======================================================== */
+		.customers-slider-container {
+			width: 100%;
+			overflow: hidden;
+			padding: 20px 0;
+			position: relative;
+			background: rgba(139, 195, 74, 0.05); /* خلفية خفيفة جداً باللون الأخضر الفاتح */
+			margin-bottom: 20px;
+		}
+		
+		.customers-track {
+			display: flex;
+			/* عرض الشريط يعتمد على حجم المستطيلات لضمان حركة متصلة دون انقطاع */
+			width: calc(220px * 16); 
+			animation: scrollCustomers 30s linear infinite;
+		}
+		
+		/* إيقاف الحركة مؤقتاً عند مرور الماوس أو لمس الشاشة لمزيد من التفاعل */
+		.customers-track:hover {
+			animation-play-state: paused;
+		}
+		
+		@keyframes scrollCustomers {
+			0% { transform: translateX(0); }
+			100% { transform: translateX(calc(-220px * 8)); }
+		}
+		
+		.customer-rectangle {
+			width: 200px;
+			height: 70px;
+			margin: 0 10px;
+			background: var(--bg-card); /* رمادي أو أبيض حسب الوضع */
+			border: 1px solid var(--border-glow);
+			border-radius: 12px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: var(--shadow);
+			flex-shrink: 0;
+			border-left: 4px solid var(--primary); /* خط أخضر فاتح جانبي للمسة جمالية */
+		}
+		
+		.customer-rectangle span {
+			font-size: 16px;
+			font-weight: 700;
+			color: var(--text-main);
+		}
     </style>
 </head>
 <body>
@@ -746,7 +796,39 @@
             </button>
         </form>
     </section>
-
+	
+	<!-- ========================================================
+     قسم تجارب الزبائن السابقة الانسيابي المتحرك
+     ======================================================== -->
+	<h2 class="section-title">
+		<span class="lang-en">Past Customers & Clients</span>
+		<span class="lang-ar">تجارب وزبائن سابقة</span>
+	</h2>
+	
+	<div class="customers-slider-container">
+		<div class="customers-track">
+			<!-- المجموعة الأولى من المستطيلات -->
+			<div class="customer-rectangle"><span>School</span></div>
+			<div class="customer-rectangle"><span>Tire company</span></div>
+			<div class="customer-rectangle"><span>Uitm</span></div>
+			<div class="customer-rectangle"><span>Family Ahmed</span></div>
+			<div class="customer-rectangle"><span>Expert Print</span></div>
+			<div class="customer-rectangle"><span>Coway</span></div>
+			<div class="customer-rectangle"><span>Aquila</span></div>
+			<div class="customer-rectangle"><span>Management</span></div>
+			
+			<!-- تكرار المجموعة الثانية لضمان انسيابية الحركة دون توقف أو فراغات -->
+			<div class="customer-rectangle"><span>School</span></div>
+			<div class="customer-rectangle"><span>Tire company</span></div>
+			<div class="customer-rectangle"><span>Uitm</span></div>
+			<div class="customer-rectangle"><span>Family Ahmed</span></div>
+			<div class="customer-rectangle"><span>Expert Print</span></div>
+			<div class="customer-rectangle"><span>Coway</span></div>
+			<div class="customer-rectangle"><span>Aquila</span></div>
+			<div class="customer-rectangle"><span>Management</span></div>
+		</div>
+	</div>
+	
     <!-- قسم شركاء الثقة المطور كلياً على شكل مربعات أنيقة تتفاعل عند اللمس أو التمرير بالماوس لتتغير للأخضر الفاتح الجميل -->
     <h2 class="section-title">
         <span class="lang-ar">شركاء الثقة</span>
