@@ -805,7 +805,28 @@
 		}
 		
 		
+				/* ========================================================
+		تطوير التمرير والسحب اللمسي الحر على الجوال والتابلت
+		======================================================== */
+		@media (max-width: 768px) {
+			/* تهيئة حاوية شريط صور الوجبات وشريط الزبائن */
+			.slider-container {
+				overflow-x: auto !important; /* السماح بالتمرير الأفقي الحر */
+				scroll-behavior: smooth;
+				-webkit-overflow-scrolling: touch; /* تمرير مطاطي وسلس جداً على هواتف آيفون وأندرويد */
+			}
 		
+			/* إزالة شريط التمرير الافتراضي للمتصفح للحفاظ على نظافة وجمال التصميم */
+			.slider-container::-webkit-scrollbar {
+				display: none;
+			}
+		
+			/* تعديل المسارات لتسمح بالسحب اللمسي دون مقاومة */
+			.fluid-track, .customers-track {
+				animation-play-state: paused !important; /* إيقاف الأنميشن الإجباري مؤقتاً على الجوال ليعمل السحب اللمسي بحرية */
+				width: max-content !important; /* جعل العرض مرناً بحسب عدد المربعات */
+			}
+		}
     </style>
 </head>
 <body>
@@ -1233,6 +1254,42 @@
 				// تحديث عرض الخط برمجياً
 				progressBar.style.width = scrolled + '%';
 			}
+		});
+		
+		// كود ذكي لتفعيل السحب الحر والدقيق بالأصبع على الجوال
+		function enableTouchSwipe(containerSelector) {
+			const container = document.querySelector(containerSelector);
+			if (!container) return;
+		
+			let isDown = false;
+			let startX;
+			let scrollLeft;
+		
+			// عند وضع الأصبع على المربعات
+			container.addEventListener('touchstart', (e) => {
+				isDown = true;
+				startX = e.touches[0].pageX - container.offsetLeft;
+				scrollLeft = container.scrollLeft;
+			}, { passive: true });
+		
+			// عند رفع الأصبع عن الشاشة
+			container.addEventListener('touchend', () => {
+				isDown = false;
+			});
+		
+			// عند تحريك الأصبع يميناً أو يساراً
+			container.addEventListener('touchmove', (e) => {
+				if (!isDown) return;
+				const x = e.touches[0].pageX - container.offsetLeft;
+				const walk = (x - startX) * 1.5; // تسريع الحركة لتعطي انسيابية وخفة باللمس
+				container.scrollLeft = scrollLeft - walk;
+			}, { passive: true });
+		}
+		
+		// تشغيل ميزة السحب اللمسي لكل من شريط الوجبات وشريط الزبائن فور تحميل الموقع
+		window.addEventListener('DOMContentLoaded', () => {
+			enableTouchSwipe('.slider-container'); // تفعيل لشريط صور الوجبات
+			enableTouchSwipe('.customers-slider-container'); // تفعيل لشريط الزبائن
 		});
     </script>
 </body>
