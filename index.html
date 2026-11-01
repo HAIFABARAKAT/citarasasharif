@@ -734,83 +734,68 @@
     </section>
 
     <!-- فورم استقبال طلبات المناسبات والحفلات الذكي عبر حساب العميل في Web3Forms -->
-<!-- ========================================================
-     قسم نموذج الطلب الذكي والمتكامل للغتين
-     ======================================================== -->
-	<section class="order-section">
-		<h2 class="section-title">
-			<span class="lang-ar">طلب الحفلات والمناسبات</span>
-			<span class="lang-en">Events & Catering Orders</span>
-		</h2>
-		
-		<form action="https://web3forms.com" method="POST" class="order-form" id="cateringForm">
-			<!-- مفتاح الوصول الخاص بـ Web3Forms -->
-			<input type="hidden" name="access_key" value="705785a7-7db7-4974-8bcc-52aea4b30120">
-	
-			<!-- 1. قسم المربعات واختيار الوجبات -->
-			<div class="form-group">
-				<label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
-				<label class="lang-en">Select Meals (You can select multiple):</label>
-				
-				<div class="checkbox-grid">
-					<label class="checkbox-btn">
-						<input type="checkbox" name="meals[]" value="Shawarma">
-						<span class="btn-text lang-ar">شاورما</span>
-						<span class="btn-text lang-en">Shawarma</span>
-					</label>
-					<label class="checkbox-btn">
-						<input type="checkbox" name="meals[]" value="Mandi">
-						<span class="btn-text lang-ar">مندي دجاج</span>
-						<span class="btn-text lang-en">Chicken Mandi</span>
-					</label>
-					<label class="checkbox-btn">
-						<input type="checkbox" name="meals[]" value="Strips">
-						<span class="btn-text lang-ar">ستربس دجاج</span>
-						<span class="btn-text lang-en">Chicken Strips</span>
-					</label>
-					<label class="checkbox-btn">
-						<input type="checkbox" name="meals[]" value="Drinks">
-						<span class="btn-text lang-ar">مشروبات</span>
-						<span class="btn-text lang-en">Drinks</span>
-					</label>
-				</div>
-			</div>
-	
-			<!-- 2. عدد الوجبات -->
-			<div class="form-group">
-				<label class="lang-ar">عدد الوجبات الكلي (الحد الأدنى 10 وجبات):</label>
-				<label class="lang-en">Total Number of Meals (Minimum 10):</label>
-				<input type="number" name="quantity" class="form-control" min="10" value="10" required>
-			</div>
-	
-			<!-- 3. تاريخ الاستلام -->
-			<div class="form-group">
-				<label class="lang-ar">تاريخ الاستلام (أقل شيء بعد 3 أيام):</label>
-				<label class="lang-en">Pickup Date (Minimum 3 days from today):</label>
-				<input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
-			</div>
-	
-			<!-- 4. ساعة استلام الطلب -->
-			<div class="form-group">
-				<label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
-				<label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
-				<input type="time" name="delivery_time" class="form-control" min="10:00" max="22:00" required>
-			</div>
-	
-			<!-- 5. ملاحظات إضافية -->
-			<div class="form-group">
-				<label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
-				<label class="lang-en">Would you like to add anything extra?</label>
-				<textarea name="special_notes" class="form-control" rows="4" placeholder="..."></textarea>
-			</div>
-	
-			<!-- زر الإرسال -->
-			<button type="submit" class="submit-btn">
-				<span class="lang-ar">إرسال الطلب السحري</span>
-				<span class="lang-en">Send Magical Order</span>
-			</button>
-		</form>
-	</section>
+    <section class="order-section">
+        <h2 class="section-title">
+            <span class="lang-ar">طلب الحفلات والمناسبات</span>
+            <span class="lang-en">Events & Catering Orders</span>
+        </h2>
+        <form action="https://api.web3forms.com/submit" method="POST" class="order-form" id="cateringForm">
+            <!-- مفتاح الربط السري الخاص بحساب العميل لاستقبال الرسائل مباشرة -->
+            <input type="hidden" name="access_key" value="705785a7-7db7-4974-8bcc-52aea4b30120">
+
+            <div class="form-group">
+                <label class="lang-ar">اختر الوجبات (يمكنك اختيار أكثر من وجبة):</label>
+                <label class="lang-en">Select Meals (You can select multiple):</label>
+                <div class="checkbox-grid">
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Shawarma">
+                        <span class="btn-text lang-ar">شاورما</span><span class="btn-text lang-en">Shawarma</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Mandi">
+                        <span class="btn-text lang-ar">مندي دجاج</span><span class="btn-text lang-en">Chicken Mandi</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Strips">
+                        <span class="btn-text lang-ar">ستربس دجاج</span><span class="btn-text lang-en">Chicken Strips</span>
+                    </label>
+                    <label class="checkbox-btn">
+                        <input type="checkbox" name="meals[]" value="Drinks">
+                        <span class="btn-text lang-ar">مشروبات</span><span class="btn-text lang-en">Drinks</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="lang-ar">عدد الوجبات الكلي (الحد الأدنى 10 وجبات):</label>
+                <label class="lang-en">Total Number of Meals (Minimum 10):</label>
+                <input type="number" name="quantity" class="form-control" min="10" value="10" required>
+            </div>
+
+            <div class="form-group">
+                <label class="lang-ar">تاريخ الاستلام (أقل شيء بعد 3 أيام):</label>
+                <label class="lang-en">Pickup Date (Minimum 3 days from today):</label>
+                <input type="date" id="deliveryDate" name="delivery_date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label class="lang-ar">ساعة استلام الطلب (ساعات العمل 10 ص - 10 م):</label>
+                <label class="lang-en">Pickup Time (Working hours 10 AM - 10 PM):</label>
+                <input type="time" name="delivery_time" class="form-control" min="10:00" max="22:00" required>
+            </div>
+
+            <div class="form-group">
+                <label class="lang-ar">هل تود إضافة شيء إضافي للطلب؟</label>
+                <label class="lang-en">Would you like to add anything extra?</label>
+                <textarea name="special_notes" class="form-control" rows="4" placeholder="..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span class="lang-ar">إرسال الطلب السحري</span>
+                <span class="lang-en">Send Magical Order</span>
+            </button>
+        </form>
+    </section>
 	
 	<!-- ========================================================
      قسم تجارب الزبائن السابقة الانسيابي المتحرك
