@@ -1241,34 +1241,41 @@
 		});
 		
 		// ========================================================
-// كود جافاسكربت المطور للحركة التلقائية مع دعم السحب اللمسي الحر
-// ========================================================
-
+		// كود جافاسكربت المطور والمصحح بالكامل لدعم العربية والإنجليزية (حركة + سحب)
+		// ========================================================
+		
 		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// إيقاف أنميشن الـ CSS القديم تماماً للاعتماد على حركة الجافاسكربت الدقيقة
+			// إلغاء أنميشن الـ CSS القديم تماماً للاعتماد الفوري على حركة الجافاسكربت الذكية
 			track.style.animation = 'none';
 		
 			let scrollPosition = 0;
 			let isDragging = false;
 			let startX = 0;
-			let dragVelocity = 0;
 			let lastX = 0;
 			let animationFrameId;
 		
 			// دالة الحركة التلقائية المستمرة
 			function animate() {
 				if (!isDragging) {
-					// تحريك الشريط بناءً على السرعة المحددة
-					scrollPosition -= speed;
+					// فحص اتجاه اللغة الحالي للموقع تلقائياً
+					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
-					// حساب نصف عرض الشريط (المجموعات المكررة) لإعادة التدوير اللانهائي
+					// إذا كانت اللغة عربية (RTL) نقوم بزيادة الموقع (موجب)، وإذا كانت إنجليزية نقوم بطرحه (سالب)
+					if (isRTL) {
+						scrollPosition += speed;
+					} else {
+						scrollPosition -= speed;
+					}
+					
+					// حساب نصف العرض الإجمالي للشريط المكرر لإعادة التدوير اللانهائي
 					const halfWidth = track.scrollWidth / 2;
+					
 					if (Math.abs(scrollPosition) >= halfWidth) {
-						scrollPosition = 0; // إعادة الشريط للبداية بسلاسة دون أن يلاحظ المستخدم
+						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة خفية
 					}
 					
 					track.style.transform = `translateX(${scrollPosition}px)`;
@@ -1276,33 +1283,30 @@
 				animationFrameId = requestAnimationFrame(animate);
 			}
 		
-			// بدء الحركة التلقائية فوراً
+			// إطلاق الحركة التلقائية فوراً
 			animate();
 		
-			// === إعدادات أحداث اللمس والسحب للجوال ===
+			// === إعدادات أحداث اللمس والسحب المتقدمة للجوال ===
 			
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
-				startX = e.touches[0].clientX;
+				startX = e.touches[clientX];
 				lastX = startX;
-				dragVelocity = 0;
 			}, { passive: true });
 		
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
 				
-				const currentX = e.touches[0].clientX;
+				const currentX = e.touches[clientX];
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
-				// تحديث الموقف الحالي للحركة بناءً على سحب الإصبع
+				// تحديث الموقف الحركي المباشر بناءً على إزاحة سحب الإصبع
 				scrollPosition += deltaX;
 		
-				// حدود إعادة التدوير أثناء السحب اليدوي لمنع ظهور فراغات
+				// حدود الصيانة وإعادة التدوير أثناء السحب اليدوي لمنع حدوث أي فراغات أو اختفاء في الجهتين
 				const halfWidth = track.scrollWidth / 2;
-				if (scrollPosition > 0) {
-					scrollPosition = -halfWidth;
-				} else if (Math.abs(scrollPosition) >= halfWidth) {
+				if (Math.abs(scrollPosition) >= halfWidth) {
 					scrollPosition = 0;
 				}
 		
@@ -1310,16 +1314,16 @@
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; // العودة الفورية للحركة التلقائية بمجرد رفع الإصبع
+				isDragging = false; // استئناف الحركة الذاتية فوراً من نفس النقطة بمجرد رفع الإصبع
 			});
 		}
 		
-		// تشغيل الميزة للشريطين معاً فور تحميل الصفحة وتحديد سرعة مناسبة لكل شريط
+		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة وتحديد سرعات متناسقة
 		window.addEventListener('DOMContentLoaded', () => {
-			// 1.2 هي السرعة التلقائية لشريط الوجبات
+			// تشغيل شريط صور الوجبات المميزة
 			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
 			
-			// 0.8 هي السرعة التلقائية لشريط الزبائن (أبطأ قليلاً لسهولة القراءة)
+			// تشغيل شريط تجارب وزبائن المطعم السابقة
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
     </script>
