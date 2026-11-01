@@ -607,6 +607,17 @@
 			font-weight: 700;
 			color: var(--text-main);
 		}
+		
+		/* إجبار شريط صور الوجبات على التوقف عند مرور الماوس في وضع اللغة العربية */
+		[dir="rtl"] .fluid-track:hover {
+			animation-play-state: paused !important;
+		}
+		
+		/* إجبار شريط الزبائن على التوقف عند مرور الماوس في وضع اللغة العربية */
+		[dir="rtl"] .customers-track:hover {
+			animation-play-state: paused !important;
+		}
+		
     </style>
 </head>
 <body>
