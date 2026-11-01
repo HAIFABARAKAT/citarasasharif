@@ -618,6 +618,76 @@
 			animation-play-state: paused !important;
 		}
 		
+		/* ========================================================
+   تأثيرات اللمسة السحرية واللمعان لكروت الوجبات (Signature Meals)
+   ======================================================== */
+
+		/* الحالة الافتراضية للكارت */
+		.slide-card {
+			width: 280px;
+			height: 350px;
+			margin: 0 10px;
+			background: var(--bg-card);
+			border-radius: 20px;
+			overflow: hidden;
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* ظل افتراضي ناعم */
+			border: 1px solid var(--border-glow);
+			position: relative;
+			cursor: pointer;
+			
+			/* ضمان انسيابية تامة للحركة عند التكبير أو التغيير */
+			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+						box-shadow 0.4s ease, 
+						border-color 0.4s ease;
+		}
+		
+		/* تجهيز طبقة اللمعة المخفية بداخل الكارت */
+		.slide-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -150%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(
+				90deg, 
+				transparent, 
+				rgba(255, 255, 255, 0.25) 50%, 
+				transparent
+			);
+			transform: skewX(-20deg);
+			z-index: 2;
+			transition: none;
+		}
+		
+		/* تأثير مرور الماوس أو اللمس بالأصبع (Hover State) */
+		.slide-card:hover {
+			transform: translateY(-8px) scale(1.03); /* تكبير بسيط وارتفاع طفيف لأعلى */
+			border-color: var(--primary); /* تحول الحواف إلى اللون الأخضر الفاتح */
+			
+			/* ظل ثلاثي الأبعاد عميق يعطي إيحاءً بالارتفاع (تأثير الهالة الخضراء الخفيفة) */
+			box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 
+						0 15px 25px rgba(0, 0, 0, 0.3); 
+		}
+		
+		/* إطلاق تأثير وميض اللمعة الخاطف عند تحريك الماوس فوق الكارت */
+		.slide-card:hover::before {
+			left: 150%;
+			transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+		}
+		
+		/* حركة إضافية للصورة بالداخل لإعطاء عمق بصري */
+		.slide-card img {
+			width: 100%;
+			height: 70%;
+			object-fit: cover;
+			transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+		}
+		
+		.slide-card:hover img {
+			transform: scale(1.05); /* تقريب خفيف جداً للصورة عند التمرير */
+		}
+		
     </style>
 </head>
 <body>
@@ -894,7 +964,7 @@
     </div>
 
     <!-- زر الاتصال والمحادثة السريعة العائم عبر تطبيق واتساب -->
-    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
+    <a href="https://wa.me/601163514552" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
         <i class="fab fa-whatsapp"></i>
     </a>
 
