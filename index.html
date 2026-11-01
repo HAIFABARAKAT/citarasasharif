@@ -787,10 +787,28 @@
 			transition: color 0.3s ease;
 		}
 		
+		/* ========================================================
+   شريط تقدم القراءة والنزول السحري باللون الأخضر الأساسي للموقع
+   ======================================================== */
+		#scrollProgressBar {
+			position: fixed;
+			top: 75px; /* يوضع تحت الهيدر تماماً */
+			left: 0;
+			width: 0%; /* يبدأ من صفر ويمتد مع النزول */
+			height: 4px; /* سُمك الخط الرفيع */
+			background: var(--primary); /* نفس لون الأخضر الأساسي المستخدم في موقعك */
+			z-index: 9999; /* يظهر فوق جميع عناصر الموقع */
+			box-shadow: 0 0 10px var(--primary-glow), 0 0 5px var(--primary); /* توهج ضوئي ناعم بنفس لون الموقع */
+			transition: width 0.1s ease-out;
+		}
+		
 		
     </style>
 </head>
 <body>
+
+	<!-- شريط تقدم القراءة والنزول الرفيع -->
+	<div id="scrollProgressBar"></div>
 
     <!-- شريط التنقل والتحكم الرئيسي بالثيم واللغات -->
     <header>
@@ -1196,6 +1214,23 @@
 			originalToggleLanguage(); // تشغيل وظيفة تغيير اللغة الأصلية
 			populateBusinessHours();   // إعادة بناء القائمة باللغة الجديدة فوراً
 		};
+		
+		
+		// كود حساب نسبة النزول وتحديث عرض شريط التقدم تلقائياً
+		window.addEventListener('scroll', () => {
+			const progressBar = document.getElementById('scrollProgressBar');
+			if (progressBar) {
+				// حساب المسافة التي نزلها المستخدم
+				const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+				// حساب الارتفاع الكلي القابل للتمرير في الصفحة
+				const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+				// تحويل المسافة إلى نسبة مئوية من 0 إلى 100
+				const scrolled = (winScroll / height) * 100;
+				
+				// تحديث عرض الخط برمجياً
+				progressBar.style.width = scrolled + '%';
+			}
+		});
     </script>
 </body>
 </html>
