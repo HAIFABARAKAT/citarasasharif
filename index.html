@@ -273,6 +273,91 @@
             margin-top: 5px;
         }
 
+        /* ========================================================
+           تعديل إضافي: أكواد الـ CSS الخاصة بقسم المنتجات المضاف
+           ======================================================== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            padding: 40px 8%;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            /* سلاسة التكبير والارتفاع والظل */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        /* إعداد طبقة اللمعة الفضية المخفية داخل كارت المنتج */
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent);
+            transform: skewX(-20deg);
+            z-index: 2;
+            transition: none;
+        }
+
+        /* تأثير التمرير واللمس لكارت المنتج (تكبير بسيط + ظل عميق بهالة خضراء) */
+        .product-card:hover, .product-card:active {
+            transform: translateY(-6px) scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(100, 188, 38, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* إطلاق وميض اللمعة السريعة عند التمرير أو اللمس */
+        .product-card:hover::before, .product-card:active::before {
+            left: 150%;
+            transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-glow);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .product-card h3 {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .product-price {
+            font-size: 21px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-top: auto;
+        }
+
         /* قسم الإحصائيات والزيارات اليومية للعملاء */
         .stats-section {
             background: var(--bg-card);
@@ -548,7 +633,7 @@
         [lang="en"] .lang-ar { display: none !important; }
         [lang="ar"] .lang-en { display: none !important; }
 		
-				/* ========================================================
+		/* ========================================================
 		قسم الزبائن والتجارب السابقة - شريط متحرك انسيابي
 		======================================================== */
 		.customers-slider-container {
@@ -788,8 +873,6 @@
 		}
 		
 		/* ========================================================
-   شريط تقدم القراءة والنزول السحري باللون الأخضر الأساسي للموقع
-		/* ========================================================
    شريط تقدم التمرير الذكي والمصحح للشاشات والجوالات
    ======================================================== */
 		#scrollProgressBar {
@@ -804,14 +887,12 @@
 			transition: width 0.1s ease-out;
 		}
 		
-		
 		/* تأكد من وجود هذه الخصائص للشريطين لضمان عمل الجافاسكربت بشكل صحيح */
 		.fluid-track, .customers-track {
 			display: flex;
 			width: max-content !important; /* يجعل الحاوية تتسع لجميع المربعات أفقياً */
 			will-change: transform; /* تسريع معالجة الحركة عبر كارت الشاشة للجوال */
 		}
-		
 		
     </style>
 </head>
@@ -886,6 +967,67 @@
             <div class="slide-card"><img src="pic/drinks.jpg"><div class="slide-info"><span class="lang-ar">مشروبات منعشة</span><span class="lang-en">Refreshing Drinks</span></div></div>
         </div>
     </div>
+
+    <!-- ========================================================
+       تعديل إضافي: كود قسم باقات ومنتجات البهارات والعسل المحدث بالصور
+       ======================================================== */ -->
+    <h2 class="section-title">
+        <span class="lang-ar">منتجاتنا الخاصة</span>
+        <span class="lang-en">Our Special Products</span>
+    </h2>
+    <div class="products-grid">
+        <div class="product-card">
+            <img src="pic/Mixmas.jpg" alt="Special Spice Mix">
+            <div class="product-info">
+                <h3 class="lang-ar">خلطة بهارات</h3>
+                <h3 class="lang-en">Special Spice Mix</h3>
+                <div class="product-price">100 RM</div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="pic/Yellowmas.jpg" alt="Biryani Spices">
+            <div class="product-info">
+                <h3 class="lang-ar">بهار برياني</h3>
+                <h3 class="lang-en">Biryani Spices</h3>
+                <div class="product-price">100 RM</div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="pic/Redmas.jpg" alt="BBQ Spices">
+            <div class="product-info">
+                <h3 class="lang-ar">بهار مشاوي</h3>
+                <h3 class="lang-en">BBQ Spices</h3>
+                <div class="product-price">100 RM</div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="pic/Blackh.jpg" alt="Royal Honey">
+            <div class="product-info">
+                <h3 class="lang-ar">عسل ملكي</h3>
+                <h3 class="lang-en">Royal Honey</h3>
+                <div class="product-price">200 RM</div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="pic/Whiteh.jpg" alt="Black Royal Honey">
+            <div class="product-info">
+                <h3 class="lang-ar">عسل ملكي أسود</h3>
+                <h3 class="lang-en">Black Royal Honey</h3>
+                <div class="product-price">500 RM</div>
+            </div>
+        </div>
+        <div class="product-card">
+            <img src="pic/Yellowh.jpg" alt="White Royal Honey">
+            <div class="product-info">
+                <h3 class="lang-ar">عسل ملكي أبيض</h3>
+                <h3 class="lang-en">White Royal Honey</h3>
+                <div class="product-price">500 RM</div>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================
+       نهاية قسم باقات ومنتجات البهارات والعسل المحدث بالصور
+       ======================================================== */ -->
 
     <!-- أقسام المنيو الدائرية التي تعتمد على الصور المخزنة في مجلد pic -->
     <h2 class="section-title">
@@ -1336,10 +1478,6 @@
 			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
-		
-		
-		
-		
 		
     </script>
 </body>
