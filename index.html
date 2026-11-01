@@ -1244,86 +1244,101 @@
 // كود جافاسكربت المصحح 100% لدعم الحركة والسحب اللمسي في الاتجاهين
 // ========================================================
 
-		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
+
+// ========================================================
+// محرك الحركة الدائرية السرمدية الحقيقية (بدون قفزات تصفير)
+// ========================================================
+		function setupTrueInfiniteScroll(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
 			const track = document.querySelector(trackSelector);
 			if (!container || !track) return;
 		
-			// إيقاف أنميشن الـ CSS القديم للاعتماد الكامل على الجافاسكربت
-			track.style.animation = 'none';
-		
-			let scrollPosition = 0;
 			let isDragging = false;
 			let startX = 0;
 			let lastX = 0;
-			let animationFrameId;
+			let currentXOffset = 0;
 		
-			// دالة الحركة التلقائية المستمرة
-			function animate() {
+			// دالة المحرك الحركي المستمر
+			function updateAnimation() {
 				if (!isDragging) {
-					// فحص اتجاه اللغة الحالي للموقع تلقائياً
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
-					// تحريك الشريط بناءً على اتجاه اللغة
+					// تحريك الإزاحة بناءً على اتجاه لغة الموقع
 					if (isRTL) {
-						scrollPosition += speed;
+						currentXOffset += speed;
+						
+						// للوضع العربي: إذا خرج أول كارت من اليمين، انقل الكارت الأخير ليوضع في البداية
+						const lastChild = track.lastElementChild;
+						const childWidth = lastChild.offsetWidth + parseInt(window.getComputedStyle(lastChild).marginLeft) * 2;
+						if (currentXOffset >= childWidth) {
+							track.insertBefore(lastChild, track.firstElementChild);
+							currentXOffset -= childWidth; // تعديل المسافة فوراً دون قفزة بصرية
+						}
 					} else {
-						scrollPosition -= speed;
+						currentXOffset -= speed;
+						
+						// للوضع الإنجليزي: إذا خرج أول كارت تماماً من اليسار، انقله وضعه في النهاية
+						const firstChild = track.firstElementChild;
+						const childWidth = firstChild.offsetWidth + parseInt(window.getComputedStyle(firstChild).marginRight) * 2;
+						if (Math.abs(currentXOffset) >= childWidth) {
+							track.appendChild(firstChild);
+							currentXOffset += childWidth; // موازنة المسافة الحركية بسرعة البرق
+						}
 					}
 					
-					// حساب نصف العرض الإجمالي للشريط المكرر لإعادة التدوير اللانهائي
-					const halfWidth = track.scrollWidth / 2;
-					
-					if (Math.abs(scrollPosition) >= halfWidth) {
-						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة
-					}
-					
-					track.style.transform = `translateX(${scrollPosition}px)`;
+					track.style.transform = `translateX(${currentXOffset}px)`;
 				}
-				animationFrameId = requestAnimationFrame(animate);
+				requestAnimationFrame(updateAnimation);
 			}
 		
-			// إطلاق الحركة التلقائية فوراً
-			animate();
+			// إطلاق المحرك الدائري
+			requestAnimationFrame(updateAnimation);
 		
-			// === إعدادات أحداث اللمس والسحب المصححة للجوال ===
-			
+			// === أحداث اللمس والسحب المتوافقة مع التدوير الحركي الفوري ===
 			container.addEventListener('touchstart', (e) => {
 				isDragging = true;
-				// تصحيح الخطأ المطبعي لقراءة نقطة اللمس الأولى بالأصبع
 				startX = e.touches[0].clientX;
 				lastX = startX;
 			}, { passive: true });
 		
 			container.addEventListener('touchmove', (e) => {
 				if (!isDragging) return;
-				
-				// تصحيح الخطأ المطبعي لقراءة حركة الإصبع المستمرة
 				const currentX = e.touches[0].clientX;
 				const deltaX = currentX - lastX;
 				lastX = currentX;
 		
-				// تحديث الموقف الحركي المباشر بناءً على سحب الإصبع
-				scrollPosition += deltaX;
-		
-				// حدود الصيانة وإعادة التدوير لمنع حدوث أي فراغات أو اختفاء
-				const halfWidth = track.scrollWidth / 2;
-				if (Math.abs(scrollPosition) >= halfWidth) {
-					scrollPosition = 0;
+				currentXOffset += deltaX;
+				
+				// إعادة الترتيب اللحظي أثناء السحب اليدوي السريع منعاً للفراغات
+				const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
+				if (!isRTL && currentXOffset < 0) {
+					const firstChild = track.firstElementChild;
+					const childWidth = firstChild.offsetWidth + 24;
+					if (Math.abs(currentXOffset) >= childWidth) {
+						track.appendChild(firstChild);
+						currentXOffset += childWidth;
+					}
+				} else if (isRTL && currentXOffset > 0) {
+					const lastChild = track.lastElementChild;
+					const childWidth = lastChild.offsetWidth + 24;
+					if (currentXOffset >= childWidth) {
+						track.insertBefore(lastChild, track.firstElementChild);
+						currentXOffset -= childWidth;
+					}
 				}
 		
-				track.style.transform = `translateX(${scrollPosition}px)`;
+				track.style.transform = `translateX(${currentXOffset}px)`;
 			}, { passive: true });
 		
 			container.addEventListener('touchend', () => {
-				isDragging = false; // استئناف الحركة الذاتية فوراً بمجرد رفع الإصبع
+				isDragging = false;
 			});
 		}
 		
-		// تشغيل الميزة المحدثة للشريطين معاً فور تحميل الصفحة
+		// تشغيل المحرك السحري الحقيقي للشريطين فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', () => {
-			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
-			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
+			setupTrueInfiniteScroll('.slider-container', '.fluid-track', 1.2);
+			setupTrueInfiniteScroll('.customers-slider-container', '.customers-track', 0.8);
 		});
 		
 		
