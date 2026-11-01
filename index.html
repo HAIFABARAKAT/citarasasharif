@@ -805,27 +805,11 @@
 		}
 		
 		
-				/* ========================================================
-		تطوير التمرير والسحب اللمسي الحر على الجوال والتابلت
-		======================================================== */
-		@media (max-width: 768px) {
-			/* تهيئة حاوية شريط صور الوجبات وشريط الزبائن */
-			.slider-container {
-				overflow-x: auto !important; /* السماح بالتمرير الأفقي الحر */
-				scroll-behavior: smooth;
-				-webkit-overflow-scrolling: touch; /* تمرير مطاطي وسلس جداً على هواتف آيفون وأندرويد */
-			}
-		
-			/* إزالة شريط التمرير الافتراضي للمتصفح للحفاظ على نظافة وجمال التصميم */
-			.slider-container::-webkit-scrollbar {
-				display: none;
-			}
-		
-			/* تعديل المسارات لتسمح بالسحب اللمسي دون مقاومة */
-			.fluid-track, .customers-track {
-				animation-play-state: paused !important; /* إيقاف الأنميشن الإجباري مؤقتاً على الجوال ليعمل السحب اللمسي بحرية */
-				width: max-content !important; /* جعل العرض مرناً بحسب عدد المربعات */
-			}
+		/* تأكد من وجود هذه الخصائص للشريطين لضمان عمل الجافاسكربت بشكل صحيح */
+		.fluid-track, .customers-track {
+			display: flex;
+			width: max-content !important; /* يجعل الحاوية تتسع لجميع المربعات أفقياً */
+			will-change: transform; /* تسريع معالجة الحركة عبر كارت الشاشة للجوال */
 		}
     </style>
 </head>
@@ -1256,40 +1240,87 @@
 			}
 		});
 		
-		// كود ذكي لتفعيل السحب الحر والدقيق بالأصبع على الجوال
-		function enableTouchSwipe(containerSelector) {
+		// ========================================================
+// كود جافاسكربت المطور للحركة التلقائية مع دعم السحب اللمسي الحر
+// ========================================================
+
+		function setupAutoScrollWithSwipe(containerSelector, trackSelector, speed) {
 			const container = document.querySelector(containerSelector);
-			if (!container) return;
+			const track = document.querySelector(trackSelector);
+			if (!container || !track) return;
 		
-			let isDown = false;
-			let startX;
-			let scrollLeft;
+			// إيقاف أنميشن الـ CSS القديم تماماً للاعتماد على حركة الجافاسكربت الدقيقة
+			track.style.animation = 'none';
 		
-			// عند وضع الأصبع على المربعات
+			let scrollPosition = 0;
+			let isDragging = false;
+			let startX = 0;
+			let dragVelocity = 0;
+			let lastX = 0;
+			let animationFrameId;
+		
+			// دالة الحركة التلقائية المستمرة
+			function animate() {
+				if (!isDragging) {
+					// تحريك الشريط بناءً على السرعة المحددة
+					scrollPosition -= speed;
+					
+					// حساب نصف عرض الشريط (المجموعات المكررة) لإعادة التدوير اللانهائي
+					const halfWidth = track.scrollWidth / 2;
+					if (Math.abs(scrollPosition) >= halfWidth) {
+						scrollPosition = 0; // إعادة الشريط للبداية بسلاسة دون أن يلاحظ المستخدم
+					}
+					
+					track.style.transform = `translateX(${scrollPosition}px)`;
+				}
+				animationFrameId = requestAnimationFrame(animate);
+			}
+		
+			// بدء الحركة التلقائية فوراً
+			animate();
+		
+			// === إعدادات أحداث اللمس والسحب للجوال ===
+			
 			container.addEventListener('touchstart', (e) => {
-				isDown = true;
-				startX = e.touches[0].pageX - container.offsetLeft;
-				scrollLeft = container.scrollLeft;
+				isDragging = true;
+				startX = e.touches[0].clientX;
+				lastX = startX;
+				dragVelocity = 0;
 			}, { passive: true });
 		
-			// عند رفع الأصبع عن الشاشة
-			container.addEventListener('touchend', () => {
-				isDown = false;
-			});
-		
-			// عند تحريك الأصبع يميناً أو يساراً
 			container.addEventListener('touchmove', (e) => {
-				if (!isDown) return;
-				const x = e.touches[0].pageX - container.offsetLeft;
-				const walk = (x - startX) * 1.5; // تسريع الحركة لتعطي انسيابية وخفة باللمس
-				container.scrollLeft = scrollLeft - walk;
+				if (!isDragging) return;
+				
+				const currentX = e.touches[0].clientX;
+				const deltaX = currentX - lastX;
+				lastX = currentX;
+		
+				// تحديث الموقف الحالي للحركة بناءً على سحب الإصبع
+				scrollPosition += deltaX;
+		
+				// حدود إعادة التدوير أثناء السحب اليدوي لمنع ظهور فراغات
+				const halfWidth = track.scrollWidth / 2;
+				if (scrollPosition > 0) {
+					scrollPosition = -halfWidth;
+				} else if (Math.abs(scrollPosition) >= halfWidth) {
+					scrollPosition = 0;
+				}
+		
+				track.style.transform = `translateX(${scrollPosition}px)`;
 			}, { passive: true });
+		
+			container.addEventListener('touchend', () => {
+				isDragging = false; // العودة الفورية للحركة التلقائية بمجرد رفع الإصبع
+			});
 		}
 		
-		// تشغيل ميزة السحب اللمسي لكل من شريط الوجبات وشريط الزبائن فور تحميل الموقع
+		// تشغيل الميزة للشريطين معاً فور تحميل الصفحة وتحديد سرعة مناسبة لكل شريط
 		window.addEventListener('DOMContentLoaded', () => {
-			enableTouchSwipe('.slider-container'); // تفعيل لشريط صور الوجبات
-			enableTouchSwipe('.customers-slider-container'); // تفعيل لشريط الزبائن
+			// 1.2 هي السرعة التلقائية لشريط الوجبات
+			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
+			
+			// 0.8 هي السرعة التلقائية لشريط الزبائن (أبطأ قليلاً لسهولة القراءة)
+			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
 		});
     </script>
 </body>
