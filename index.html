@@ -804,6 +804,39 @@
 			transition: width 0.1s ease-out;
 		}
 		
+				/* ========================================================
+		تأثير اللمس الذكي المخصص لشاشات الجوال باللمس
+		======================================================== */
+		@media (max-width: 768px) {
+			/* إلغاء تأثير الـ Hover التقليدي المستمر على الجوال لمنع ثبات اللون والتكبير */
+			.slide-card:hover, .customer-rectangle:hover {
+				transform: none !important;
+				background-color: var(--bg-card) !important;
+				box-shadow: var(--shadow) !important;
+				border-color: var(--border-glow) !important;
+			}
+			.slide-card:hover .slide-info {
+				background-color: var(--bg-card) !important;
+			}
+			.slide-card:hover .slide-info h3 {
+				color: var(--text-main) !important;
+			}
+		
+			/* تأثير اللمسة النشطة الخاطفة (عند وضع الإصبع على الشاشة) */
+			.slide-card:active, .customer-rectangle:active {
+				transform: scale(0.97) !important; /* ارتداد خفيف للداخل يعطي إيحاء بالضغط الحقيقي */
+				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2) !important;
+				border-color: var(--primary) !important;
+			}
+			
+			/* وميض لوني سريع أثناء الضغط بالإصبع */
+			.slide-card:active .slide-info {
+				background-color: #c5e1a5 !important; /* اللون الأخضر الفستقي المختار Hex Code */
+			}
+			.slide-card:active .slide-info h3 {
+				color: #2e7d32 !important;
+			}
+		}
 		
     </style>
 </head>
