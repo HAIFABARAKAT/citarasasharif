@@ -10,37 +10,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* تعريف متغيرات الألوان المستوحاة من الصورة (الأخضر الفاتح والرمادي والأبيض) */
         :root {
-            --primary: #64bc26; /* الأخضر الفاتح الحيوي المتناسق مع ألوان الهوية في الصورة */
+            --primary: #64bc26; 
             --primary-glow: rgba(100, 188, 38, 0.3);
-            --bg-main: #f4f6f8; /* خلفية رمادية فاتحة ومريحة للعين */
-            --bg-card: #ffffff; /* خلفية بيضاء ناصعة للكروت والأقسام لتعطي مظهراً نظيفاً */
-            --text-main: #2c3e50; /* لون الخط الرئيسي داكن لسهولة القراءة والوضوح */
-            --text-muted: #7f8c8d; /* لون الخط الفرعي أو الباهت باللون الرمادي */
+            --bg-main: #f4f6f8; 
+            --bg-card: #ffffff; 
+            --text-main: #2c3e50; 
+            --text-muted: #7f8c8d; 
             --banner-gradient: linear-gradient(45deg, #64bc26, #84d642, #7f8c8d, #64bc26);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
             --border-glow: rgba(100, 188, 38, 0.15);
+            --header-bg: rgba(255, 255, 255, 0.75);
+            --neon-glow: none;
         }
 
-        /* الوضع المظلم التبديري الاختياري لتوفير تباين جذاب للزوار */
         [data-theme="dark"] {
             --primary: #64bc26;
-            --primary-glow: rgba(100, 188, 38, 0.4);
+            --primary-glow: rgba(100, 188, 38, 0.5);
             --bg-main: #1a1b1f;
             --bg-card: #24262b;
             --text-main: #ffffff;
             --text-muted: #a0a0ab;
             --banner-gradient: linear-gradient(45deg, #24262b, #64bc26, #1a1b1f, #24262b);
             --shadow: 0 15px 35px rgba(0,0,0,0.3);
-            --border-glow: rgba(255, 255, 255, 0.05);
+            --border-glow: rgba(100, 188, 38, 0.3);
+            --header-bg: rgba(36, 38, 43, 0.7);
+            --neon-glow: 0 0 15px rgba(100, 188, 38, 0.6), 0 0 30px rgba(100, 188, 38, 0.3);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background 0.4s ease, color 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+            transition: background 0.4s ease, color 0.4s ease, box-shadow 0.3s ease;
         }
 
         body {
@@ -50,28 +52,31 @@
             overflow-x: hidden;
         }
 
-        /* الهيدر العلوي */
+        /* 1. Glassmorphism Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
+            background: var(--header-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
             box-shadow: var(--shadow);
         }
 
+        /* 2. Neon Glow for Dark Mode inside Logo & Active Items */
         .logo {
             font-size: 24px;
             font-weight: 900;
             background: linear-gradient(45deg, var(--primary), #489314);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 15px var(--primary-glow);
+            text-shadow: var(--neon-glow);
+            transition: text-shadow 0.3s ease;
         }
 
         .nav-controls {
@@ -92,6 +97,7 @@
             align-items: center;
             gap: 8px;
             font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
         }
 
         .btn-magic:hover {
@@ -102,7 +108,6 @@
             color: white;
         }
 
-        /* البنر الرئيسي بتأثير التدرج اللوني واللمعة السحرية الفضية */
         .banner {
             position: relative;
             height: 380px;
@@ -123,7 +128,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* تأثير اللمعة الفضية الفخمة المتحركة بشكل تلقائي */
         .banner::before {
             content: '';
             position: absolute;
@@ -137,7 +141,6 @@
             100% { transform: translateX(100%); }
         }
 
-        /* عناوين الأقسام الرئيسية للموقع */
         .section-title {
             text-align: center;
             margin: 60px 0 30px;
@@ -156,7 +159,6 @@
             box-shadow: 0 0 10px var(--primary);
         }
 
-        /* سلايدر صور الوجبات الانسيابي المتحرك تلقائياً وتؤخذ الصور من مجلد pic */
         .slider-container {
             width: 100%;
             overflow: hidden;
@@ -164,33 +166,13 @@
             position: relative;
         }
 
-		/* شريط صور الوجبات - متوافق مع الاتجاهين */
 		.fluid-track {
 			display: flex;
-			width: calc(300px * 8);
-			animation: continuousScroll 25s linear infinite;
-		}
-		
-		.fluid-track:hover {
-			animation-play-state: paused;
-		}
-		
-		/* الحركة الافتراضية للغة الإنجليزية (من اليسار لليمين) */
-		@keyframes continuousScroll {
-			0% { transform: translateX(0); }
-			100% { transform: translateX(calc(-300px * 4)); }
-		}
-		
-		/* حل السحر للغة العربية: عندما يتحول اتجاه الموقع لـ RTL يتم عكس الحركة برمجياً */
-		[dir="rtl"] .fluid-track {
-			animation: continuousScrollRTL 25s linear infinite;
-		}
-		
-		@keyframes continuousScrollRTL {
-			0% { transform: translateX(0); }
-			100% { transform: translateX(calc(300px * 4)); }
+			width: max-content !important;
+			will-change: transform;
 		}
 
+        /* 3. Tilt Effect CSS properties initialization */
         .slide-card {
             width: 280px;
             height: 350px;
@@ -198,26 +180,66 @@
             background: var(--bg-card);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border-glow);
             position: relative;
+            cursor: pointer;
+			transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
-
-        .slide-card img {
-            width: 100%;
-            height: 75%;
-            object-fit: cover;
-        }
+		
+		.slide-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -150%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25) 50%, transparent);
+			transform: skewX(-20deg);
+			z-index: 2;
+			transition: none;
+		}
+		
+		.slide-card:hover {
+			border-color: var(--primary);
+			box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3); 
+		}
+		
+		.slide-card:hover::before {
+			left: 150%;
+			transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+		}
+		
+		.slide-card img {
+			width: 100%;
+			height: 70%;
+			object-fit: cover;
+			transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(20px);
+		}
+		
+		.slide-card:hover img {
+			transform: scale(1.05) translateZ(30px);
+		}
 
         .slide-info {
-            padding: 15px;
-            text-align: center;
-            font-weight: 700;
-        }
+			padding: 15px;
+			text-align: center;
+			background: var(--bg-card);
+			transition: background-color 0.4s ease; 
+            transform: translateZ(10px);
+		}
+		
+		.slide-card:hover .slide-info {
+			background-color: #c5e1a5 !important; 
+		}
+		
+		.slide-card:hover .slide-info h3 {
+			color: #33691e !important;
+		}
 
-        /* ========================================================
-           تعديل إضافي مصحح: الحاوية والأسهم الدوارة لقسم المنتجات
-           ======================================================== */
         .products-carousel-container {
             position: relative;
             max-width: 1280px;
@@ -237,12 +259,12 @@
             display: flex;
             gap: 20px;
             scroll-behavior: smooth;
-            /* عرض 4 كروت بشكل مثالي */
             transition: transform 0.5s ease-in-out;
         }
 
+        /* 3. Tilt Effect on Product Cards too */
         .product-card {
-            flex: 0 0 calc((100% - 60px) / 4); /* توزيع 4 مربعات بالضبط بالتساوي */
+            flex: 0 0 calc((100% - 60px) / 4);
             background: var(--bg-card);
             border: 1px solid var(--border-glow);
             border-radius: 20px;
@@ -254,26 +276,27 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            /* سلاسة التكبير والارتفاع والظل */
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+			transition: transform 0.1s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         @media (max-width: 1024px) {
-            .product-card { flex: 0 0 calc((100% - 40px) / 3); } /* 3 مربعات للشاشات المتوسطة */
+            .product-card { flex: 0 0 calc((100% - 40px) / 3); }
         }
         @media (max-width: 768px) {
-            .product-card { flex: 0 0 calc((100% - 20px) / 2); } /* مربعين للشاشات الصغيرة */
+            .product-card { flex: 0 0 calc((100% - 20px) / 2); }
         }
         @media (max-width: 480px) {
-            .product-card { flex: 0 0 100%; } /* مربع واحد للجوالات الصغيرة جداً */
+            .product-card { flex: 0 0 100%; }
         }
 
-        /* تصميم صور المنتجات من مجلد pic بدقة عالية */
         .product-card img {
             width: 100%;
             height: 220px;
             object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(15px);
         }
 
         .product-card-body {
@@ -283,9 +306,9 @@
             gap: 10px;
             background: var(--bg-card);
             transition: background-color 0.4s ease;
+            transform: translateZ(10px);
         }
 
-        /* إعداد طبقة اللمعة الفضية المخفية داخل كارت المنتج */
         .product-card::before {
             content: '';
             position: absolute;
@@ -296,18 +319,15 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent);
             transform: skewX(-20deg);
             z-index: 2;
-            transition: none;
         }
 
-        /* تأثير التمرير واللمس لكارت المنتج (تكبير بسيط + ظل عميق بهالة خضراء + تكبير داخلي للصورة) */
-        .product-card:hover, .product-card:active {
-            transform: translateY(-6px) scale(1.03);
+        .product-card:hover {
             border-color: var(--primary);
             box-shadow: 0 15px 30px rgba(100, 188, 38, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .product-card:hover img {
-            transform: scale(1.06);
+            transform: scale(1.06) translateZ(25px);
         }
 
         .product-card:hover .product-card-body {
@@ -318,8 +338,7 @@
             color: #33691e !important;
         }
 
-        /* إطلاق وميض اللمعة السريعة عند التمرير أو اللمس */
-        .product-card:hover::before, .product-card:active::before {
+        .product-card:hover::before {
             left: 150%;
             transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
         }
@@ -340,7 +359,6 @@
             color: #2e7d32 !important;
         }
 
-        /* تصميم أزرار الأسهم الدوارة الفريدة (يسار ويمين) لقسم المنتجات */
         .carousel-arrow {
             position: absolute;
             top: 50%;
@@ -358,6 +376,7 @@
             cursor: pointer;
             z-index: 10;
             box-shadow: var(--shadow);
+            transition: background 0.3s, color 0.3s, transform 0.3s;
         }
 
         .carousel-arrow:hover {
@@ -367,15 +386,12 @@
             box-shadow: 0 5px 15px var(--primary-glow);
         }
 
-        /* تحديد اتجاه ومكان الأسهم بدقة متوافقة مع قلب اتجاه الصفحة التلقائي */
         .arrow-left { left: 5px; }
         .arrow-right { right: 5px; }
 
-        /* حل سحري لقلب الأسهم عند تحول الاتجاه للغة العربية تلقائياً */
         [dir="rtl"] .arrow-left { left: auto; right: 5px; transform: translateY(-50%) rotate(180deg); }
         [dir="rtl"] .arrow-right { right: auto; left: 5px; transform: translateY(-50%) rotate(180deg); }
 
-        /* أقسام المنيو الدائرية المعتمدة بالكامل على الصور من مجلد pic */
         .menu-circles {
             display: flex;
             justify-content: center;
@@ -389,6 +405,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
         .circle-img-wrapper {
@@ -401,6 +418,7 @@
             box-shadow: var(--shadow);
             margin-bottom: 15px;
             position: relative;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         .circle-img-wrapper img {
@@ -421,7 +439,6 @@
             margin-top: 5px;
         }
 
-        /* قسم الإحصائيات والزيارات اليومية للعملاء */
         .stats-section {
             background: var(--bg-card);
             padding: 60px 8%;
@@ -452,7 +469,6 @@
             margin-bottom: 5px;
         }
 
-        /* شبكة معلومات العمل والأسئلة الاستفسارية الشائعة */
         .info-faq-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -518,7 +534,6 @@
             transition: all 0.3s ease;
         }
 
-        /* نموذج إرسال وتلقي الطلبات الذكي */
         .order-section {
             padding: 60px 8%;
             max-width: 800px;
@@ -578,6 +593,7 @@
             cursor: pointer;
             font-weight: 700;
             user-select: none;
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .checkbox-btn input {
@@ -604,6 +620,7 @@
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 10px 20px var(--primary-glow);
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
         }
 
         .submit-btn:hover {
@@ -612,7 +629,6 @@
             background: #489314;
         }
 
-        /* قسم شركاء الثقة المطوّر: شبكة مربعات تفاعلية تتغير ألوانها بسلاسة للأخضر الفاتح عند التمرير بالماوس أو اللمس بالأصبع */
         .partners-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -635,9 +651,9 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
+            transition: transform 0.3s, background 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
-        /* تأثير حركي خلاب عند تمرير الماوس أو اللمس بالأصبع على الجوال */
         .partner-box:hover, .partner-box:active {
             background: var(--primary);
             color: white;
@@ -649,13 +665,13 @@
         .partner-box i {
             font-size: 32px;
             color: var(--primary);
+            transition: color 0.3s;
         }
 
         .partner-box:hover i, .partner-box:active i {
             color: white;
         }
 
-        /* أيقونة تطبيق الواتساب العائمة للمحادثات الفورية */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -672,13 +688,47 @@
             box-shadow: 0 10px 25px rgba(37, 211, 102, 0.5);
             z-index: 1000;
             text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .whatsapp-float:hover {
             transform: scale(1.1) rotate(15deg);
         }
 
-        /* تذييل الصفحة الفوتر المدمج */
+        /* 5. Smart Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.3s ease, background-color 0.3s ease;
+            border: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: #489314;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--primary-glow);
+        }
+
         footer {
             background: var(--bg-card);
             padding: 40px 8%;
@@ -692,47 +742,22 @@
             margin-bottom: 15px;
         }
 
-        /* كلاسات التحكم اللغوي لإخفاء الفئات غير النشطة */
         [lang="en"] .lang-ar { display: none !important; }
         [lang="ar"] .lang-en { display: none !important; }
 		
-				/* ========================================================
-		قسم الزبائن والتجارب السابقة - شريط متحرك انسيابي
-		======================================================== */
 		.customers-slider-container {
 			width: 100%;
 			overflow: hidden;
 			padding: 20px 0;
 			position: relative;
-			background: rgba(139, 195, 74, 0.05); /* خلفية خفيفة جداً باللون الأخضر الفاتح */
+			background: rgba(139, 195, 74, 0.05); 
 			margin-bottom: 20px;
 		}
 		
-		/* شريط الزبائن - متوافق مع الاتجاهين */
 		.customers-track {
 			display: flex;
-			width: calc(220px * 16); 
-			animation: scrollCustomers 30s linear infinite;
-		}
-		
-		.customers-track:hover {
-			animation-play-state: paused;
-		}
-		
-		/* الحركة الافتراضية للغة الإنجليزية */
-		@keyframes scrollCustomers {
-			0% { transform: translateX(0); }
-			100% { transform: translateX(calc(-220px * 8)); }
-		}
-		
-		/* حل السحر للغة العربية: عكس اتجاه حركة شريط الزبائن عند قلب اللغة */
-		[dir="rtl"] .customers-track {
-			animation: scrollCustomersRTL 30s linear infinite;
-		}
-		
-		@keyframes scrollCustomersRTL {
-			0% { transform: translateX(0); }
-			100% { transform: translateX(calc(220px * 8)); }
+			width: max-content !important;
+			will-change: transform;
 		}
 		
 		.customer-rectangle {
@@ -745,153 +770,15 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			box-shadow: var(--shadow);
+			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
 			flex-shrink: 0;
 			border-left: 4px solid var(--primary);
-		}
-		
-		.customer-rectangle span {
-			font-size: 16px;
-			font-weight: 700;
-			color: var(--text-main);
-		}
-		
-		/* إجبار شريط صور الوجبات على التوقف عند مرور الماوس في وضع اللغة العربية */
-		[dir="rtl"] .fluid-track:hover {
-			animation-play-state: paused !important;
-		}
-		
-		/* إجبار شريط الزبائن على التوقف عند مرور الماوس في وضع اللغة العربية */
-		[dir="rtl"] .customers-track:hover {
-			animation-play-state: paused !important;
-		}
-		
-		/* ========================================================
-   تأثيرات اللمسة السحرية واللمعان لكروت الوجبات (Signature Meals)
-   ======================================================== */
-
-		/* الحالة الافتراضية للكارت */
-		.slide-card {
-			width: 280px;
-			height: 350px;
-			margin: 0 10px;
-			background: var(--bg-card);
-			border-radius: 20px;
-			overflow: hidden;
-			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* ظل افتراضي ناعم */
-			border: 1px solid var(--border-glow);
-			position: relative;
-			cursor: pointer;
-			
-			/* ضمان انسيابية تامة للحركة عند التكبير أو التغيير */
-			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-						box-shadow 0.4s ease, 
-						border-color 0.4s ease;
-		}
-		
-		/* تجهيز طبقة اللمعة المخفية بداخل الكارت */
-		.slide-card::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: -150%;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(
-				90deg, 
-				transparent, 
-				rgba(255, 255, 255, 0.25) 50%, 
-				transparent
-			);
-			transform: skewX(-20deg);
-			z-index: 2;
-			transition: none;
-		}
-		
-		/* تأثير مرور الماوس أو اللمس بالأصبع (Hover State) */
-		.slide-card:hover {
-			transform: translateY(-8px) scale(1.03); /* تكبير بسيط وارتفاع طفيف لأعلى */
-			border-color: var(--primary); /* تحول الحواف إلى اللون الأخضر الفاتح */
-			
-			/* ظل ثلاثي الأبعاد عميق يعطي إيحاءً بالارتفاع (تأثير الهالة الخضراء الخفيفة) */
-			box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 
-						0 15px 25px rgba(0, 0, 0, 0.3); 
-		}
-		
-		/* إطلاق تأثير وميض اللمعة الخاطف عند تحريك الماوس فوق الكارت */
-		.slide-card:hover::before {
-			left: 150%;
-			transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-		}
-		
-		/* حركة إضافية للصورة بالداخل لإعطاء عمق بصري */
-		.slide-card img {
-			width: 100%;
-			height: 70%;
-			object-fit: cover;
-			transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-		}
-		
-		.slide-card:hover img {
-			transform: scale(1.05); /* تقريب خفيف جداً للصورة عند التمرير */
-		}
-		
-		/* ========================================================
-   تحديث خلفية صندوق اسم الوجبة السفلي عند تمرير الماوس
-   ======================================================== */
-
-		/* الحالة الافتراضية للجزء السفلي الذي يحتوي على النص */
-		.slide-info {
-			padding: 15px;
-			text-align: center;
-			background: var(--bg-card); /* الخلفية الرمادية أو البيضاء الافتراضية */
-			
-			/* ضمان انتقال لوني ناعم وانسيابي للغاية عند مرور الماوس */
-			transition: background-color 0.4s ease; 
-		}
-		
-		/* التأثير السحري: عند تمرير الماوس على الكارت بأكمله، تتغير خلفية النص للأخضر الفاتح الناعم */
-		.slide-card:hover .slide-info {
-			/* درجة أخضر فاتح مشرق، ناعمة ومريحة للعين ومناسبة للخلفيات */
-			background-color: #c5e1a5 !important; 
-		}
-		
-		/* لتنسيق لون الخط ليصبح متناسقاً وواضحاً جداً فوق الخلفية الخضراء الفاتحة الجديدة */
-		.slide-card:hover .slide-info h3 {
-			color: #33691e !important;
-			text-shadow: none;
-		}
-		
-		/* ========================================================
-   تأثيرات اللمسة السحرية واللمعان لكروت الزبائن السابقة
-   ======================================================== */
-
-		/* الحالة الافتراضية لمستطيل الزبون */
-		.customer-rectangle {
-			width: 200px;
-			height: 70px;
-			margin: 0 10px;
-			background: var(--bg-card);
-			border: 1px solid var(--border-glow);
-			border-radius: 12px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* ظل افتراضي ناعم */
-			flex-shrink: 0;
-			border-left: 4px solid var(--primary); /* خط أخضر فاتح جانبي */
 			position: relative;
 			overflow: hidden;
 			cursor: pointer;
-			
-			/* ضمان انسيابية تامة للحركة والتحول اللوني */
-			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-						box-shadow 0.4s ease, 
-						background-color 0.4s ease,
-						border-color 0.4s ease;
+			transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
 		}
 		
-		/* تجهيز طبقة وميض اللمعة السحرية بداخل مستطيل الزبون */
 		.customer-rectangle::before {
 			content: '';
 			position: absolute;
@@ -899,41 +786,28 @@
 			left: -150%;
 			width: 100%;
 			height: 100%;
-			background: linear-gradient(
-				90deg, 
-				transparent, 
-				rgba(255, 255, 255, 0.3) 50%, 
-				transparent
-			);
+			background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3) 50%, transparent);
 			transform: skewX(-20deg);
 			z-index: 2;
-			transition: none;
 		}
 		
-		/* تأثير مرور الماوس أو اللمس بالأصبع (Hover State) لقائمة الزبائن */
 		.customer-rectangle:hover {
-			transform: scale(1.05); /* تكبير بسيط ومرن بنسبة 5% */
+			transform: scale(1.05); 
 			border-color: var(--primary);
 			background-color: #c5e1a5 !important; 
-			box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25), 
-						0 8px 15px rgba(0, 0, 0, 0.2);
+			box-shadow: 0 12px 25px rgba(139, 195, 74, 0.25), 0 8px 15px rgba(0, 0, 0, 0.2);
 		}
 		
-		/* إطلاق وميض اللمعة الخاطف ليعبر فوق المستطيل عند التمرير */
 		.customer-rectangle:hover::before {
 			left: 150%;
 			transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
 		}
 		
-		/* تنسيق خط اسم الزبون ليتحول للون داكن واضح ومريح جداً فوق الخلفية الجديدة */
 		.customer-rectangle:hover span {
-			color: #2e7d32 !important; /* لون أخضر عشبي داكن */
+			color: #2e7d32 !important; 
 			transition: color 0.3s ease;
 		}
 		
-		/* ========================================================
-   شريط تقدم التمرير الذكي والمصحح للشاشات والجوالات
-   ======================================================== */
 		#scrollProgressBar {
 			position: fixed;
 			top: 0;
@@ -945,21 +819,25 @@
 			box-shadow: 0 1px 5px var(--primary-glow);
 			transition: width 0.1s ease-out;
 		}
-		
-		.fluid-track, .customers-track {
-			display: flex;
-			width: max-content !important;
-			will-change: transform;
-		}
+
+        /* 4. Scroll Reveal Animation initial states */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
 		
     </style>
 </head>
 <body>
 
-	<!-- شريط تقدم القراءة والنزول الرفيع -->
 	<div id="scrollProgressBar"></div>
 
-    <!-- شريط التنقل والتحكم الرئيسي بالثيم واللغات -->
     <header>
         <div class="logo">Cita Rasa Sharif</div>
         <div class="nav-controls">
@@ -973,7 +851,6 @@
         </div>
     </header>
 
-    <!-- البنر الإعلاني -->
     <section class="banner">
         <div class="banner-content">
             <h1 class="lang-ar">مطعم سيتا راسا شريف</h1>
@@ -983,153 +860,152 @@
         </div>
     </section>
 
-    <!-- قسم صور الوجبات الانسيابي التلقائي -->
-    <h2 class="section-title">
-        <span class="lang-ar">وجباتنا المميزة</span>
-        <span class="lang-en">Our Signature Meals</span>
-    </h2>
-    <div class="slider-container">
-        <div class="fluid-track">
-            <div class="slide-card">
-                <img src="pic/shawarma.jpg" alt="Shawarma">
-                <div class="slide-info">
-                    <span class="lang-ar">شاورما ملكية</span>
-                    <span class="lang-en">Royal Shawarma</span>
+    <!-- Adding reveal class for scroll effect -->
+    <div class="reveal">
+        <h2 class="section-title">
+            <span class="lang-ar">وجباتنا المميزة</span>
+            <span class="lang-en">Our Signature Meals</span>
+        </h2>
+        <div class="slider-container">
+            <div class="fluid-track">
+                <div class="slide-card tilt-element">
+                    <img src="pic/shawarma.jpg" alt="Shawarma">
+                    <div class="slide-info">
+                        <span class="lang-ar">شاورما ملكية</span>
+                        <span class="lang-en">Royal Shawarma</span>
+                    </div>
                 </div>
-            </div>
-            <div class="slide-card">
-                <img src="pic/mandi.jpg" alt="Chicken Mandi">
-                <div class="slide-info">
-                    <span class="lang-ar">مندي دجاج فاخر</span>
-                    <span class="lang-en">Premium Chicken Mandi</span>
+                <div class="slide-card tilt-element">
+                    <img src="pic/mandi.jpg" alt="Chicken Mandi">
+                    <div class="slide-info">
+                        <span class="lang-ar">مندي دجاج فاخر</span>
+                        <span class="lang-en">Premium Chicken Mandi</span>
+                    </div>
                 </div>
-            </div>
-            <div class="slide-card">
-                <img src="pic/strips.jpg" alt="Chicken Strips">
-                <div class="slide-info">
-                    <span class="lang-ar">ستربس دجاج مقرمش</span>
-                    <span class="lang-en">Crispy Chicken Strips</span>
+                <div class="slide-card tilt-element">
+                    <img src="pic/strips.jpg" alt="Chicken Strips">
+                    <div class="slide-info">
+                        <span class="lang-ar">ستربس دجاج مقرمش</span>
+                        <span class="lang-en">Crispy Chicken Strips</span>
+                    </div>
                 </div>
-            </div>
-            <div class="slide-card">
-                <img src="pic/drinks.jpg" alt="Drinks">
-                <div class="slide-info">
-                    <span class="lang-ar">مشروبات منعشة</span>
-                    <span class="lang-en">Refreshing Drinks</span>
+                <div class="slide-card tilt-element">
+                    <img src="pic/drinks.jpg" alt="Drinks">
+                    <div class="slide-info">
+                        <span class="lang-ar">مشروبات منعشة</span>
+                        <span class="lang-en">Refreshing Drinks</span>
+                    </div>
                 </div>
+                <div class="slide-card tilt-element"><img src="pic/shawarma.jpg"><div class="slide-info"><span class="lang-ar">شاورما ملكية</span><span class="lang-en">Royal Shawarma</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/mandi.jpg"><div class="slide-info"><span class="lang-ar">مندي دجاج فاخر</span><span class="lang-en">Premium Chicken Mandi</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/strips.jpg"><div class="slide-info"><span class="lang-ar">ستربس دجاج مقرمش</span><span class="lang-en">Crispy Chicken Strips</span></div></div>
+                <div class="slide-card tilt-element"><img src="pic/drinks.jpg"><div class="slide-info"><span class="lang-ar">مشروبات منعشة</span><span class="lang-en">Refreshing Drinks</span></div></div>
             </div>
-            <div class="slide-card"><img src="pic/shawarma.jpg"><div class="slide-info"><span class="lang-ar">شاورما ملكية</span><span class="lang-en">Royal Shawarma</span></div></div>
-            <div class="slide-card"><img src="pic/mandi.jpg"><div class="slide-info"><span class="lang-ar">مندي دجاج فاخر</span><span class="lang-en">Premium Chicken Mandi</span></div></div>
-            <div class="slide-card"><img src="pic/strips.jpg"><div class="slide-info"><span class="lang-ar">ستربس دجاج مقرمش</span><span class="lang-en">Crispy Chicken Strips</span></div></div>
-            <div class="slide-card"><img src="pic/drinks.jpg"><div class="slide-info"><span class="lang-ar">مشروبات منعشة</span><span class="lang-en">Refreshing Drinks</span></div></div>
         </div>
     </div>
 
-    <!-- ========================================================
-       تعديل إضافي مصحح: كود قسم المنتجات المتطور بـ 4 كروت وأسهم تحريك
-       ======================================================== -->
-    <h2 class="section-title">
-        <span class="lang-ar">منتجاتنا الخاصة</span>
-        <span class="lang-en">Our Special Products</span>
-    </h2>
-    <div class="products-carousel-container">
-        <!-- زر السهم الأيسر -->
-        <button class="carousel-arrow arrow-left" onclick="slideProducts('left')" aria-label="Previous">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        
-        <div class="products-carousel-wrapper">
-            <div class="products-carousel-track" id="productsTrack">
-                
-                <div class="product-card">
-                    <img src="pic/Mixmas.jpg" alt="Special Spice Mix">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">خلطة بهارات</h3>
-                        <h3 class="lang-en">Special Spice Mix</h3>
-                        <div class="product-price">100 RM</div>
+    <div class="reveal">
+        <h2 class="section-title">
+            <span class="lang-ar">منتجاتنا الخاصة</span>
+            <span class="lang-en">Our Special Products</span>
+        </h2>
+        <div class="products-carousel-container">
+            <button class="carousel-arrow arrow-left" onclick="slideProducts('left')" aria-label="Previous">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="products-carousel-wrapper">
+                <div class="products-carousel-track" id="productsTrack">
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Mixmas.jpg" alt="Special Spice Mix">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">خلطة بهارات</h3>
+                            <h3 class="lang-en">Special Spice Mix</h3>
+                            <div class="product-price">100 RM</div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="pic/Yellowmas.jpg" alt="Biryani Spices">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">بهار برياني</h3>
-                        <h3 class="lang-en">Biryani Spices</h3>
-                        <div class="product-price">100 RM</div>
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Yellowmas.jpg" alt="Biryani Spices">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">بهار برياني</h3>
+                            <h3 class="lang-en">Biryani Spices</h3>
+                            <div class="product-price">100 RM</div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="pic/Redmas.jpg" alt="BBQ Spices">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">بهار مشاوي</h3>
-                        <h3 class="lang-en">BBQ Spices</h3>
-                        <div class="product-price">100 RM</div>
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Redmas.jpg" alt="BBQ Spices">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">بهار مشاوي</h3>
+                            <h3 class="lang-en">BBQ Spices</h3>
+                            <div class="product-price">100 RM</div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="pic/Blackh.jpg" alt="Royal Honey">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">عسل ملكي</h3>
-                        <h3 class="lang-en">Royal Honey</h3>
-                        <div class="product-price">200 RM</div>
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Blackh.jpg" alt="Royal Honey">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">عسل ملكي</h3>
+                            <h3 class="lang-en">Royal Honey</h3>
+                            <div class="product-price">200 RM</div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="pic/Whiteh.jpg" alt="Black Royal Honey">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">عسل ملكي أسود</h3>
-                        <h3 class="lang-en">Black Royal Honey</h3>
-                        <div class="product-price">500 RM</div>
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Whiteh.jpg" alt="Black Royal Honey">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">عسل ملكي أسود</h3>
+                            <h3 class="lang-en">Black Royal Honey</h3>
+                            <div class="product-price">500 RM</div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="product-card">
-                    <img src="pic/Yellowh.jpg" alt="White Royal Honey">
-                    <div class="product-card-body">
-                        <h3 class="lang-ar">عسل ملكي أبيض</h3>
-                        <h3 class="lang-en">White Royal Honey</h3>
-                        <div class="product-price">500 RM</div>
+                    
+                    <div class="product-card tilt-element">
+                        <img src="pic/Yellowh.jpg" alt="White Royal Honey">
+                        <div class="product-card-body">
+                            <h3 class="lang-ar">عسل ملكي أبيض</h3>
+                            <h3 class="lang-en">White Royal Honey</h3>
+                            <div class="product-price">500 RM</div>
+                        </div>
                     </div>
+                    
                 </div>
-                
+            </div>
+
+            <button class="carousel-arrow arrow-right" onclick="slideProducts('right')" aria-label="Next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="reveal">
+        <h2 class="section-title">
+            <span class="lang-ar">أقسام المنيو</span>
+            <span class="lang-en">Menu Categories</span>
+        </h2>
+        <div class="menu-circles">
+            <div class="circle-item">
+                <div class="circle-img-wrapper"><img src="pic/cat-shawarma.jpg" alt="Shawarma Category"></div>
+                <span class="lang-ar">شاورما</span><span class="lang-en">Shawarma</span>
+            </div>
+            <div class="circle-item">
+                <div class="circle-img-wrapper"><img src="pic/cat-mandi.jpg" alt="Chicken Mandi Category"></div>
+                <span class="lang-ar">مندي دجاج</span><span class="lang-en">Chicken Mandi</span>
+            </div>
+            <div class="circle-item">
+                <div class="circle-img-wrapper"><img src="pic/cat-strips.jpg" alt="Chicken Strips Category"></div>
+                <span class="lang-ar">ستربس دجاج</span><span class="lang-en">Chicken Strips</span>
+            </div>
+            <div class="circle-item">
+                <div class="circle-img-wrapper"><img src="pic/cat-drinks.jpg" alt="Drinks Category"></div>
+                <span class="lang-ar">مشروبات</span><span class="lang-en">Drinks</span>
             </div>
         </div>
-
-        <!-- زر السهم الأيمن -->
-        <button class="carousel-arrow arrow-right" onclick="slideProducts('right')" aria-label="Next">
-            <i class="fas fa-chevron-right"></i>
-        </button>
     </div>
 
-    <!-- أقسام المنيو الدائرية -->
-    <h2 class="section-title">
-        <span class="lang-ar">أقسام المنيو</span>
-        <span class="lang-en">Menu Categories</span>
-    </h2>
-    <div class="menu-circles">
-        <div class="circle-item">
-            <div class="circle-img-wrapper"><img src="pic/cat-shawarma.jpg" alt="Shawarma Category"></div>
-            <span class="lang-ar">شاورما</span><span class="lang-en">Shawarma</span>
-        </div>
-        <div class="circle-item">
-            <div class="circle-img-wrapper"><img src="pic/cat-mandi.jpg" alt="Chicken Mandi Category"></div>
-            <span class="lang-ar">مندي دجاج</span><span class="lang-en">Chicken Mandi</span>
-        </div>
-        <div class="circle-item">
-            <div class="circle-img-wrapper"><img src="pic/cat-strips.jpg" alt="Chicken Strips Category"></div>
-            <span class="lang-ar">ستربس دجاج</span><span class="lang-en">Chicken Strips</span>
-        </div>
-        <div class="circle-item">
-            <div class="circle-img-wrapper"><img src="pic/cat-drinks.jpg" alt="Drinks Category"></div>
-            <span class="lang-ar">مشروبات</span><span class="lang-en">Drinks</span>
-        </div>
-    </div>
-
-    <!-- قسم الإحصائيات -->
-    <section class="stats-section">
+    <section class="stats-section reveal">
         <div class="stat-box">
             <i class="fas fa-users"></i>
             <h3 id="visitCounter">1,482</h3>
@@ -1144,8 +1020,7 @@
         </div>
     </section>
 
-    <!-- معلومات وساعات عمل المطعم وقائمة الأسئلة الشائعة للزوار -->
-    <section class="info-faq-grid">
+    <section class="info-faq-grid reveal">
         <div class="info-card">
             <h2 class="lang-ar"><i class="fas fa-info-circle"></i> معلومات المطعم</h2>
             <h2 class="lang-en"><i class="fas fa-info-circle"></i> Restaurant Info</h2>
@@ -1181,8 +1056,7 @@
         </div>
     </section>
 
-    <!-- فورم استقبال طلبات المناسبات والحفلات -->
-    <section class="order-section">
+    <section class="order-section reveal">
         <h2 class="section-title">
             <span class="lang-ar">طلب الحفلات والمناسبات</span>
             <span class="lang-en">Events & Catering Orders</span>
@@ -1245,76 +1119,80 @@
         </form>
     </section>
 	
-	<!-- قسم تجارب الزبائن السابقة -->
-	<h2 class="section-title">
-		<span class="lang-en">Past Customers & Clients</span>
-		<span class="lang-ar">تجارب وزبائن سابقة</span>
-	</h2>
+    <div class="reveal">
+        <h2 class="section-title">
+            <span class="lang-en">Past Customers & Clients</span>
+            <span class="lang-ar">تجارب وزبائن سابقة</span>
+        </h2>
+        
+        <div class="customers-slider-container">
+            <div class="customers-track">
+                <div class="customer-rectangle"><span>School</span></div>
+                <div class="customer-rectangle"><span>Tire company</span></div>
+                <div class="customer-rectangle"><span>Uitm</span></div>
+                <div class="customer-rectangle"><span>Family Ahmed</span></div>
+                <div class="customer-rectangle"><span>Expert Print</span></div>
+                <div class="customer-rectangle"><span>Coway</span></div>
+                <div class="customer-rectangle"><span>Aquila</span></div>
+                <div class="customer-rectangle"><span>Management</span></div>
+                
+                <div class="customer-rectangle"><span>School</span></div>
+                <div class="customer-rectangle"><span>Tire company</span></div>
+                <div class="customer-rectangle"><span>Uitm</span></div>
+                <div class="customer-rectangle"><span>Family Ahmed</span></div>
+                <div class="customer-rectangle"><span>Expert Print</span></div>
+                <div class="customer-rectangle"><span>Coway</span></div>
+                <div class="customer-rectangle"><span>Aquila</span></div>
+                <div class="customer-rectangle"><span>Management</span></div>
+            </div>
+        </div>
+    </div>
 	
-	<div class="customers-slider-container">
-		<div class="customers-track">
-			<div class="customer-rectangle"><span>School</span></div>
-			<div class="customer-rectangle"><span>Tire company</span></div>
-			<div class="customer-rectangle"><span>Uitm</span></div>
-			<div class="customer-rectangle"><span>Family Ahmed</span></div>
-			<div class="customer-rectangle"><span>Expert Print</span></div>
-			<div class="customer-rectangle"><span>Coway</span></div>
-			<div class="customer-rectangle"><span>Aquila</span></div>
-			<div class="customer-rectangle"><span>Management</span></div>
-			
-			<div class="customer-rectangle"><span>School</span></div>
-			<div class="customer-rectangle"><span>Tire company</span></div>
-			<div class="customer-rectangle"><span>Uitm</span></div>
-			<div class="customer-rectangle"><span>Family Ahmed</span></div>
-			<div class="customer-rectangle"><span>Expert Print</span></div>
-			<div class="customer-rectangle"><span>Coway</span></div>
-			<div class="customer-rectangle"><span>Aquila</span></div>
-			<div class="customer-rectangle"><span>Management</span></div>
-		</div>
-	</div>
-	
-    <!-- قسم شركاء الثقة المطور كلياً -->
-    <h2 class="section-title">
-        <span class="lang-ar">شركاء الثقة</span>
-        <span class="lang-en">Trusted Partners</span>
-    </h2>
-    <div class="partners-grid">
-        <div class="partner-box">
-            <i class="fas fa-handshake"></i>
-            <span class="lang-ar">شركة التموين المتميز</span>
-            <span class="lang-en">Premium Catering Co.</span>
-        </div>
-        <div class="partner-box">
-            <i class="fas fa-award"></i>
-            <span class="lang-ar">مؤسسة الجودة العالمية</span>
-            <span class="lang-en">Global Quality Est.</span>
-        </div>
-        <div class="partner-box">
-            <i class="fas fa-utensils"></i>
-            <span class="lang-ar">شريك المذاق الرفيع</span>
-            <span class="lang-en">Gourmet Taste Partner</span>
-        </div>
-        <div class="partner-box">
-            <i class="fas fa-star"></i>
-            <span class="lang-ar">الخيار الأول للثقة</span>
-            <span class="lang-en">First Choice Trust</span>
+    <div class="reveal">
+        <h2 class="section-title">
+            <span class="lang-ar">شركاء الثقة</span>
+            <span class="lang-en">Trusted Partners</span>
+        </h2>
+        <div class="partners-grid">
+            <div class="partner-box">
+                <i class="fas fa-handshake"></i>
+                <span class="lang-ar">شركة التموين المتميز</span>
+                <span class="lang-en">Premium Catering Co.</span>
+            </div>
+            <div class="partner-box">
+                <i class="fas fa-award"></i>
+                <span class="lang-ar">مؤسسة الجودة العالمية</span>
+                <span class="lang-en">Global Quality Est.</span>
+            </div>
+            <div class="partner-box">
+                <i class="fas fa-utensils"></i>
+                <span class="lang-ar">شريك المذاق الرفيع</span>
+                <span class="lang-en">Gourmet Taste Partner</span>
+            </div>
+            <div class="partner-box">
+                <i class="fas fa-star"></i>
+                <span class="lang-ar">الخيار الأول للثقة</span>
+                <span class="lang-en">First Choice Trust</span>
+            </div>
         </div>
     </div>
 
-    <!-- زر الاتصال والمحادثة السريعة العائم عبر تطبيق واتساب -->
     <a href="https://wa.me/601163514552" class="whatsapp-float" target="_blank" aria-label="WhatsApp Support">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- فوتر الموقع المحتوي على اسم المطعم والحقوق -->
+    <!-- 5. Back to top trigger button -->
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()" aria-label="Back to Top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <footer>
         <h2>Cita Rasa Sharif</h2>
-        <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا راسا شريف. لمسات سحرية بكل وجبة.</p>
+        <p class="lang-ar">© 2026 جميع الحقوق محفوظة لمطعم سيتا rasa شريف. لمسات سحرية بكل وجبة.</p>
         <p class="lang-en">© 2026 All Rights Reserved for Cita Rasa Sharif. Magical touches in every meal.</p>
     </footer>
 
     <script>
-        // دالة تحويل اللغات للتحكم الفوري بالاتجاهات والنصوص
         function toggleLanguage() {
             const currentLang = document.documentElement.getAttribute('lang');
             if (currentLang === 'ar') {
@@ -1326,13 +1204,11 @@
             }
 			document.querySelectorAll('.fluid-track, .customers-track').forEach(t => t.style.transform = 'translateX(0px)');
             
-            // إعادة تصفير حاوية المنتجات عند قلب اللغة لمنع اختلال المسافات
             currentProductIndex = 0;
             const track = document.getElementById('productsTrack');
             if(track) track.style.transform = 'translateX(0px)';
         }
 
-        // دالة التبديل اللوني لثيمات الواجهة (شمس / قمر)
         function toggleTheme() {
             const body = document.body;
             const themeBtn = document.getElementById('themeBtn').querySelector('i');
@@ -1345,7 +1221,6 @@
             }
         }
 
-        // دالة الأكورديون الذكي لقسم الأسئلة الاستفسارية الشائعة
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const icon = element.querySelector('i');
@@ -1360,7 +1235,6 @@
             }
         }
 
-        // كود التحكم البرمجي بمجرد تحميل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('deliveryDate');
             const today = new Date();
@@ -1374,15 +1248,16 @@
                 dateInput.value = `${year}-${month}-${day}`;
             }
             
-            // عداد الزيارات
             let count = parseInt(document.getElementById('visitCounter').innerText.replace(/,/g, ''));
             setInterval(() => {
                 count += Math.floor(Math.random() * 3) + 1;
                 document.getElementById('visitCounter').innerText = count.toLocaleString();
             }, 4000);
+
+            // Trigger reveal on load
+            reveal();
         });
 		
-		// دالة لتوليد أوقات العمل ديناميكياً
 		function populateBusinessHours() {
 			const timeSelect = document.getElementById('deliveryTimeSelect');
 			if (!timeSelect) return;
@@ -1427,7 +1302,7 @@
 			populateBusinessHours();
 		};
 		
-		// شريط التقدم العلوي
+        // 4. Scroll Reveal Logic & 5. Back to top visibility
 		window.addEventListener('scroll', () => {
 			const progressBar = document.getElementById('scrollProgressBar');
 			if (progressBar) {
@@ -1436,18 +1311,45 @@
 				const scrolled = (winScroll / height) * 100;
 				progressBar.style.width = scrolled + '%';
 			}
+
+            reveal();
+
+            // Back to Top button show/hide
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            if (backToTopBtn) {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            }
 		});
+
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                const elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
 		
-        // ========================================================
-        // وظيفة جافاسكربت الجديدة والمصححة للتحكم بأسهم السلايدر للمنتجات
-        // ========================================================
         let currentProductIndex = 0;
         function slideProducts(direction) {
             const track = document.getElementById('productsTrack');
             const cards = document.querySelectorAll('.product-card');
             if (!track || cards.length === 0) return;
 
-            // حساب العدد الأقصى للحركات بناءً على الشاشة (في الديسكتوب يظهر 4، والمجموع 6 كروت، يعني الحركات المتاحة = 6 - 4 = 2)
             let cardsToShow = 4;
             if (window.innerWidth <= 480) cardsToShow = 1;
             else if (window.innerWidth <= 768) cardsToShow = 2;
@@ -1462,12 +1364,10 @@
                 if (currentProductIndex > 0) currentProductIndex--;
             }
 
-            // حساب المسافة بدقة بناءً على عرض الكارت والGap الفاصل
             const cardWidth = cards[0].getBoundingClientRect().width;
             const gap = 20; 
             let moveDistance = currentProductIndex * (cardWidth + gap);
 
-            // تطبيق الإزاحة مع مراعاة اتجاه اللغة العربية والانجليزية لمنع الاختفاء
             if (isRTL) {
                 track.style.transform = `translateX(${moveDistance}px)`;
             } else {
@@ -1534,7 +1434,32 @@
 		window.addEventListener('DOMContentLoaded', () => {
 			setupAutoScrollWithSwipe('.slider-container', '.fluid-track', 1.2);
 			setupAutoScrollWithSwipe('.customers-slider-container', '.customers-track', 0.8);
+            setupTiltEffect();
 		});
+
+        /* 3. Tilt Effect Functionality */
+        function setupTiltEffect() {
+            const elements = document.querySelectorAll('.tilt-element');
+            elements.forEach(element => {
+                element.addEventListener('mousemove', (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const xc = rect.width / 2;
+                    const yc = rect.height / 2;
+                    
+                    const angleX = (yc - y) / 15; 
+                    const angleY = (x - xc) / 15;
+                    
+                    element.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px) scale(1.03)`;
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+                });
+            });
+        }
 		
     </script>
 </body>
