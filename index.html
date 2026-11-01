@@ -1262,28 +1262,45 @@
 			let animationFrameId;
 		
 			// دالة الحركة التلقائية المستمرة
+// استبدل دالة animate القديمة بهذا الكود الدائري المصحح بالكامل:
 			function animate() {
 				if (!isDragging) {
-					// فحص اتجاه اللغة الحالي للموقع تلقائياً
 					const isRTL = document.documentElement.getAttribute('dir') === 'rtl';
 					
-					// تحريك الشريط بناءً على اتجاه اللغة
+					// 1. تحريك المسافة بمقدار السرعة المحددة حسب اتجاه اللغة
 					if (isRTL) {
 						scrollPosition += speed;
 					} else {
 						scrollPosition -= speed;
 					}
 					
-					// حساب نصف العرض الإجمالي للشريط المكرر لإعادة التدوير اللانهائي
-					const halfWidth = track.scrollWidth / 2;
-					
-					if (Math.abs(scrollPosition) >= halfWidth) {
-						scrollPosition = 0; // إعادة تدوير الشريط لنقطة الصفر بسلاسة
+					// 2. المحرك الدائري: نقل العناصر الفيزيائية لمنع القفزة البصرية نهائياً
+					if (!isRTL) {
+						// للوضع الإنجليزي: إذا خرج العنصر الأول من اليسار، انقله فوراً لنهاية الطابور
+						const firstChild = track.firstElementChild;
+						if (firstChild) {
+							const childWidth = firstChild.offsetWidth + parseInt(window.getComputedStyle(firstChild).marginRight || 0);
+							if (Math.abs(scrollPosition) >= childWidth) {
+								track.appendChild(firstChild); // نقل حقيقي للعنصر داخل المتصفح
+								scrollPosition += childWidth; // موازنة الإزاحة برقة وبدون قفزة
+							}
+						}
+					} else {
+						// للوضع العربي: إذا خرج العنصر الأخير من اليمين، انقله فوراً لبداية الطابور
+						const lastChild = track.lastElementChild;
+						if (lastChild) {
+							const childWidth = lastChild.offsetWidth + parseInt(window.getComputedStyle(lastChild).marginLeft || 0);
+							if (scrollPosition >= childWidth) {
+								track.insertBefore(lastChild, track.firstElementChild); // نقل حقيقي للعنصر للبداية
+								scrollPosition -= childWidth; // موازنة الإزاحة برقة وبدون قفزة
+							}
+						}
 					}
 					
+					// 3. تطبيق الحركة الفعلية على الشريط
 					track.style.transform = `translateX(${scrollPosition}px)`;
 				}
-				animationFrameId = requestAnimationFrame(animate);
+				requestAnimationFrame(animate);
 			}
 		
 			// إطلاق الحركة التلقائية فوراً
