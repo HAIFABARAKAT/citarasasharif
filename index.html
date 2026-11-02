@@ -1775,59 +1775,58 @@
             });
         }
 		
-		// الدالة المصححة والذكية لحساب اتجاه ضغطة الإصبع بدقة على الجوال (يمين أو يسار)
+		// الدالة المطورة لحساب اتجاه النقرة الفورية واللمسة السريعة على الجوال
 		function setupMobileDynamicTilt() {
-			// جلب جميع كروت الوجبات والمنتجات المربعّة من الصفحة
 			const cards = document.querySelectorAll('.product-card, .slide-card');
 			
-			// المرور على كل كرت بشكل منفرد لتطبيق أحداث اللمس المصححة
 			cards.forEach(card => {
-				
-				// 1. عند بدء ملامسة الإصبع لسطح الكرت على الشاشة
-				card.addEventListener('touchstart', (e) => {
-					// جلب أبعاد وموقع الكرت الحالي على الشاشة
+				// دالة موحدة لتطبيق التأثير فوراً سواء كانت لمسة سريعة (click) أو بدء لمس (touchstart)
+				function handleInstantTap(e) {
 					const rect = card.getBoundingClientRect();
 					
-					/* التعديل الصحيح: استخدام changedTouches[0] لقراءة مكان الإصبع الأول بدقة على الجوال */
-					const touchX = e.changedTouches[0].clientX - rect.left;
-					
-					// حساب نقطة منتصف الكرت أفقياً (العرض مقسوماً على 2)
+					// جلب إحداثيات الإصبع أو النقرة (دعم نظام اللمس والضغط الفوري معاً)
+					const clientX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : e.clientX;
+					if (!clientX) return;
+		
+					const touchX = clientX - rect.left;
 					const cardCenter = rect.width / 2;
 					
-					// تحديد اتجاه الميلان: إذا كانت الضغطة في النصف الأيمن يميل لليمين (2 درجة)، وإلا يميل لليسار (-2 درجة)
+					// حساب اتجاه الدوران يميناً أو يساراً
 					const rotateDirection = (touchX > cardCenter) ? 2 : -2;
 		
-					// تطبيق التأثير الجمالي الفوري لحظة الضغط (استجابة سريعة خلال 0.1 ثانية)
-					card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease';
+					// تطبيق التأثير الجمالي والـ 3D برمشة عين (خلال 0.05 ثانية فقط لسرعة خارقة)
+					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease';
 					card.style.transform = `translateY(-8px) scale(1.04) rotate(${rotateDirection}deg)`;
 					card.style.borderColor = 'var(--primary)';
 					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)';
 		
-					// تشغيل تأثير الـ 3D القديم والبروز على الصورة الداخلية
 					const img = card.querySelector('img');
 					if(img) {
-						img.style.transition = 'transform 0.1s ease';
+						img.style.transition = 'transform 0.05s ease';
 						img.style.transform = 'scale(1.08) translateZ(30px)';
 					}
 					
-					// تحويل ألوان خلفية النصوص والنصوص للألوان التفاعلية
 					const body = card.querySelector('.product-card-body, .slide-info');
 					if(body) {
-						body.style.transition = 'background-color 0.1s ease';
+						body.style.transition = 'background-color 0.05s ease';
 						body.style.backgroundColor = '#c5e1a5';
 						const h3 = body.querySelector('h3, span');
 						if(h3) {
-							h3.style.transition = 'color 0.1s ease';
+							h3.style.transition = 'color 0.05s ease';
 							h3.style.color = '#33691e';
 						}
 					}
-				}, { passive: true }); // حماية الشاشة من البطء والتهنيج أثناء اللمس
 		
-				// 2. عند رفع الإصبع عن سطح الكرت بالكامل
-				card.addEventListener('touchend', () => {
-					// إعادة ضبط وتصفير كل التأثيرات لتعود للوضع الأصلي تدريجياً وببطء خلال ثانيتين (كما حددنا في الـ CSS)
+					// مؤقت ذكي: بما أن اللمسة سريعة، نقوم بإجبار الكرت على العودة لوضعه الطبيعي تلقائياً بعد ثانية ونصف بنعومة
+					setTimeout(() => {
+						resetCardPosition();
+					}, 1500);
+				}
+		
+				// دالة إعادة الكرت لوضعه الطبيعي وتلاشي الألوان ببطء خلال ثانيتين
+				function resetCardPosition() {
 					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
-					card.style.transform = 'none'; // إلغاء الميلان والارتفاع وإعادة الكرت لوضعه الطبيعي مستقراً
+					card.style.transform = 'none';
 					card.style.borderColor = 'var(--border-glow)';
 					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)';
 		
@@ -1847,11 +1846,20 @@
 							h3.style.color = 'var(--text-main)';
 						}
 					}
-				});
+				}
+		
+				// تشغيل التأثير فوراً عند ملامسة الشاشة
+				card.addEventListener('touchstart', handleInstantTap, { passive: true });
+				
+				// تشغيل التأثير عند النقرة الفورية السريعة لكسر تضارب كود السلايدر
+				card.addEventListener('click', handleInstantTap);
+				
+				// إعادة الكرت لطبيعته عند رفع الإصبع في حال الضغط المطول
+				card.addEventListener('touchend', resetCardPosition);
 			});
 		}
 		
-		// تشغيل الدالة الذكية والمصححة فور اكتمال تحميل هيكل وتصميم الصفحة
+		// تشغيل الدالة فور تحميل الصفحة
 		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
