@@ -825,20 +825,40 @@
         } /* نهاية تنسيق كلاس التفعيل للظهور التدريجي */
 		
 		
-		/* هذا الكود يمنع تثبيت التأثير عند اللمس في الجوال ويعيد تفعيله فقط أثناء الضغط الفعلي */
+		/* كود متكامل لمنع تعليق التأثيرات عند اللمس في الجوال */
 		@media (hover: none) {
+			/* 1. إلغاء تأثير الحوم الثابت للمربعات والعناصر الداخلية في الجوال */
 			.product-card:hover, .slide-card:hover {
-				/* إلغاء تأثير الحوم الثابت في الجوال */
 				transform: none !important;
-				box-shadow: none !important;
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05) !important;
+				border-color: var(--border-glow) !important;
 			}
-			
-			/* تفعيل التأثير فقط «أثناء» ضغطة الإصبع الفورية */
+			.product-card:hover img, .slide-card:hover img {
+				transform: translateZ(15px) scale(1) !important;
+			}
+			.product-card:hover .product-card-body, .slide-card:hover .slide-info {
+				background: var(--bg-card) !important;
+			}
+			.product-card:hover .product-card-body h3, .slide-card:hover .slide-info h3 {
+				color: var(--text-main) !important;
+			}
+			.product-card:hover .product-price {
+				color: var(--primary) !important;
+			}
+		
+			/* 2. تفعيل التأثير البصري الفوري فقط «أثناء» ضغطة الإصبع الفطرية الحالية */
 			.product-card:active, .slide-card:active {
 				border-color: var(--primary) !important;
+				box-shadow: 0 10px 20px rgba(100, 188, 38, 0.2) !important;
+			}
+			.product-card:active .product-card-body, .slide-card:active .slide-info {
 				background-color: #c5e1a5 !important;
 			}
+			.product-card:active .product-card-body h3, .slide-card:active .slide-info span {
+				color: #33691e !important;
+			}
 		}
+		
 		
     </style> <!-- وسم إغلاق تنسيقات الـ CSS بالكامل -->
 </head> <!-- وسم إغلاق قسم رأس الصفحة والموقع -->
