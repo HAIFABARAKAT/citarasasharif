@@ -825,6 +825,20 @@
         } /* نهاية تنسيق كلاس التفعيل للظهور التدريجي */
 		
 		
+		/* هذا الكود يمنع تثبيت التأثير عند اللمس في الجوال ويعيد تفعيله فقط أثناء الضغط الفعلي */
+		@media (hover: none) {
+			.product-card:hover, .slide-card:hover {
+				/* إلغاء تأثير الحوم الثابت في الجوال */
+				transform: none !important;
+				box-shadow: none !important;
+			}
+			
+			/* تفعيل التأثير فقط «أثناء» ضغطة الإصبع الفورية */
+			.product-card:active, .slide-card:active {
+				border-color: var(--primary) !important;
+				background-color: #c5e1a5 !important;
+			}
+		}
 		
     </style> <!-- وسم إغلاق تنسيقات الـ CSS بالكامل -->
 </head> <!-- وسم إغلاق قسم رأس الصفحة والموقع -->
