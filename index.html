@@ -826,95 +826,97 @@
 		
 		
 		
-		/* الكود الشامل مع ضبط وقت التلاشي والرجوع إلى ثانيتين كاملتين على الجوال */
+		/* الكود الشامل والمطور مع الحركات الجمالية والشرح التفصيلي لمتصفحات الجوال */
 		@media (hover: none) { 
-			/* يتم تفعيل هذا القسم فقط على شاشات اللمس (الجوال والتابلت) */
+			/* يتم تفعيل هذا القسم فقط عندما يكتشف المتصفح أن الشاشة تعمل باللمس (جوال/تابلت) ولا يوجد ماوس حقيقي */
 		
 			/* ============================================================== */
-			/* 1. ضبط وقت الرجوع التدريجي البطيء (2 ثانية) عند رفع الإصبع */
+			/* 1. ضبط وقت الرجوع التدريجي البطيء (2 ثانية) مع تأثير ارتدادي مرن */
 			/* ============================================================== */
 			
+			/* إجبار الكروت والمربعات على العودة لوضعها الطبيعي خلال ثانيتين بنعومة وارتداد فيزيائي مرن يشبه حركة التطبيقات الذكية */
 			.product-card, .slide-card, .circle-item {
-				/* إجبار العناصر على العودة لوضعها الطبيعي خلال ثانيتين بنعومة فائقة عند رفع الإصبع */
-				transition: transform 2s ease, box-shadow 2s ease, border-color 2s ease !important;
+				transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease !important;
 			}
 		
+			/* إجبار الصور الداخلية على العودة لحجمها وعمقها الطبيعي والـ 3D الأصلي خلال ثانيتين تدريجياً */
 			.product-card img, .slide-card img {
-				/* إجبار الصور الداخلية على العودة لحجمها وعمقها الطبيعي خلال ثانيتين */
 				transition: transform 2s ease !important;
 			}
 		
+			/* إجبار خلفيات الكروت على العودة للونها الطبيعي بدون أي استعجال خلال ثانيتين كاملتين عند رفع الإصبع */
 			.product-card .product-card-body, .slide-card .slide-info {
-				/* إجبار خلفيات الكروت على العودة للونها الأصلي خلال ثانيتين تدريجياً وببطء */
 				transition: background-color 2s ease !important;
 			}
 		
+			/* إجبار خطوط العناوين وأسماء الوجبات على التلاشي والعودة للونها الأصلي الهادئ خلال ثانيتين */
 			.product-card .product-card-body h3, .slide-card .slide-info h3, .slide-card .slide-info span {
-				/* إجبار خطوط العناوين على العودة للونها الطبيعي خلال ثانيتين */
 				transition: color 2s ease !important;
 			}
 		
+			/* إجبار الدائرة وإطارها وظلها المتوهج على التراجع والعودة للوضع الثابت خلال ثانيتين مع المنحنى الارتدادي المرن */
 			.circle-item .circle-img-wrapper {
-				/* إجبار الدائرة وإطارها وظلها المتوهج على العودة للوضع الأصلي خلال ثانيتين بنعومة */
-				transition: transform 2s ease, border-color 2s ease, box-shadow 2s ease !important;
+				transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 2s ease, box-shadow 2s ease !important;
 			}
 		
-			/* إلغاء تأثيرات الحوم العشوائية لمنع تعليق الكروت */
+			/* -------------------------------------------------------------- */
+			/* تصفير وإلغاء حالة الحوم (Hover) لمنع تعليق المربعات عشوائياً بعد رفع الإصبع */
+			/* -------------------------------------------------------------- */
+			
 			.product-card:hover, .slide-card:hover, .circle-item:hover {
-				transform: none !important;
+				transform: none !important; /* إبقاء الكروت في مكانها وتصفير الإزاحة عند الحوم العشوائي في الجوال */
 			}
 			.product-card:hover img, .slide-card:hover img {
-				transform: translateZ(15px) scale(1) !important;
+				transform: translateZ(15px) scale(1) !important; /* إلغاء التكبير والتري دي العشوائي للصورة خارج الضغط */
 			}
 			.product-card:hover .product-card-body, .slide-card:hover .slide-info {
-				background: var(--bg-card) !important;
+				background: var(--bg-card) !important; /* تصفير اللون الأخضر وإعادة خلفية الكروت لطبيعتها */
 			}
 			.product-card:hover .product-card-body h3, .slide-card:hover .slide-info h3 {
-				color: var(--text-main) !important;
+				color: var(--text-main) !important; /* إعادة لون النصوص للوضع الافتراضي ومنع تعليقها */
 			}
 			.circle-item:hover .circle-img-wrapper {
-				transform: scale(1) rotate(0deg) !important;
-				border-color: var(--bg-card) !important;
-				box-shadow: var(--shadow) !important;
+				transform: scale(1) rotate(0deg) !important; /* منع الدائرة من التكبير أو الدوران العشوائي بجانب الإصبع */
+				border-color: var(--bg-card) !important; /* إعادة لون إطار الدائرة للونه الافتراضي الأبيض أو الرمادي */
+				box-shadow: var(--shadow) !important; /* تطبيق الظل الخفيف الهادئ للمظهر وإلغاء التوهج المضيء */
 			}
 		
 			/* ============================================================== */
-			/* 2. تأثير المربعات (الوجبات والمنتجات) أثناء ضغطة الإصبع الحالية */
+			/* 2. تأثير المربعات المطور (الوجبات والمنتجات) أثناء ضغطة الإصبع الحالية */
 			/* ============================================================== */
 			
 			.product-card:active, .slide-card:active {
-				border-color: var(--primary) !important;
-				box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3) !important; 
-				transform: translateY(-5px) scale(1.03) !important; 
-				/* جعل الدخول في تأثير الضغط سريعاً جداً (0.1 ثانية) ليعطي شعوراً فورياً بالاستجابة لحظة اللمس */
-				transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+				border-color: var(--primary) !important; /* تحويل لون حدود الكرت للون الأخضر المضيء للموقع فوراً */
+				box-shadow: 0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35) !important; /* توليد ظل مزدوج متدرج عميق يمنح الكارت بُعداً واقعياً مرتفعاً */
+				transform: translateY(-8px) scale(1.04) rotate(-1.5deg) !important; /* حركة جمالية: يرتفع الكارت 8 بكسل، ويكبر 4%، ويميل بزاوية تفاعلية مَرنة مقدارها -1.5 درجة */
+				transition: transform 0.1s ease, box-shadow 0.1s ease !important; /* جعل الدخول في تأثير الضغط سريعاً جداً (0.1 ثانية) ليعطي شعوراً فورياً بالاستجابة والضغط الحقيقي */
 			}
 			.product-card:active img, .slide-card:active img {
-				transform: scale(1.06) translateZ(25px) !important;
-				transition: transform 0.1s ease !important;
+				transform: scale(1.08) translateZ(30px) !important; /* تكبير الصورة ودفعها للأمام 30 بكسل لتعزيز ميزة البروز وتجسيم الـ 3D القديم */
+				transition: transform 0.1s ease !important; /* استجابة لحظية وسريعة لبروز الصورة عند ملامسة الشاشة */
 			}
 			.product-card:active .product-card-body, .slide-card:active .slide-info {
-				background-color: #c5e1a5 !important;
-				transition: background-color 0.1s ease !important;
+				background-color: #c5e1a5 !important; /* تلوين خلفية البيانات باللون الأخضر العشبي الجذاب لبيان النقر الفعلي */
+				transition: background-color 0.1s ease !important; /* تحول لوني سريع يواكب حركة الإصبع */
 			}
 			.product-card:active .product-card-body h3, .slide-card:active .slide-info span {
-				color: #33691e !important;
-				transition: color 0.1s ease !important;
+				color: #33691e !important; /* تحويل لون النصوص للأخضر الزيتوني الداكن لتحقيق تباين رائع ومريح للعين فوق الخلفية العشبية */
+				transition: color 0.1s ease !important; /* تغيير سريع للون الخط ليتماشى مع الضغطة */
 			}
 		
 			/* ============================================================== */
-			/* 3. تأثير أقسام المنيو الدائرية أثناء ضغطة الإصبع الحالية */
+			/* 3. تأثير أقسام المنيو الدائرية المطور أثناء ضغطة الإصبع الحالية */
 			/* ============================================================== */
 			
 			.circle-item:active {
-				transform: scale(1.02) !important;
-				transition: transform 0.1s ease !important;
+				transform: scale(1.03) !important; /* تكبير الحاوية الكلية لقسم المنيو بنسبة 3% لإعطاء إيحاء بمرونة الزر */
+				transition: transform 0.1s ease !important; /* استجابة فورية للنقر */
 			}
 			.circle-item:active .circle-img-wrapper {
-				transform: scale(1.1) rotate(5deg) !important; 
-				border-color: var(--primary) !important; 
-				box-shadow: 0 0 20px var(--primary-glow) !important; 
-				transition: transform 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease !important;
+				transform: scale(1.12) rotate(8deg) !important; /* حركة جمالية: تكبير الصورة الدائرية بنسبة 12% وتدويرها بزاوية 8 درجات لتأثير حركي راقص رائع جداً */
+				border-color: var(--primary) !important; /* إضاءة إطار الدائرة السميك باللون الأخضر الأساسي للموقع */
+				box-shadow: 0 0 25px var(--primary-glow) !important; /* بث هالة ظل خضراء مضيئة وجميلة حول حواف الدائرة */
+				transition: transform 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease !important; /* جعل الدائرة تتفاعل وتدور برمشة عين خلال 0.1 ثانية لمواكبة نقرة المستخدم */
 			}
 		}
 		
