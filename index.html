@@ -825,9 +825,9 @@
         } /* نهاية تنسيق كلاس التفعيل للظهور التدريجي */
 		
 		
-		/* كود متكامل لمنع تعليق التأثيرات عند اللمس في الجوال */
+		/* الكود الصحيح: يعيد التأثيرات القديمة كاملة (تري دي وظل) أثناء ضغطة الإصبع فقط ويخفيها فوراً عند الرفع */
 		@media (hover: none) {
-			/* 1. إلغاء تأثير الحوم الثابت للمربعات والعناصر الداخلية في الجوال */
+			/* 1. تصفير حالة الحوم لمنع التعليق */
 			.product-card:hover, .slide-card:hover {
 				transform: none !important;
 				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05) !important;
@@ -842,18 +842,24 @@
 			.product-card:hover .product-card-body h3, .slide-card:hover .slide-info h3 {
 				color: var(--text-main) !important;
 			}
-			.product-card:hover .product-price {
-				color: var(--primary) !important;
-			}
 		
-			/* 2. تفعيل التأثير البصري الفوري فقط «أثناء» ضغطة الإصبع الفطرية الحالية */
+			/* 2. إعادة كل التأثيرات القديمة (تري دي، ظل متوهج، ارتفاع) عند ضغطة الإصبع الحالية */
 			.product-card:active, .slide-card:active {
 				border-color: var(--primary) !important;
-				box-shadow: 0 10px 20px rgba(100, 188, 38, 0.2) !important;
+				/* الظل المتوهج القديم */
+				box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3) !important; 
+				/* تأثير الارتفاع والتكبير القديم */
+				transform: translateY(-5px) scale(1.03) !important; 
 			}
+			/* تشغيل تأثير الـ 3D القديم على الصورة داخل الكارت أثناء الضغط */
+			.product-card:active img, .slide-card:active img {
+				transform: scale(1.06) translateZ(25px) !important;
+			}
+			/* تغيير لون الخلفية للأخضر العشبي أثناء الضغط */
 			.product-card:active .product-card-body, .slide-card:active .slide-info {
 				background-color: #c5e1a5 !important;
 			}
+			/* تحويل العناوين للأخضر الزيتوني أثناء الضغط */
 			.product-card:active .product-card-body h3, .slide-card:active .slide-info span {
 				color: #33691e !important;
 			}
