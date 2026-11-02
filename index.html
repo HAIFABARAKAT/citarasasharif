@@ -920,35 +920,7 @@
 			}
 		}
 		
-		/* كود الجوال: تهيئة أوقات الحركة والرجوع البطيء (ثانيتين) عند رفع الإصبع */
-		@media (hover: none) {
-			/* يتم تفعيل هذا القسم فقط على الأجهزة التي تعمل باللمس (جوال/تابلت) ولا تحتوي على ماوس حقيقي */
 		
-			.product-card, .slide-card {
-				/* إجبار الكروت على العودة لوضعها الطبيعي خلال ثانيتين بنعومة مذهلة وارتداد فيزيائي مَرن عند رفع الإصبع */
-				transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease !important;
-			}
-		
-			.product-card img, .slide-card img {
-				/* إجبار الصور داخل الكروت على العودة لحجمها الطبيعي وعمق الـ 3D الافتراضي خلال ثانيتين بنعومة */
-				transition: transform 2s ease !important;
-			}
-		
-			.product-card .product-card-body, .slide-card .slide-info {
-				/* إجبار خلفيات الكروت على التلاشي والعودة للونها الافتراضي (مضيء/مظلم) ببطء شديد خلال ثانيتين */
-				transition: background-color 2s ease !important;
-			}
-		
-			.product-card .product-card-body h3, .slide-card .slide-info h3, .slide-card .slide-info span {
-				/* إجبار خطوط العناوين وأسماء الوجبات على العودة للونها الطبيعي تدريجياً خلال ثانيتين */
-				transition: color 2s ease !important;
-			}
-		
-			/* إلغاء تفعيل حالة الحَوْم (Hover) تماماً على الجوال لمنع تعليق المربعات عشوائياً */
-			.product-card:hover, .slide-card:hover { 
-				transform: none !important; /* إلغاء حركة الحوم الافتراضية للكمبيوتر */
-			}
-		}
 		
 		
     </style> <!-- وسم إغلاق تنسيقات الـ CSS بالكامل -->
@@ -1774,93 +1746,6 @@
                 });
             });
         }
-		
-		// الدالة المطورة لحساب اتجاه النقرة الفورية واللمسة السريعة على الجوال
-		function setupMobileDynamicTilt() {
-			const cards = document.querySelectorAll('.product-card, .slide-card');
-			
-			cards.forEach(card => {
-				// دالة موحدة لتطبيق التأثير فوراً سواء كانت لمسة سريعة (click) أو بدء لمس (touchstart)
-				function handleInstantTap(e) {
-					const rect = card.getBoundingClientRect();
-					
-					// جلب إحداثيات الإصبع أو النقرة (دعم نظام اللمس والضغط الفوري معاً)
-					const clientX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : e.clientX;
-					if (!clientX) return;
-		
-					const touchX = clientX - rect.left;
-					const cardCenter = rect.width / 2;
-					
-					// حساب اتجاه الدوران يميناً أو يساراً
-					const rotateDirection = (touchX > cardCenter) ? 2 : -2;
-		
-					// تطبيق التأثير الجمالي والـ 3D برمشة عين (خلال 0.05 ثانية فقط لسرعة خارقة)
-					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease';
-					card.style.transform = `translateY(-8px) scale(1.04) rotate(${rotateDirection}deg)`;
-					card.style.borderColor = 'var(--primary)';
-					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)';
-		
-					const img = card.querySelector('img');
-					if(img) {
-						img.style.transition = 'transform 0.05s ease';
-						img.style.transform = 'scale(1.08) translateZ(30px)';
-					}
-					
-					const body = card.querySelector('.product-card-body, .slide-info');
-					if(body) {
-						body.style.transition = 'background-color 0.05s ease';
-						body.style.backgroundColor = '#c5e1a5';
-						const h3 = body.querySelector('h3, span');
-						if(h3) {
-							h3.style.transition = 'color 0.05s ease';
-							h3.style.color = '#33691e';
-						}
-					}
-		
-					// مؤقت ذكي: بما أن اللمسة سريعة، نقوم بإجبار الكرت على العودة لوضعه الطبيعي تلقائياً بعد ثانية ونصف بنعومة
-					setTimeout(() => {
-						resetCardPosition();
-					}, 1500);
-				}
-		
-				// دالة إعادة الكرت لوضعه الطبيعي وتلاشي الألوان ببطء خلال ثانيتين
-				function resetCardPosition() {
-					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
-					card.style.transform = 'none';
-					card.style.borderColor = 'var(--border-glow)';
-					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)';
-		
-					const img = card.querySelector('img');
-					if(img) {
-						img.style.transition = 'transform 2s ease';
-						img.style.transform = 'translateZ(15px) scale(1)';
-					}
-					
-					const body = card.querySelector('.product-card-body, .slide-info');
-					if(body) {
-						body.style.transition = 'background-color 2s ease';
-						body.style.backgroundColor = 'var(--bg-card)';
-						const h3 = body.querySelector('h3, span');
-						if(h3) {
-							h3.style.transition = 'color 2s ease';
-							h3.style.color = 'var(--text-main)';
-						}
-					}
-				}
-		
-				// تشغيل التأثير فوراً عند ملامسة الشاشة
-				card.addEventListener('touchstart', handleInstantTap, { passive: true });
-				
-				// تشغيل التأثير عند النقرة الفورية السريعة لكسر تضارب كود السلايدر
-				card.addEventListener('click', handleInstantTap);
-				
-				// إعادة الكرت لطبيعته عند رفع الإصبع في حال الضغط المطول
-				card.addEventListener('touchend', resetCardPosition);
-			});
-		}
-		
-		// تشغيل الدالة فور تحميل الصفحة
-		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
     </script>
