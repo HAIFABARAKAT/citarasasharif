@@ -1182,7 +1182,7 @@
 
     <script> <!-- بداية قسم برمجة الجافاسكريبت لإضافة العمليات التفاعلية والذكية لصفحة الويب -->
 	// تعريف دالة فارغة لإعادة ضبط اتجاه السلايدر (المشغلات/المعروضات)
-let resetSlidersDirection = () => {};
+		let resetSlidersDirection = () => {};
 
         // دالة لتبديل لغة الموقع بين العربية والإنجليزية
         function toggleLanguage() {
@@ -1359,7 +1359,7 @@ let resetSlidersDirection = () => {};
 			}
 		}
 		// الاستماع لحدث اكتمال تحميل هيكل الصفحة لتعبئة ساعات العمل تلقائياً
-window.addEventListener('DOMContentLoaded', populateBusinessHours);
+		window.addEventListener('DOMContentLoaded', populateBusinessHours);
 		
 		// حفظ نسخة من الدالة الأصلية الخاصة بتبديل اللغة في متغير
 		const originalToggleLanguage = toggleLanguage;
@@ -1528,7 +1528,7 @@ window.addEventListener('DOMContentLoaded', populateBusinessHours);
 						scrollPosition -= speed;
 					}
 					// حساب نصف العرض الإجمالي لمسار التمرير (بسبب تكرار العناصر برمجياً)
-const halfWidth = track.scrollWidth / 2;
+					const halfWidth = track.scrollWidth / 2;
 					// التحقق مما إذا كانت القيمة المطلقة لموضع التمرير قد تجاوزت نصف عرض المسار
 					if (Math.abs(scrollPosition) >= halfWidth) {
 						// إعادة تعيين موضع التمرير إلى الصفر لضمان حركة سلسة ولانهائية
