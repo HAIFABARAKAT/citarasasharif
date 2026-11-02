@@ -826,37 +826,37 @@
 		
 		
 		
-		/* الكود الشامل مع التحكم الكامل في وقت ونعومة التفاعل على الجوال */
+		/* الكود الشامل مع ضبط وقت التلاشي والرجوع إلى ثانيتين كاملتين على الجوال */
 		@media (hover: none) { 
 			/* يتم تفعيل هذا القسم فقط على شاشات اللمس (الجوال والتابلت) */
 		
 			/* ============================================================== */
-			/* 1. تصفير حالة الحوم (Hover) وإضافة وقت الرجوع التدريجي (البطيء) عند رفع الإصبع */
+			/* 1. ضبط وقت الرجوع التدريجي البطيء (2 ثانية) عند رفع الإصبع */
 			/* ============================================================== */
 			
 			.product-card, .slide-card, .circle-item {
-				/* إجبار العناصر على العودة لوضعها الطبيعي خلال 0.4 ثانية بنعومة فائقة عند رفع الإصبع */
-				transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease !important;
+				/* إجبار العناصر على العودة لوضعها الطبيعي خلال ثانيتين بنعومة فائقة عند رفع الإصبع */
+				transition: transform 2s ease, box-shadow 2s ease, border-color 2s ease !important;
 			}
 		
 			.product-card img, .slide-card img {
-				/* إجبار الصور الداخلية على العودة لحجمها وعمقها الطبيعي خلال 0.4 ثانية بنعومة */
-				transition: transform 0.4s ease !important;
+				/* إجبار الصور الداخلية على العودة لحجمها وعمقها الطبيعي خلال ثانيتين */
+				transition: transform 2s ease !important;
 			}
 		
 			.product-card .product-card-body, .slide-card .slide-info {
-				/* إجبار خلفيات الكروت على العودة للونها الأصلي خلال 0.4 ثانية تدريجياً وببطء */
-				transition: background-color 0.4s ease !important;
+				/* إجبار خلفيات الكروت على العودة للونها الأصلي خلال ثانيتين تدريجياً وببطء */
+				transition: background-color 2s ease !important;
 			}
 		
 			.product-card .product-card-body h3, .slide-card .slide-info h3, .slide-card .slide-info span {
-				/* إجبار خطوط العناوين على العودة للونها الطبيعي خلال 0.4 ثانية */
-				transition: color 0.4s ease !important;
+				/* إجبار خطوط العناوين على العودة للونها الطبيعي خلال ثانيتين */
+				transition: color 2s ease !important;
 			}
 		
 			.circle-item .circle-img-wrapper {
-				/* إجبار الدائرة وإطارها وظلها المتوهج على العودة للوضع الأصلي خلال 0.4 ثانية بنعومة */
-				transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+				/* إجبار الدائرة وإطارها وظلها المتوهج على العودة للوضع الأصلي خلال ثانيتين بنعومة */
+				transition: transform 2s ease, border-color 2s ease, box-shadow 2s ease !important;
 			}
 		
 			/* إلغاء تأثيرات الحوم العشوائية لمنع تعليق الكروت */
@@ -886,7 +886,7 @@
 				border-color: var(--primary) !important;
 				box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3) !important; 
 				transform: translateY(-5px) scale(1.03) !important; 
-				/* جعل الدخول في تأثير الضغط سريعاً ولحظياً (0.1 ثانية) ليعطي شعوراً فورياً بالاستجابة */
+				/* جعل الدخول في تأثير الضغط سريعاً جداً (0.1 ثانية) ليعطي شعوراً فورياً بالاستجابة لحظة اللمس */
 				transition: transform 0.1s ease, box-shadow 0.1s ease !important;
 			}
 			.product-card:active img, .slide-card:active img {
