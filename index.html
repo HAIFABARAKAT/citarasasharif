@@ -1648,6 +1648,34 @@
             });
         }
 		
+	
+    // كود مخصص لمنع تعلق التلوين والظل عند اللمس في الجوال
+		document.addEventListener('DOMContentLoaded', () => {
+			// جلب جميع بطاقات الوجبات في الصفحة
+			const slideCards = document.querySelectorAll('.slide-card');
+			
+			slideCards.forEach(card => {
+				// عند بدء لمس المربع بالإصبع
+				card.addEventListener('touchstart', () => {
+					// إجبار التنسيقات على الظهور اللحظي
+					card.style.borderColor = 'var(--primary)';
+					card.style.boxShadow = '0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3)';
+					const info = card.querySelector('.slide-info');
+					if(info) info.style.backgroundColor = '#c5e1a5';
+				}, { passive: true });
+	
+				// فوراً عند رفع الإصبع عن المربع
+				card.addEventListener('touchend', () => {
+					// إرجاع كل شيء للوضع الطبيعي والأصلي فوراً
+					card.style.borderColor = '';
+					card.style.boxShadow = '';
+					const info = card.querySelector('.slide-info');
+					if(info) info.style.backgroundColor = '';
+				}, { passive: true });
+			});
+		});
+
+		
     </script>
 </body>
 </html>
