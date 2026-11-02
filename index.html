@@ -1746,6 +1746,90 @@
                 });
             });
         }
+		
+		// دالة جعل الكروت تلاحق حركة الإصبع في الجوال كاللعبة تماماً وبكل الاتجاهات
+		function setupMobileDynamicTilt() {
+			const cards = document.querySelectorAll('.product-card, .slide-card');
+			
+			cards.forEach(card => {
+				// دالة مشتركة لحساب مكان الإصبع وتدوير الكرت بدقة نحوه
+				function trackTouchMovement(e) {
+					const rect = card.getBoundingClientRect();
+					
+					// التقاط إحداثيات الإصبع الحالي أثناء الحركة أو اللمس
+					const touch = e.touches[0] || e.changedTouches[0];
+					if (!touch) return;
+		
+					// حساب مكان اللمس بالنسبة لأبعاد الكرت (أفقياً وعمودياً)
+					const x = touch.clientX - rect.left;
+					const y = touch.clientY - rect.top;
+					
+					// حساب نقطة المنتصف الدقيقة للكرت
+					const xc = rect.width / 2;
+					const yc = rect.height / 2;
+					
+					// حساب زوايا الدوران الفيزيائية بناءً على بُعد إصبعك عن منتصف المربع
+					const angleX = (yc - y) / 10; // زاوية المحور الأفقي
+					const angleY = (x - xc) / 10; // زاوية المحور العمودي
+		
+					// تطبيق التأثير اللحظي ليرقص ويميل المربع تحت إصبعك أينما تحرك
+					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease';
+					card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px) scale(1.03)`;
+					card.style.borderColor = 'var(--primary)';
+					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)';
+		
+					const img = card.querySelector('img');
+					if(img) {
+						img.style.transition = 'transform 0.05s ease';
+						img.style.transform = `scale(1.08) translateZ(30px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+					}
+					
+					const body = card.querySelector('.product-card-body, .slide-info');
+					if(body) {
+						body.style.backgroundColor = '#c5e1a5';
+						const h3 = body.querySelector('h3, span');
+						if(h3) h3.style.color = '#33691e';
+					}
+				}
+		
+				// دالة إعادة المربع لوضعه الطبيعي وتلاشي التأثير ببطء خلال ثانيتين عند رفع الإصبع
+				function resetCardPosition() {
+					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
+					card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+					card.style.borderColor = 'var(--border-glow)';
+					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)';
+		
+					const img = card.querySelector('img');
+					if(img) {
+						img.style.transition = 'transform 2s ease';
+						img.style.transform = 'translateZ(15px) scale(1)';
+					}
+					
+					const body = card.querySelector('.product-card-body, .slide-info');
+					if(body) {
+						body.style.transition = 'background-color 2s ease';
+						body.style.backgroundColor = 'var(--bg-card)';
+						const h3 = body.querySelector('h3, span');
+						if(h3) {
+							h3.style.transition = 'color 2s ease';
+							h3.style.color = 'var(--text-main)';
+						}
+					}
+				}
+		
+				// 1. عند بدء ملامسة الإصبع (ابدأ الحساب فوراً)
+				card.addEventListener('touchstart', trackTouchMovement, { passive: true });
+				
+				/* 2. اللمسة السحرية: ملاحقة الإصبع أثناء التحريك والسحب فوق المربع في كل الاتجاهات */
+				card.addEventListener('touchmove', trackTouchMovement, { passive: true });
+				
+				// 3. عند رفع الإصبع عن الشاشة (ابدأ التلاشي البطيء لمدة ثانيتين)
+				card.addEventListener('touchend', resetCardPosition);
+			});
+		}
+		
+		// تشغيل الدالة الذكية فور تحميل الصفحة
+		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
     </script>
