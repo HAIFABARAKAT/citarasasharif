@@ -1747,57 +1747,70 @@
             });
         }
 		
-		// دالة شاملة تجعل كروت الوجبات والمنتجات تلاحق حركة الإصبع كاللعبة في كل الاتجاهات
+		// دالة تثبيت زاوية الميلان ثلاثية الأبعاد فوراً بمجرد لمسة خفيفة وسريعة في الجوال
 		function setupMobileDynamicTilt() {
-			// الاستماع لحدث بدء ملامسة الشاشة على مستوى الصفحة بالكامل لالتقاط كروت الوجبات والمنتجات ديناميكياً
-			document.body.addEventListener('touchstart', (e) => {
-				// البحث عن أقرب عنصر يحمل كلاس كروت المنتجات أو الوجبات المميزة مكان اللمس
-				const card = e.target.closest('.product-card, .slide-card');
-				if (!card) return; // إذا لم يكن اللمس فوق كارت، يتم تجاهل الحدث بأمان
+			// جلب جميع كروت الوجبات والمنتجات المربعّة من الصفحة
+			const cards = document.querySelectorAll('.product-card, .slide-card');
+			
+			cards.forEach(card => {
+				let returnTimeout; // متغير لحفظ وقت المؤقت الذكي
 		
-				// دالة مشتركة لحساب مكان الإصبع وتدوير الكرت بدقة نحوه في المحاور الثلاثة
-				function trackTouchMovement(moveEvent) {
+				// دالة التقاط اللمسة الفورية وتطبيق زاوية الـ 3D والبروز الجانبي
+				function applyInstantTilt(e) {
+					// إيقاف مؤقت العودة السابق إذا قام المستخدم بلمس الكارت مجدداً
+					clearTimeout(returnTimeout);
+		
 					const rect = card.getBoundingClientRect();
+					// قراءة إحداثيات الإصبع الأول بدقة على الجوال سواء في اللمس الفوري أو النقرة
+					const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+					const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
 					
-					// التقاط إحداثيات الإصبع الحالي أثناء الحركة أو اللمس (الإصبع الأول)
-					const touch = moveEvent.touches ? moveEvent.touches[0] : moveEvent.changedTouches[0];
-					if (!touch) return;
+					if (!clientX || !clientY) return;
 		
-					// حساب مكان اللمس بالنسبة لأبعاد الكرت (أفقياً وعمودياً)
-					const x = touch.clientX - rect.left;
-					const y = touch.clientY - rect.top;
+					// حساب مكان الضغطة الخفيفة بالنسبة لأبعاد الكرت أفقياً وعمودياً
+					const x = clientX - rect.left;
+					const y = clientY - rect.top;
 					
 					// حساب نقطة المنتصف الدقيقة للكرت
 					const xc = rect.width / 2;
 					const yc = rect.height / 2;
 					
-					// حساب زوايا الدوران الفيزيائية بناءً على بُعد إصبعك عن منتصف المربع
-					const angleX = (yc - y) / 10; // زاوية المحور الأفقي (أعلى وأسفل)
-					const angleY = (x - xc) / 10; // 0زاوية المحور العمودي (يمين ويسار)
+					// حساب زوايا الدوران الفيزيائية بناءً على مكان ملامسة إصبعك (مثل صورتك تماماً)
+					const angleX = (yc - y) / 6; // زيادة قوة الميلان العمودي
+					const angleY = (x - xc) / 6; // زيادة قوة الميلان الجانبي الأفقي
 		
-					// تطبيق التأثير اللحظي ليرقص ويميل المربع تحت إصبعك أينما تحرك
-					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease';
-					card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px) scale(1.03)`;
+					// تطبيق التأثير والميلان الفاخر فوراً برمشة عين (خلال 0.05 ثانية) ليلتقط المتصفح اللمسة السريعة
+					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease';
+					card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px) scale(1.04)`;
 					card.style.borderColor = 'var(--primary)';
 					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)';
 		
-					// تشغيل تأثير الـ 3D والبروز القديم على الصورة الداخلية للكارت
+					// تفعيل بروز الصورة الداخلي والتري دي القديم
 					const img = card.querySelector('img');
 					if(img) {
 						img.style.transition = 'transform 0.05s ease';
-						img.style.transform = `scale(1.08) translateZ(30px)`;
+						img.style.transform = 'scale(1.08) translateZ(30px)';
 					}
 					
-					// تحويل لون خلفية البيانات والنصوص للألوان التفاعلية (العشبي والزيتوني الداكن)
+					// تحويل الألوان للخلفية العشبية والنصوص للزيتوني الداكن
 					const body = card.querySelector('.product-card-body, .slide-info');
 					if(body) {
+						body.style.transition = 'background-color 0.05s ease';
 						body.style.backgroundColor = '#c5e1a5';
 						const h3 = body.querySelector('h3, span');
-						if(h3) h3.style.color = '#33691e';
+						if(h3) {
+							h3.style.transition = 'color 0.05s ease';
+							h3.style.color = '#33691e';
+						}
 					}
+		
+					/* اللمسة السحرية: نأمر المتصفح بتثبيت هذا الميلان الفاخر لمدة ثانية كاملة (1000 ملي ثانية) أمام عين العميل قبل العودة */
+					returnTimeout = setTimeout(() => {
+						resetCardPosition();
+					}, 1000);
 				}
 		
-				// دالة إعادة المربع لوضعه الطبيعي وتلاشي التأثير بنعومة خلال ثانيتين كاملتين عند رفع الإصبع
+				// دالة إعادة المربع لوضعه الطبيعي وتلاشي التأثير ببطء شديد يستغرق ثانيتين كاملتين (2s)
 				function resetCardPosition() {
 					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
 					card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
@@ -1820,22 +1833,14 @@
 							h3.style.color = 'var(--text-main)';
 						}
 					}
-		
-					// إزالة أحداث الاستماع المؤقتة فور رفع الإصبع لتوفير ذاكرة المتصفح ومنع التداخل
-					card.removeEventListener('touchmove', trackTouchMovement);
-					card.removeEventListener('touchend', resetCardPosition);
-					card.removeEventListener('touchcancel', resetCardPosition);
 				}
 		
-				// تشغيل الحساب الفوري وملاحقة الإصبع بمجرد بدء اللمس والتحريك فوق الكارت الملتقط ديناميكياً
-				trackTouchMovement(e);
-				card.addEventListener('touchmove', trackTouchMovement, { passive: true });
-				card.addEventListener('touchend', resetCardPosition);
-				card.addEventListener('touchcancel', resetCardPosition); // دعم التوقف المفاجئ للمس في الجوال
-			}, { passive: true });
+				// الاستماع لحدث بدء اللمس لالتقاط اللمسة الخفيفة والسريعة جداً وتثبيت زواياها فوراً
+				card.addEventListener('touchstart', applyInstantTilt, { passive: true });
+			});
 		}
 		
-		// تشغيل هذه الدالة الذكية والمطورة الشاملة فور تحميل وتوفر عناصر الصفحة
+		// تشغيل الدالة الذكية فور اكتمال تحميل وتوفر عناصر الصفحة
 		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
