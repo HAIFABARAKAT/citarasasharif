@@ -920,6 +920,36 @@
 			}
 		}
 		
+		/* كود الجوال: تهيئة أوقات الحركة والرجوع البطيء (ثانيتين) عند رفع الإصبع */
+		@media (hover: none) {
+			/* يتم تفعيل هذا القسم فقط على الأجهزة التي تعمل باللمس (جوال/تابلت) ولا تحتوي على ماوس حقيقي */
+		
+			.product-card, .slide-card {
+				/* إجبار الكروت على العودة لوضعها الطبيعي خلال ثانيتين بنعومة مذهلة وارتداد فيزيائي مَرن عند رفع الإصبع */
+				transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease !important;
+			}
+		
+			.product-card img, .slide-card img {
+				/* إجبار الصور داخل الكروت على العودة لحجمها الطبيعي وعمق الـ 3D الافتراضي خلال ثانيتين بنعومة */
+				transition: transform 2s ease !important;
+			}
+		
+			.product-card .product-card-body, .slide-card .slide-info {
+				/* إجبار خلفيات الكروت على التلاشي والعودة للونها الافتراضي (مضيء/مظلم) ببطء شديد خلال ثانيتين */
+				transition: background-color 2s ease !important;
+			}
+		
+			.product-card .product-card-body h3, .slide-card .slide-info h3, .slide-card .slide-info span {
+				/* إجبار خطوط العناوين وأسماء الوجبات على العودة للونها الطبيعي تدريجياً خلال ثانيتين */
+				transition: color 2s ease !important;
+			}
+		
+			/* إلغاء تفعيل حالة الحَوْم (Hover) تماماً على الجوال لمنع تعليق المربعات عشوائياً */
+			.product-card:hover, .slide-card:hover { 
+				transform: none !important; /* إلغاء حركة الحوم الافتراضية للكمبيوتر */
+			}
+		}
+		
 		
     </style> <!-- وسم إغلاق تنسيقات الـ CSS بالكامل -->
 </head> <!-- وسم إغلاق قسم رأس الصفحة والموقع -->
@@ -1744,6 +1774,96 @@
                 });
             });
         }
+		
+		// دالة تفاعلية ذكية لحساب اتجاه ضغطة الإصبع على الجوال (يمين أو يسار) وتدوير الكرت نحوها
+		function setupMobileDynamicTilt() {
+			// جلب جميع كروت الوجبات المميزة والمنتجات الخاصة المتواجدة في الصفحة
+			const cards = document.querySelectorAll('.product-card, .slide-card');
+			
+			// المرور على كل كرت بشكل منفرد لتطبيق أحداث اللمس عليه
+			cards.forEach(card => {
+				
+				// ----------------==============================================----------------
+				// 1. الحدث الأول: لحظة ملامسة الإصبع لسطح الكرت على الشاشة (touchstart)
+				// ----------------==============================================----------------
+				card.addEventListener('touchstart', (e) => {
+					// جلب أبعاد الكرت الحالي وموقعه الدقيق بالنسبة لشاشة العرض
+					const rect = card.getBoundingClientRect();
+					
+					// حساب مكان ضغطة الإصبع الأفقية (X) عبر طرح المسافة اليسارية للكرت من نقطة لمس الإصبع
+					const touchX = e.touches[0].clientX - rect.left;
+					
+					// حساب نقطة منتصف الكرت الأفقية تماماً (العرض الكلي مقسوماً على 2)
+					const cardCenter = rect.width / 2;
+					
+					// شرط ذكي: إذا كان مكان اللمس (touchX) أكبر من المنتصف، فالضغطة في اليمين (درجتين موجبة 2)، وإلا فهي في اليسار (درجتين سالبة -2)
+					const rotateDirection = (touchX > cardCenter) ? 2 : -2;
+		
+					// تطبيق الحركة الفورية لحظة الضغط (دخول سريع جداً خلال 0.1 ثانية لإعطاء شعور بالاستجابة اللحظية)
+					card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease';
+					
+					// تحريك الكرت للأعلى 8 بكسل، وتكبيره 4%، وتدويره يميناً أو يساراً بناءً على مكان إصبع العميل
+					card.style.transform = `translateY(-8px) scale(1.04) rotate(${rotateDirection}deg)`;
+					card.style.borderColor = 'var(--primary)'; // إضاءة حدود الكرت باللون الأخضر الأساسي للموقع
+					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)'; // بث الظل المتوهج الفاخر
+		
+					// جلب الصورة الداخلية للكرت لتفعيل تأثير الـ 3D والبروز عليها فوراً
+					const img = card.querySelector('img');
+					if(img) {
+						img.style.transition = 'transform 0.1s ease'; // استجابة تكبير الصورة بسرعة مع الإصبع
+						img.style.transform = 'scale(1.08) translateZ(30px)'; // تكبير الصورة 8% ودفعها للأمام 30 بكسل لتبدو مجسمة خارج الكرت
+					}
+					
+					// جلب حاوية النصوص المكتوبة أسفل الصورة لتغيير ألوانها مع الضغطة الحالية
+					const body = card.querySelector('.product-card-body, .slide-info');
+					if(body) {
+						body.style.transition = 'background-color 0.1s ease'; // استجابة لون الخلفية السريعة
+						body.style.backgroundColor = '#c5e1a5'; // تحويل لون الخلفية للأخضر العشبي الفاتح التفاعلي
+						
+						// جلب عنوان النص أو اسم الوجبة الداخلي
+						const h3 = body.querySelector('h3, span');
+						if(h3) {
+							h3.style.transition = 'color 0.1s ease'; // استجابة سريعة للخط
+							h3.style.color = '#33691e'; // تحويل لون الخط للأخضر الزيتوني الداكن لتحقيق تباين ممتاز وقراءة واضحة
+						}
+					}
+				}, { passive: true }); // استخدام خاصية اللمس الخامل لضمان سرعة تصفح واستجابة الشاشة بدون أي تهنيج
+		
+				// ----------------==============================================----------------
+				// 2. الحدث الثاني: لحظة رفع الإصبع عن سطح الكرت بالكامل (touchend)
+				// ----------------==============================================----------------
+				card.addEventListener('touchend', () => {
+					// إجبار الكرت على العودة التدريجية والبطيئة جداً (خلال ثانيتين مع التلاشي والمنحنى المرن الذي ضبطناه في الـ CSS)
+					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
+					card.style.transform = 'none'; // إلغاء الارتفاع، التكبير، والميلان وإرجاع الكرت لمكانه المستقر الأصلي
+					card.style.borderColor = 'var(--border-glow)'; // إعادة لون الحدود للوضع الافتراضي الباهت للموقع
+					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)'; // إعادة الظل الناعم الصغير الافتراضي للكرت
+		
+					// إعادة الصورة الداخلية لوضعها الطبيعي ببطء شديد بالتزامن مع حركة الكرت الكلية
+					const img = card.querySelector('img');
+					if(img) {
+						img.style.transition = 'transform 2s ease'; // العودة للأصل خلال ثانيتين
+						img.style.transform = 'translateZ(15px) scale(1)'; // إلغاء التكبير وإعادة عمق الـ 3D الافتراضي
+					}
+					
+					// إعادة حاوية النصوص وألوانها لوضعها ومظهرها الطبيعي (مضيء/مظلم) خلال ثانيتين وبنعومة فائقة
+					const body = card.querySelector('.product-card-body, .slide-info');
+					if(body) {
+						body.style.transition = 'background-color 2s ease'; // تلاشي اللون الأخضر ببطء خلال ثانيتين
+						body.style.backgroundColor = 'var(--bg-card)'; // إعادة الخلفية البيضاء أو الرمادية للبطاقات
+						
+						const h3 = body.querySelector('h3, span');
+						if(h3) {
+							h3.style.transition = 'color 2s ease'; // تلاشي لون الخط ببطء
+							h3.style.color = 'var(--text-main)'; // إعادة لون النص الكحلي أو الأبيض الأصلي حسب مظهر الموقع الحالي
+						}
+					}
+				});
+			});
+		}
+		
+		// الاستماع لحدث اكتمال تحميل هيكل وتصميم الصفحة لتشغيل هذه الدالة الذكية تلقائياً فور فتح الموقع
+		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
     </script>
