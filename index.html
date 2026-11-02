@@ -826,81 +826,95 @@
 		
 		
 		
-		/* الكود الشامل والمثالي للمربعات وأقسام المنيو الدائرية على الجوال */
+		/* الكود الشامل مع التحكم الكامل في وقت ونعومة التفاعل على الجوال */
 		@media (hover: none) { 
-			/* يتم تفعيل هذا القسم فقط عندما يكتشف المتصفح أن الشاشة تعمل باللمس (جوال/تابلت) ولا يوجد ماوس حقيقي */
+			/* يتم تفعيل هذا القسم فقط على شاشات اللمس (الجوال والتابلت) */
 		
 			/* ============================================================== */
-			/* 1. تصفير وإلغاء حالة الحوم (Hover) لمنع تعليق العناصر بعد رفع الإصبع */
+			/* 1. تصفير حالة الحوم (Hover) وإضافة وقت الرجوع التدريجي (البطيء) عند رفع الإصبع */
 			/* ============================================================== */
 			
-			/* إلغاء تأثيرات الإمالة والارتفاع الافتراضية عند الحوم فوق كروت المنتجات والوجبات المميزة */
+			.product-card, .slide-card, .circle-item {
+				/* إجبار العناصر على العودة لوضعها الطبيعي خلال 0.4 ثانية بنعومة فائقة عند رفع الإصبع */
+				transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease !important;
+			}
+		
+			.product-card img, .slide-card img {
+				/* إجبار الصور الداخلية على العودة لحجمها وعمقها الطبيعي خلال 0.4 ثانية بنعومة */
+				transition: transform 0.4s ease !important;
+			}
+		
+			.product-card .product-card-body, .slide-card .slide-info {
+				/* إجبار خلفيات الكروت على العودة للونها الأصلي خلال 0.4 ثانية تدريجياً وببطء */
+				transition: background-color 0.4s ease !important;
+			}
+		
+			.product-card .product-card-body h3, .slide-card .slide-info h3, .slide-card .slide-info span {
+				/* إجبار خطوط العناوين على العودة للونها الطبيعي خلال 0.4 ثانية */
+				transition: color 0.4s ease !important;
+			}
+		
+			.circle-item .circle-img-wrapper {
+				/* إجبار الدائرة وإطارها وظلها المتوهج على العودة للوضع الأصلي خلال 0.4 ثانية بنعومة */
+				transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+			}
+		
+			/* إلغاء تأثيرات الحوم العشوائية لمنع تعليق الكروت */
 			.product-card:hover, .slide-card:hover, .circle-item:hover {
-				transform: none !important; /* إجبار المربعات على البقاء في مكانها الطبيعي وبأبعادها الأصلية */
+				transform: none !important;
 			}
-			
-			/* تصفير حركة عمق الـ 3D وتكبير الصور الداخلية للوجبات والمنتجات */
 			.product-card:hover img, .slide-card:hover img {
-				transform: translateZ(15px) scale(1) !important; /* إعادة الصورة لحجمها الطبيعي وعمقها الافتراضي */
+				transform: translateZ(15px) scale(1) !important;
 			}
-			
-			/* إعادة لون خلفية جسم الكروت إلى لونها الأصلي المعتمد في المظهر (مضيء/مظلم) */
 			.product-card:hover .product-card-body, .slide-card:hover .slide-info {
-				background: var(--bg-card) !important; /* إلغاء تحول الخلفية للون الأخضر أثناء الحوم العشوائي */
+				background: var(--bg-card) !important;
 			}
-			
-			/* إعادة ألوان خطوط العناوين وأسماء الوجبات للونها الأصلي الأساسي للموقع */
 			.product-card:hover .product-card-body h3, .slide-card:hover .slide-info h3 {
-				color: var(--text-main) !important; /* إلغاء تحول خط العناوين للأخضر الزيتوني أثناء الحوم */
+				color: var(--text-main) !important;
 			}
-			
-			/* تصفير وإلغاء كل التأثيرات القديمة لأقسام المنيو الدائرية حتى لا تعلق عند اللمس */
 			.circle-item:hover .circle-img-wrapper {
-				transform: scale(1) rotate(0deg) !important; /* منع الدائرة من التكبير أو الدوران العشوائي بجانب الإصبع */
-				border-color: var(--bg-card) !important; /* إعادة لون إطار الدائرة للونه الأبيض أو الرمادي الافتراضي */
-				box-shadow: var(--shadow) !important; /* تطبيق الظل الناعم الطبيعي وإلغاء التوهج المضيء */
+				transform: scale(1) rotate(0deg) !important;
+				border-color: var(--bg-card) !important;
+				box-shadow: var(--shadow) !important;
 			}
 		
 			/* ============================================================== */
-			/* 2. تفعيل كل التأثيرات القديمة (تري دي، ظل، ارتفاع) فقط «أثناء» ضغط الإصبع */
+			/* 2. تأثير المربعات (الوجبات والمنتجات) أثناء ضغطة الإصبع الحالية */
 			/* ============================================================== */
 			
-			/* تطبيق تأثير الارتفاع والتوهج الفوري على كروت المنتجات والوجبات لحظة ملامسة الشاشة */
 			.product-card:active, .slide-card:active {
-				border-color: var(--primary) !important; /* تحويل لون حدود الكرت للون الأخضر الأساسي للموقع */
-				box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3) !important; /* إعادة إنتاج الظل المزدوج المتوهج والعميق */
-				transform: translateY(-5px) scale(1.03) !important; /* تحريك الكرت للأعلى 5 بكسل وتكبيره بنسبة 3% لمحاكاة الضغط */
+				border-color: var(--primary) !important;
+				box-shadow: 0 20px 35px rgba(139, 195, 74, 0.2), 0 15px 25px rgba(0, 0, 0, 0.3) !important; 
+				transform: translateY(-5px) scale(1.03) !important; 
+				/* جعل الدخول في تأثير الضغط سريعاً ولحظياً (0.1 ثانية) ليعطي شعوراً فورياً بالاستجابة */
+				transition: transform 0.1s ease, box-shadow 0.1s ease !important;
 			}
-			
-			/* تشغيل ميزة الـ 3D القديمة وتكبير الصور الداخلية لحظة النقر بالإصبع */
 			.product-card:active img, .slide-card:active img {
-				transform: scale(1.06) translateZ(25px) !important; /* دفع الصورة للأمام 25 بكسل على المحور Z لبروز ثلاثي الأبعاد وتكبيرها */
+				transform: scale(1.06) translateZ(25px) !important;
+				transition: transform 0.1s ease !important;
 			}
-			
-			/* تحويل لون خلفية بيانات الكروت للون الأخضر العشبي الفاتح فوراً عند الضغط */
 			.product-card:active .product-card-body, .slide-card:active .slide-info {
-				background-color: #c5e1a5 !important; /* تلوين الخلفية لإعطاء انطباع تفاعلي للمستخدم */
+				background-color: #c5e1a5 !important;
+				transition: background-color 0.1s ease !important;
 			}
-			
-			/* تغيير لون أسماء المنتجات والوجبات داخل الكروت للأخضر الزيتوني الداكن مع ضغطة اللمس */
 			.product-card:active .product-card-body h3, .slide-card:active .slide-info span {
-				color: #33691e !important; /* تحقيق تباين لوني سحري وممتاز يسهل قراءته فوق اللون العشبي */
+				color: #33691e !important;
+				transition: color 0.1s ease !important;
 			}
 		
 			/* ============================================================== */
-			/* 3. تطبيق التأثيرات القديمة لأقسام المنيو الدائرية فقط «أثناء» ضغط الإصبع */
+			/* 3. تأثير أقسام المنيو الدائرية أثناء ضغطة الإصبع الحالية */
 			/* ============================================================== */
 			
-			/* تكبير حاوية قسم المنيو بالكامل بشكل خفيف جداً أثناء ملامسة الإصبع */
 			.circle-item:active {
-				transform: scale(1.02) !important; /* إزاحة خفيفة للحجم الكلي تعطي إيحاء بمرونة الزر */
+				transform: scale(1.02) !important;
+				transition: transform 0.1s ease !important;
 			}
-			
-			/* إعادة تشغيل الوميض والتكبير والدوران والحدود الخضراء المتوهجة للدائرة أثناء اللمس الحالي */
 			.circle-item:active .circle-img-wrapper {
-				transform: scale(1.1) rotate(5deg) !important; /* تكبير الدائرة بنسبة 10% وتدويرها بزاوية 5 درجات لتأثير حركي رائع */
-				border-color: var(--primary) !important; /* إضاءة إطار الدائرة باللون الأخضر المضيء للموقع */
-				box-shadow: 0 0 20px var(--primary-glow) !important; /* بث هالة ظل خضراء متوهجة حول حواف الدائرة */
+				transform: scale(1.1) rotate(5deg) !important; 
+				border-color: var(--primary) !important; 
+				box-shadow: 0 0 20px var(--primary-glow) !important; 
+				transition: transform 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease !important;
 			}
 		}
 		
