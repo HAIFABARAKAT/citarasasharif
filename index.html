@@ -1747,113 +1747,104 @@
             });
         }
 		
-		// دالة تثبيت زاوية الميلان ثلاثية الأبعاد فوراً بمجرد لمسة خفيفة وسريعة في الجوال
+		// دالة جعل الكروت تميل بأقصى زاوية بمجرد الضغط على الجانب (يمين، يسار، أعلى، أسفل) دون الحاجة للزاوية
 		function setupMobileDynamicTilt() {
-			// جلب جميع كروت الوجبات والمنتجات المربعّة المتواجدة في الصفحة بالكامل
 			const cards = document.querySelectorAll('.product-card, .slide-card');
 			
-			// المرور على كل كرت بشكل منفرد لتطبيق أحداث اللمس الفورية عليه
 			cards.forEach(card => {
-				let returnTimeout; // متغير ذكي مخصص لحفظ وإدارة وقت مؤقت العودة التلقائي
+				let returnTimeout; // متغير لحفظ وقت مؤقت العودة التلقائي
 		
-				// دالة التقاط اللمسة السريعة والخاطفة وتطبيق زاوية الـ 3D والبروز الجانبي فوراً
 				function applyInstantTilt(e) {
-					// إيقاف مؤقت العودة السابق فوراً إذا قام المستخدم بلمس نفس الكارت مجدداً قبل انتهاء الوقت
-					clearTimeout(returnTimeout);
+					clearTimeout(returnTimeout); // إيقاف مؤقت العودة السابق
 		
-					// جلب أبعاد وموقع الكرت الحالي بدقة بالنسبة لشاشة هاتف الجوال
 					const rect = card.getBoundingClientRect();
+					// قراءة إحداثيات الإصبع الأول بدقة على الجوال
+					const clientX = e.changedTouches ? e.changedTouches.clientX : e.clientX;
+					const clientY = e.changedTouches ? e.changedTouches.clientY : e.clientY;
 					
-					// قراءة إحداثيات الإصبع الأفقي (X) والإصبع العمودي (Y) بدقة تامة لحظة ملامسة الشاشة
-					const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-					const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-					
-					// تأمين الكود: إذا عجز المتصفح عن قراءة الإحداثيات لأي سبب، يتم إنهاء الدالة بأمان لضمان عدم حدوث خطأ
 					if (!clientX || !clientY) return;
 		
-					// حساب مكان الضغطة الخفيفة بالنسبة لأبعاد الكرت نفسه (طرح هوامش الكرت من نقطة اللمس)
+					// حساب مكان الضغطة بالنسبة لأبعاد الكرت
 					const x = clientX - rect.left;
 					const y = clientY - rect.top;
 					
-					// حساب نقطة المنتصف الدقيقة للكرت (العرض والارتفاع مقسوماً على 2)
+					// نقطة المنتصف الدقيقة للكرت أفقياً وعمودياً
 					const xc = rect.width / 2;
 					const yc = rect.height / 2;
 					
-					// حساب زوايا الدوران الفيزيائية بناءً على مكان ملامسة إصبعك (تقسيم المسافة على 6 لزيادة قوة وملاحظة الميلان والبروز)
-					const angleX = (yc - y) / 6; // حساب زاوية الالتواء العمودي (أعلى وأسفل)
-					const angleY = (x - xc) / 6; // حساب زاوية الالتواء الأفقي الجانبي (يمين ويسار)
-		
-					// تطبيق التأثير والميلان الفاخر فوراً برمشة عين (خلال 0.05 ثانية) ليلتقط المتصفح اللمسة السريعة جداً ويبرز الكارت
-					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease';
+					/* اللمسة السحرية الجديدة: تحديد أقصى زوايا ميلان ثابتة وقوية (مثلاً 12 درجة) */
+					const maxTiltAngle = 12; 
 					
-					// إمالة الكارت بالزوايا المحسوبة، ورفعه 8 بكسل للأعلى، وتكبير حجمه بنسبة 4% ليظهر بشكل فخم ومميز
-					card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px) scale(1.04)`;
-					card.style.borderColor = 'var(--primary)'; // إضاءة وتلوين حدود الكرت باللون الأخضر الأساسي للموقع
-					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)'; // بث الظل المتوهج المزدوج والعميق
+					// تحديد زاوية الالتواء العمودي (أعلى وأسفل) بناءً على الجانب
+					// إذا كانت الضغطة في النصف العلوي يميل للأعلى، وإذا في السفلي يميل للأسفل بقوة ثابتة
+					const angleX = (y < yc) ? (maxTiltAngle) : (-maxTiltAngle);
+					
+					// تحديد زاوية الالتواء الأفقي الجانبي (يمين ويسار) بناءً على الجانب
+					// إذا كانت الضغطة في النصف الأيمن يميل لليمين، وإذا في الأيسر يميل ليسار بقوة ثابتة
+					const angleY = (x > xc) ? (maxTiltAngle) : (-maxTiltAngle);
 		
-					// جلب الصورة الداخلية للكرت لتفعيل تأثير الـ 3D والبروز الساحر عليها بالتزامن مع اللمسة
+					// تطبيق التأثير والميلان الفاخر للجانب فوراً خلال 0.05 ثانية
+					card.style.transition = 'transform 0.05s ease, box-shadow 0.05s ease, border-color 0.05s ease';
+					card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px) scale(1.04)`;
+					card.style.borderColor = 'var(--primary)'; 
+					card.style.boxShadow = '0 25px 45px rgba(100, 188, 38, 0.3), 0 15px 25px rgba(0, 0, 0, 0.35)';
+		
+					// تفعيل بروز وتكبير الصورة الداخلية (الـ 3D الفاخر)
 					const img = card.querySelector('img');
 					if(img) {
-						img.style.transition = 'transform 0.05s ease'; // استجابة سريعة جداً للصورة
-						img.style.transform = 'scale(1.08) translateZ(30px)'; // تكبير الصورة 8% ودفعها للأمام بمقدار 30 بكسل لتبدو مجسمة خارج حدود الكارت
+						img.style.transition = 'transform 0.05s ease';
+						img.style.transform = 'scale(1.08) translateZ(30px)';
 					}
 					
-					// جلب حاوية البيانات والنصوص لتغيير ألوان المظهر بشكل متناسق مع الضغطة الحالية
+					// تحويل ألوان المظهر للخلفية العشبية والخط الزيتوني الداكن
 					const body = card.querySelector('.product-card-body, .slide-info');
 					if(body) {
-						body.style.transition = 'background-color 0.05s ease'; // استجابة لون الخلفية السريعة
-						body.style.backgroundColor = '#c5e1a5'; // تحويل لون خلفية النصوص لللون الأخضر العشبي الفاتح التفاعلي
-						
-						// جلب عنوان النص أو اسم المنتج والوجبة المكتوب بالداخل
+						body.style.transition = 'background-color 0.05s ease';
+						body.style.backgroundColor = '#c5e1a5';
 						const h3 = body.querySelector('h3, span');
 						if(h3) {
-							h3.style.transition = 'color 0.05s ease'; // استجابة سريعة لتغير لون الخط
-							h3.style.color = '#33691e'; // تحويل لون الخط للأخضر الزيتوني الداكن لتحقيق تباين لوني ممتاز ومريح للعين يسهل قراءته
+							h3.style.transition = 'color 0.05s ease';
+							h3.style.color = '#33691e';
 						}
 					}
 		
-					/* اللمسة السحرية: نأمر المتصفح بتثبيت هذا الميلان الفاخر والبروز لمدة ثانية كاملة (1000 ملي ثانية) أمام عين العميل قبل بدء العودة */
+					// تثبيت هذا الميلان الجانبي القوي لمدة ثانية كاملة أمام عين العميل قبل بدء التلاشي
 					returnTimeout = setTimeout(() => {
-						resetCardPosition(); // استدعاء دالة التلاشي والرجوع للأصل بعد انتهاء الثانية
+						resetCardPosition();
 					}, 1000);
 				}
 		
-				// دالة إعادة المربع لوضعه الطبيعي وتلاشي التأثير ببطء شديد يستغرق ثانيتين كاملتين (2s) لراحة العين وثبات المشهد
+				// دالة إعادة المربع لوضعه الطبيعي وتلاشي التأثير ببطء شديد يستغرق ثانيتين كاملتين (2s)
 				function resetCardPosition() {
-					// إجبار الكرت على العودة التدريجية خلال ثانيتين مع تطبيق المنحنى الفيزيائي الارتدادي المَرن والناعم
 					card.style.transition = 'transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 2s ease, border-color 2s ease';
-					card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)'; // إلغاء كل زوايا الميلان وإرجاع الكرت لمكانه المستقر
-					card.style.borderColor = 'var(--border-glow)'; // إعادة لون حدود الكرت للوضع الافتراضي الهادئ للموقع
-					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)'; // إعادة الظل الصغير الناعم الطبيعي للكرت
+					card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+					card.style.borderColor = 'var(--border-glow)';
+					card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.05)';
 		
-					// جلب الصورة الداخلية لإلغاء بروزها وإرجاعها للوضع الأصلي ببطء شديد بالتزامن مع حركة الكرت الكلية
 					const img = card.querySelector('img');
 					if(img) {
-						img.style.transition = 'transform 2s ease'; // العودة للأصل خلال ثانيتين بدون استعجال
-						img.style.transform = 'translateZ(15px) scale(1)'; // إلغاء التكبير وإعادة عمق الـ 3D الافتراضي المستقر للصورة
+						img.style.transition = 'transform 2s ease';
+						img.style.transform = 'translateZ(15px) scale(1)';
 					}
 					
-					// تلاشي ألوان حاوية البيانات والنصوص وعودتها لمظهر الموقع الطبيعي (مضيء/مظلم) بنعومة فائقة خلال ثانيتين
 					const body = card.querySelector('.product-card-body, .slide-info');
 					if(body) {
-						body.style.transition = 'background-color 2s ease'; // تلاشي اللون الأخضر ببطء خلال ثانيتين
-						body.style.backgroundColor = 'var(--bg-card)'; // إعادة خلفية الكروت البيضاء أو الرمادية الأصلية
-						
-						// جلب اسم المنتج أو الوجبة لإعادة لونه الأصلي
+						body.style.transition = 'background-color 2s ease';
+						body.style.backgroundColor = 'var(--bg-card)';
 						const h3 = body.querySelector('h3, span');
 						if(h3) {
-							h3.style.transition = 'color 2s ease'; // تلاشي لون الخط ببطء شديد
-							h3.style.color = 'var(--text-main)'; // إعادة لون النص الكحلي أو الأبيض الأصلي حسب مظهر وثيم الموقع الحالي
+							h3.style.transition = 'color 2s ease';
+							h3.style.color = 'var(--text-main)';
 						}
 					}
 				}
 		
-				// الاستماع لحدث بدء اللمس (touchstart) لالتقاط اللمسة الخفيفة والسريعة جداً وتثبيت زواياها الفاخرة فوراً بمجرد ملامسة الإصبع لشاشة الجوال
+				// الاستماع لحدث بدء اللمس لتفعيل الميلان الجانبي الفوري بمجرد ملامسة أي طرف في الكرت
 				card.addEventListener('touchstart', applyInstantTilt, { passive: true });
 			});
 		}
 		
-		// الاستماع لحدث اكتمال تحميل هيكل وتصميم الصفحة لتشغيل هذه الدالة الذكية تلقائياً فور فتح الموقع لتجهيز الأكواد
+		// تشغيل الدالة تلقائياً فور فتح الموقع وتوفر العناصر
 		window.addEventListener('DOMContentLoaded', setupMobileDynamicTilt);
 
 		
